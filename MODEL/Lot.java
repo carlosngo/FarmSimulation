@@ -1,5 +1,5 @@
 public class Lot{
-	ArrayList<ArrayList<Tile>> tiles;
+	private ArrayList<ArrayList<Tile>> tiles;
 	
 	public Lot(){
 		
