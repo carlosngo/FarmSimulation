@@ -5,8 +5,8 @@ public class Tile{
 	private boolean isWithered;
 	private boolean hasRocks;
 	private boolean isPlowed;
-	private boolean isTree;
-	private boolean isOccupied;
+	//private boolean isTree;
+	//private boolean isOccupied;
 	
 	public Tile(Seed seed, int water, int fertilizer){
 		this.seed = seed;
@@ -44,6 +44,11 @@ public class Tile{
 	
 	public int getFertilizer(){
 		return fertilizer;
+	}
+	
+	
+	public String getActions(){
+		
 	}
 	
 	public boolean isWithered(){
