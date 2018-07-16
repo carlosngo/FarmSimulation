@@ -1,7 +1,7 @@
 public class Inventory{
-	ArrayList<Seed> seeds;
-	int noOfFertilizers;
-	ArrayList<Tool> tools;
+	private ArrayList<Seed> seeds;
+	private int noOfFertilizers;
+	private ArrayList<Tool> tools;
 	
 	Inventory(int noOfFertilizers){
 		this.noOfFertilizers = noOfFertilizers;
