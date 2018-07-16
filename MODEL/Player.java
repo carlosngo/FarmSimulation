@@ -8,11 +8,16 @@ public class Player{
 	private Inventory inv;
 	private Object selected;
 	
+	public Player(String name){
+		this.name = name;
+	}
+	
+	/*
 	public Player(String name, double money){
 		this.name = name;
 		this.money = money;
 	}
-	
+	*/
 	public String getName(){
 		return name;
 	}
@@ -60,15 +65,56 @@ public class Player{
 	public void setMoney(double money){
 		this.money = money;
 	}
-	
+	/*
 	public void displayStats(){
 		//print out the player's name, level, exp, and money?
 	}
-	
+	*/
 	public void select(Object obj){
-		//selects object
+		
 	}
 	
+	public boolean buy(Object obj, int quantity){
+		
+	}
+	
+	public boolean register(int type){
+		
+	}
+	
+	public boolean expandLot(){
+		
+	}
+	
+	public boolean plow(Tile t){
+		
+	}
+	
+	public boolean water(Tile t){
+		
+	}
+	
+	public void plant(Tile t, Seed s){
+		
+	}
+	
+	public boolean harvest(Tile t){
+		//calculate t's sp and etc
+		// add money to wallet
+	}
+	
+	public boolean removeWithered(Tile t){
+		
+	}
+	
+	public boolean putFertilizer(Tile t){
+		// add to t's fertilizer
+	}
+	
+	public void removeRocks(Tile t){
+		// set t's hasRocks to false
+	}
+	/*
 	public void use(Object obj){
 		//uses object
 		//activates object's actions
@@ -81,33 +127,6 @@ public class Player{
 	public void openMenu(){
 		//display menu
 	}
+	*/
 	
-	public void plow(Tile t){
-		// set t's isPlowed to true
-	}
-	
-	public void water(Tile t){
-		// add to t's water
-	}
-	
-	public void harvest(Tile t){
-		//calculate t's sp and etc
-		// add money to wallet
-	}
-	
-	public void putFertilizer(Tile t){
-		// add to t's fertilizer
-	}
-	
-	public void buy(Seed s){
-		// add to Inventory's ArrayList<Seed>
-	}
-	
-	public void destroyRocks(){
-		// set t's hasRocks to false
-	}
-	
-	public void register(int type){
-		// set player's type
-	}
 }
