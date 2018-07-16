@@ -12,6 +12,18 @@ public class Lot{
 	public boolean hasAdjacentTile(Tile t){
 		
 	}
+	
+	public boolean hasAdjacentTree(Tile t){
+		
+	}
+	
+	public boolean hasAdjacentSeed(Tile t){
+		
+	}
+	
+	public void expand(){
+		
+	}
 	/*
 	public void addTile(){
 		
