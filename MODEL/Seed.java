@@ -66,11 +66,16 @@ public class Seed(){
 	public double getSP(){
 		return sp;
 	}
-
+	/*
 	public boolean equals(Object obj){
 		Seed s = (Seed) obj;
 		return type == s.type && name.equals(s.name) && hTime==s.hTime && water==s.water && waterMax==s.waterMax &&
 			   fertilizer==s.fertilizer && fertilizerMax==s.fertilizerMax && hCost==s.hCost && products==s.products &&
 			   sCost==s.sCost && bp==s.bp && sp==s.sp && timeElapsed==s.timeElapsed;
+	}
+	*/
+	public boolean equals(Object obj){
+		Seed s = (Seed) obj;
+		return type == s.type && name.equals(s.name);
 	}
 }
