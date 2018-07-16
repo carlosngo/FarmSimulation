@@ -1,19 +1,19 @@
 public class Seed(){
-	int kind;
-	String name;
-	double hTime;
-	int water;
-	int waterMax;
-	int fertilizer;
-	int fertilizerMax;
-	double hCost;
-	int minProducts;
-	int maxProducts;
-	//int products;
-	double sCost;
-	double bp;
-	double sp;
-	double timeElapsed;
+	private int kind;
+	private String name;
+	private double hTime;
+	private int water;
+	private int waterMax;
+	private int fertilizer;
+	private int fertilizerMax;
+	private double hCost;
+	private int minProducts;
+	private int maxProducts;
+	//private int products;
+	private double sCost;
+	private double bp;
+	private double sp;
+	private double timeElapsed;
 	
 	public Seed(int kind){
 		this.kind = kind;
