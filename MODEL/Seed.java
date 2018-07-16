@@ -1,5 +1,5 @@
 public class Seed(){
-	int type;
+	int kind;
 	String name;
 	double hTime;
 	int water;
@@ -13,14 +13,14 @@ public class Seed(){
 	double sp;
 	double timeElapsed;
 	
-	public Seed(int type){
-		this.type = type;
+	public Seed(int kind){
+		this.kind = kind;
 	}
 	
 	public Seed(){}
 	
-	public int getType(){
-		return type;
+	public int getKind(){
+		return kind;
 	}
 	
 	public String getName(){
@@ -69,13 +69,13 @@ public class Seed(){
 	/*
 	public boolean equals(Object obj){
 		Seed s = (Seed) obj;
-		return type == s.type && name.equals(s.name) && hTime==s.hTime && water==s.water && waterMax==s.waterMax &&
+		return kind == s.kind && name.equals(s.name) && hTime==s.hTime && water==s.water && waterMax==s.waterMax &&
 			   fertilizer==s.fertilizer && fertilizerMax==s.fertilizerMax && hCost==s.hCost && products==s.products &&
 			   sCost==s.sCost && bp==s.bp && sp==s.sp && timeElapsed==s.timeElapsed;
 	}
 	*/
 	public boolean equals(Object obj){
 		Seed s = (Seed) obj;
-		return type == s.type && name.equals(s.name);
+		return kind == s.kind && name.equals(s.name);
 	}
 }
