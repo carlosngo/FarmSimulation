@@ -1,5 +1,5 @@
 public class Lot{
-	ArrayList<ArrayList<Tile>> tiles;
+	private ArrayList<ArrayList<Tile>> tiles;
 	
 	public Lot(){
 		
@@ -10,6 +10,18 @@ public class Lot{
 	}
 	
 	public boolean hasAdjacentTile(Tile t){
+		
+	}
+	
+	public boolean hasAdjacentTree(Tile t){
+		
+	}
+	
+	public boolean hasAdjacentSeed(Tile t){
+		
+	}
+	
+	public void expand(){
 		
 	}
 	/*

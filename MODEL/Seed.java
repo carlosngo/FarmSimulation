@@ -1,26 +1,28 @@
 public class Seed(){
-	int type;
-	String name;
-	double hTime;
-	int water;
-	int waterMax;
-	int fertilizer;
-	int fertilizerMax;
-	double hCost;
-	int products;
-	double sCost;
-	double bp;
-	double sp;
-	double timeElapsed;
+	private int kind;
+	private String name;
+	private double hTime;
+	private int water;
+	private int waterMax;
+	private int fertilizer;
+	private int fertilizerMax;
+	private double hCost;
+	private int minProducts;
+	private int maxProducts;
+	//private int products;
+	private double sCost;
+	private double bp;
+	private double sp;
+	private double timeElapsed;
 	
-	public Seed(int type){
-		this.type = type;
+	public Seed(int kind){
+		this.kind = kind;
 	}
 	
-	public Seed(){}
+	//public Seed(){}
 	
-	public int getType(){
-		return type;
+	public int getKind(){
+		return kind;
 	}
 	
 	public String getName(){
@@ -52,7 +54,7 @@ public class Seed(){
 	}
 	
 	public int getNumOfProducts(){
-		return products;
+		
 	}
 	
 	public double getSeedCost(){
@@ -66,4 +68,26 @@ public class Seed(){
 	public double getSP(){
 		return sp;
 	}
+	
+	public boolean canHarvest(){
+		
+	}
+	
+	public boolean isWithered(){
+		
+	}
+	
+	public String toString(){
+		
+	}
+	
+	public boolean equals(Object obj){
+		Seed s = (Seed) obj;
+		return kind == s.kind && name.equals(s.name);
+	}
+	
+	public int compareTo(Seed s){
+		
+	}
+	
 }
