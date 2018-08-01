@@ -22,14 +22,19 @@ import static javax.swing.JFrame.EXIT_ON_CLOSE;
  * @author User
  */
 public class SeedStatus implements ActionListener, DocumentListener{
-    //Tile t;
+    String name;
+    long time;
+    int status;
     JFrame f;
     JButton harvest, done;
     
-    public SeedStatus(/*Tile t*/) {
-        //this.t = t;
+    public SeedStatus(String name, long time, int status) {
+        this.name = name;
+        this.time = time;
+        this.status = status;
         initSeedStatus();
     }
+    
     public void initSeedStatus(){
         f = new JFrame();
         f.setLayout(new FlowLayout());
@@ -48,34 +53,35 @@ public class SeedStatus implements ActionListener, DocumentListener{
         p.add(title,c);
         
       
-        JLabel name = new JLabel();
-        name.setHorizontalAlignment(SwingConstants.LEFT);
-        name.setFont(new Font("Abril Fatface", Font.PLAIN, 18));
-        //if(t.getSeed().getName()==null)
-        //  name.setText("Name: N/A (tree ground)");
-        //else
-            name.setText("Name: "/* + t.getSeed().getName()*/);
+        JLabel nameLabel = new JLabel();
+        nameLabel.setHorizontalAlignment(SwingConstants.LEFT);
+        nameLabel.setFont(new Font("Abril Fatface", Font.PLAIN, 18));
+        if(name==null)
+          nameLabel.setText("Name: N/A");
+        else
+          nameLabel.setText("Name: " + name);
         c.gridx = 0;
         c.gridy = 1;
         c.gridwidth = 2;
         c.fill = GridBagConstraints.HORIZONTAL;
-        p.add(name,c);
+        p.add(nameLabel,c);
         
-        JLabel time = new JLabel();
-        time.setHorizontalAlignment(SwingConstants.LEFT);
-        time.setFont(new Font("Abril Fatface", Font.PLAIN, 18));
-        time.setText("Time Elapsed: "/* + time left*/);
+        JLabel timeLabel = new JLabel();
+        timeLabel.setHorizontalAlignment(SwingConstants.LEFT);
+        timeLabel.setFont(new Font("Abril Fatface", Font.PLAIN, 18));
+        timeLabel.setText("Time Elapsed: " + time);
         c.gridx = 0;
         c.gridy = 2;
         c.gridwidth = 2;
         c.fill = GridBagConstraints.HORIZONTAL;
-        p.add(time,c);
+        p.add(timeLabel,c);
         
         
         harvest = new JButton("Harvest");
         harvest.setFont(new Font("Abril Fatface", Font.PLAIN, 18));
         harvest.addActionListener(this);
         harvest.setEnabled(false);
+        enableHarvest();
         c.gridx = 0;
         c.gridy = 3;
         c.gridwidth = 1;
@@ -97,6 +103,12 @@ public class SeedStatus implements ActionListener, DocumentListener{
         f.setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
     
+    public void enableHarvest(){
+        if(status==2){
+            harvest.setEnabled(true);
+        }
+    }
+  
     public void actionPerformed (ActionEvent e){
         if(e.getSource()==harvest){
             //plant is harvested
@@ -117,15 +129,11 @@ public class SeedStatus implements ActionListener, DocumentListener{
     }
     
     public void changedUpdate(DocumentEvent e) {
-       /*if (t.isWithered())
-            harvest.setEnabled(false);
-        else
-            harvest.setEnabled(true);
-       */
+        
     }
     
     public static void main(String[] args){
-        SeedStatus s = new SeedStatus();
+        SeedStatus s = new SeedStatus("flower",12,2);
     }
 }
 
