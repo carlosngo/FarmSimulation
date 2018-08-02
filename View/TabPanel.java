@@ -10,18 +10,12 @@ import javax.swing.*;
 import javax.swing.event.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import javax.imageio.ImageIO;
 import javax.swing.border.Border;
-import static javax.swing.JFrame.EXIT_ON_CLOSE;
 
-public class TabPanel {
+public class TabPanel extends JPanel{
     private JButton[][] actionButtons;
     String category;
     JPanel mainPnl;
-    GridBagConstraints c;
     private static int row;
     private static int col;
 
@@ -30,32 +24,27 @@ public class TabPanel {
         col = 0;
         actionButtons = new JButton[12][6];
         this.category = category;
-        c = new GridBagConstraints();
         
-        mainPnl = new JPanel();
-        mainPnl.setLayout(new BoxLayout(mainPnl, BoxLayout.Y_AXIS));
+        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         
-        JPanel firstPnl = new JPanel(new GridBagLayout());
-        JLabel nameLabel = makeLabel(category);
-        c.gridx = 0; 
-        c.gridy = 0; 
-        c.gridwidth = 2; 
-        c.fill = GridBagConstraints.HORIZONTAL;
-        firstPnl.add(nameLabel,c);
-        JLabel amount = makeLabel("Amount");
-        c.gridx = 2; 
-        c.gridy = 0; 
-        c.gridwidth = 2; 
-        c.fill = GridBagConstraints.HORIZONTAL;
-        firstPnl.add(amount,c);
-        JLabel action = makeLabel("Actions");
-        c.gridx = 4; 
-        c.gridy = 0; 
-        c.gridwidth = 2; 
-        c.fill = GridBagConstraints.HORIZONTAL;
-        firstPnl.add(action,c);
-        
-        mainPnl.add(firstPnl);
+        JPanel firstPnl = new JPanel();
+        firstPnl.setLayout(new BoxLayout(firstPnl, BoxLayout.X_AXIS));
+        JLabel nameLabel = makeLabel("Name");
+        nameLabel.setMinimumSize(new Dimension(150, 36));
+        nameLabel.setMaximumSize(new Dimension(150, 36));
+        nameLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        firstPnl.add(nameLabel);
+        JLabel amount = makeLabel("Qty.");
+        amount.setMinimumSize(new Dimension(75, 36));
+        amount.setMaximumSize(new Dimension(75, 36));
+        amount.setHorizontalAlignment(SwingConstants.CENTER);
+        firstPnl.add(amount);
+        JLabel action = makeLabel("Actions");        
+        action.setMinimumSize(new Dimension(170, 36));
+        action.setMaximumSize(new Dimension(170, 36));
+        action.setHorizontalAlignment(SwingConstants.CENTER);
+        firstPnl.add(action);
+        add(firstPnl);
     }
     
     public String getCategory() {
@@ -67,19 +56,18 @@ public class TabPanel {
     }
     
     public void addRow(String name, int number){
-        JPanel pnl = new JPanel(new GridBagLayout());
+        JPanel pnl = new JPanel();
+        pnl.setLayout(new BoxLayout(pnl, BoxLayout.X_AXIS));
         JLabel nameLabel = makeLabel(name);
-        c.gridx = 0; 
-        c.gridy = 0; 
-        c.gridwidth = 2; 
-        c.fill = GridBagConstraints.HORIZONTAL;
-        pnl.add(nameLabel,c);
+        nameLabel.setMinimumSize(new Dimension(150, 36));
+        nameLabel.setMaximumSize(new Dimension(150, 36));
+        nameLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        pnl.add(nameLabel);
         JLabel amount = makeLabel("" + number);
-        c.gridx = 2; 
-        c.gridy = 0; 
-        c.gridwidth = 2; 
-        c.fill = GridBagConstraints.HORIZONTAL;
-        pnl.add(amount,c);
+        amount.setMinimumSize(new Dimension(75, 36));
+        amount.setMaximumSize(new Dimension(75, 36));
+        amount.setHorizontalAlignment(SwingConstants.CENTER);
+        pnl.add(amount);
         JPanel actionButtonPnl = new JPanel();
         actionButtonPnl.setLayout(new BoxLayout(actionButtonPnl, BoxLayout.X_AXIS));
         Border border = BorderFactory.createLineBorder(Color.BLACK, 1);  
@@ -91,13 +79,9 @@ public class TabPanel {
         actionButtons[row][col] = new JButton("Plant");
         actionButtons[row][col].setFont(new Font("Abril Fatface", Font.PLAIN, 18));
         actionButtonPnl.add(actionButtons[row][col]);
-        c.gridx = 4; 
-        c.gridy = 0; 
-        c.gridwidth = 2; 
-        c.fill = GridBagConstraints.HORIZONTAL;
-        pnl.add(actionButtonPnl,c);
         row++;
-        mainPnl.add(pnl);
+        pnl.add(actionButtonPnl);
+        add(pnl);
     }
 
     public JButton[][] getActionButtons() {
@@ -110,5 +94,15 @@ public class TabPanel {
             Border border = BorderFactory.createLineBorder(Color.BLACK, 1);    
             label.setBorder(border);
             return label;
+    }
+    
+    public static void main(String[] args) {
+        JFrame f = new JFrame("Test");
+        TabPanel tp = new TabPanel("Vegetables");
+        tp.addRow("Carrot", 5);
+        f.setContentPane(tp);
+        f.setSize(500, 500);
+        f.pack();
+        f.setVisible(true);
     }
 }
