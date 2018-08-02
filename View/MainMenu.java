@@ -14,8 +14,7 @@ import static javax.swing.JFrame.EXIT_ON_CLOSE;
  *
  * @author User
  */
-public class MainMenu implements ActionListener, DocumentListener{
-    JFrame f;
+public class MainMenu extends JFrame implements ActionListener, DocumentListener{
     JTextField nameInput;
     JButton playgame;
     JButton exit;
@@ -24,18 +23,8 @@ public class MainMenu implements ActionListener, DocumentListener{
     public MainMenu() {
         initHomeScreen();
     }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     
-    public String getName() {
-        return name;
-    }
-    
-    public void initHomeScreen(){
-        f = new JFrame();
+    public void initHomeScreen() {
         JPanel p = new JPanel();
         p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
         
@@ -47,16 +36,14 @@ public class MainMenu implements ActionListener, DocumentListener{
         
         JPanel subP = new JPanel();
         subP.setLayout(new FlowLayout());
-        JLabel name = new JLabel("Name: ");
-        name.setFont(new Font("Abril Fatface", Font.PLAIN, 24));
-        subP.add(name);
+        JLabel nameLabel = new JLabel("Name: ");
+        nameLabel.setFont(new Font("Abril Fatface", Font.PLAIN, 24));
+        subP.add(nameLabel);
+        
         nameInput = new JTextField("" , 20);
         nameInput.addActionListener(this);
         nameInput.setFont(new Font("Abril Fatface", Font.PLAIN, 24));
-        //p = new Player(nameInput.getText());
-        
         subP.add(nameInput);
-        setName(nameInput.getText());
         subP.setAlignmentX(Component.CENTER_ALIGNMENT);
         p.add(subP);
         p.add(Box.createRigidArea(new Dimension(0,7))); // add space
@@ -76,24 +63,26 @@ public class MainMenu implements ActionListener, DocumentListener{
         p.add(exit);
         p.add(Box.createRigidArea(new Dimension(0,7))); // add space
         
-        f.add(p);
-        f.pack();
-        f.setVisible(true);
-        f.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        add(p);
+        pack();
+        setVisible(true);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
     
     public void actionPerformed (ActionEvent e){
         if(nameInput.getText().equals(""))
             playgame.setEnabled(false);
-        else
+        else{
+            name = nameInput.getText();
             playgame.setEnabled(true);
+        }
         
         if(e.getActionCommand().equals("Play Game")){
-            GameGUI g = new GameGUI();
-            f.dispose();
+            GameGUI g = new GameGUI(name);
+            dispose();
         }
         else if(e.getActionCommand().equals("Exit")){
-            f.dispose();
+            dispose();
         }
     }
     
