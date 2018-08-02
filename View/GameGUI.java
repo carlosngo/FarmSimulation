@@ -13,17 +13,19 @@ import javax.swing.border.Border;
 import static javax.swing.JFrame.EXIT_ON_CLOSE;
 
 
-public class GameGUI implements ActionListener{
+public class GameGUI extends JFrame implements ActionListener{
     public static final int row = 10;
     public static final int col = 5;
+    String name;
     private boolean canWater, canPlow, canPickaxe, canFertilize;
     JButton[][] tileButtons;
-    JFrame f;
     JPanel p1;
-    JLabel level, type, money, description;
+    JLabel nameLabel, level, type, money;
+    JTextArea description;
     JButton mainmenu, watercan, plow, pickaxe, fertilizer, seeds;
 
-    public GameGUI() {
+    public GameGUI(String name) {
+        this.name = name;
         canWater = false;
         canPlow = false;
         canPickaxe = false;
@@ -31,11 +33,25 @@ public class GameGUI implements ActionListener{
         tileButtons = new JButton[row][col];
         initGameGUI();
     }
+
+    public void setNameLabel(String name) {
+        this.nameLabel = new JLabel("Name: " + name);
+    }
+
+    public void setLevel(int lvl) {
+        this.level = new JLabel("Level: " + lvl);
+    }
+
+    public void setType(String type) {
+        this.type = new JLabel("Level: " + type);
+    }
+
+    public void setMoney(JLabel money) {
+        this.money = new JLabel("Money: " + money);
+    }
+    
     
     public void initGameGUI(){
-        f = new JFrame();
-        f.setLayout(new FlowLayout());
-        
         JPanel p = new JPanel(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints(); 
         
@@ -49,14 +65,14 @@ public class GameGUI implements ActionListener{
         c.fill = GridBagConstraints.HORIZONTAL;
         p1.add(title,c);
         
-        JLabel name = new JLabel("Name: ");
-        name.setFont(new Font("Abril Fatface", Font.PLAIN, 18));
+        nameLabel = new JLabel("Name:  ");
+        nameLabel.setFont(new Font("Abril Fatface", Font.PLAIN, 18));
         //Border border1 = BorderFactory.createLineBorder(Color.BLUE, 1);   name.setBorder(border1);
         c.gridx = 0;
         c.gridy = 1;
         c.gridwidth = 4;
         c.fill = GridBagConstraints.HORIZONTAL;
-        p1.add(name,c);
+        p1.add(nameLabel,c);
         
         level = new JLabel("Level: ");
         level.setFont(new Font("Abril Fatface", Font.PLAIN, 18));
@@ -174,8 +190,13 @@ public class GameGUI implements ActionListener{
         c.fill = GridBagConstraints.HORIZONTAL;
         p1.add(specs,c);
         
-        description = new JLabel();
+        description = new JTextArea();
         description.setFont(new Font("Abril Fatface", Font.PLAIN, 18));
+        description.setWrapStyleWord(true);
+        description.setLineWrap(true);
+        description.setEditable(false);
+        description.setBackground(Color.WHITE);
+//        JScrollPane sp = new JScrollPane(description);
         //Border border = BorderFactory.createLineBorder(Color.BLACK, 1); description.setBorder(border);
         c.gridx = 0;
         c.gridy = 13;
@@ -207,11 +228,12 @@ public class GameGUI implements ActionListener{
         c.gridwidth = 10;
         c.fill = GridBagConstraints.HORIZONTAL;
         p.add(p2,c);
-        f.add(p);
+        p.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        add(p);
         //f.setSize(900,900);
-        f.pack();
-        f.setVisible(true);
-        f.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        pack();
+        setVisible(true);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
     /*
     public static BufferedImage setTileImage(int state, String plant){
@@ -282,27 +304,22 @@ public class GameGUI implements ActionListener{
     public void actionPerformed (ActionEvent e){
         if(e.getSource()==mainmenu){
              MainMenu m = new MainMenu();
-            f.dispose();
         }
         else if(e.getSource()==watercan){
             description.setText("Click on a plant to water it.");
             canWater = true;
-            f.pack();
         }
         else if(e.getSource()==plow){
             description.setText("Click on a tile to plow it.");
             canPlow = true;
-            f.pack();
         }
         else if(e.getSource()==pickaxe){
-            description.setText("Click on a tile to clear the \nrocks in it.");
+            description.setText("Click on a tile to clear the \nr\no\nc\nk\ns\n \ni\nn\n \nit.");
             canPickaxe = true;
-            f.pack();
         }
         else if(e.getSource()==fertilizer){
             description.setText("Click on a plant to fertilize it.");
             canFertilize = true;
-            f.pack();
         }
         else if(e.getSource()==seeds){
             SeedMenu s = new SeedMenu();
@@ -357,6 +374,6 @@ public class GameGUI implements ActionListener{
     }
     
     public static void main(String[] args){
-        GameGUI g = new GameGUI();
+        GameGUI g = new GameGUI("johanna");
     }
 }
