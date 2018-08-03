@@ -7,10 +7,12 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.border.Border;
 import static javax.swing.JFrame.EXIT_ON_CLOSE;
+import sun.audio.*;
 
 
 public class GameGUI extends JFrame implements ActionListener{
@@ -21,7 +23,7 @@ public class GameGUI extends JFrame implements ActionListener{
     JButton[][] tileButtons;
     JPanel p1;
     JLabel nameLabel, level, type, money;
-    JTextArea description;
+    JTextArea description, log;
     JButton mainmenu, watercan, plow, pickaxe, fertilizer, seeds;
 
     public GameGUI(String name) {
@@ -32,6 +34,20 @@ public class GameGUI extends JFrame implements ActionListener{
         canFertilize = false;
         tileButtons = new JButton[row][col];
         initGameGUI();
+        AudioPlayer MGP = AudioPlayer.player;
+        AudioStream BGM;
+        AudioData MD;
+        ContinuousAudioDataStream loop = null;
+        
+        try{
+            BGM = new AudioStream(new FileInputStream("Pineapple Overture.mp3"));
+            MD = BGM.getData();
+            loop = new ContinuousAudioDataStream(MD);
+        }
+        catch(IOException e){
+            System.out.println("Unable to load audio.");
+        }
+        MGP.start(loop);
     }
 
     public void setNameLabel(String name) {
@@ -200,7 +216,7 @@ public class GameGUI extends JFrame implements ActionListener{
         description.setLineWrap(true);
         description.setEditable(false);
         description.setBackground(Color.WHITE);
-//        JScrollPane sp = new JScrollPane(description);
+        //JScrollPane sp = new JScrollPane(description);
         //Border border = BorderFactory.createLineBorder(Color.BLACK, 1); description.setBorder(border);
         c.gridx = 0;
         c.gridy = 13;
@@ -208,6 +224,31 @@ public class GameGUI extends JFrame implements ActionListener{
         c.fill = GridBagConstraints.HORIZONTAL;
         p1.add(description,c);
         
+        JLabel logLabel = new JLabel("Log:");
+        logLabel.setFont(new Font("Abril Fatface", Font.PLAIN, 30));
+        //Border border11 = BorderFactory.createLineBorder(Color.BLUE, 1);  specs.setBorder(border11);
+        //specs.setHorizontalAlignment(SwingConstants.LEFT);
+        c.gridx = 0;
+        c.gridy = 14;
+        c.gridwidth = 3;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        p1.add(logLabel,c);
+        
+        log = new JTextArea(30,20);
+        log.setFont(new Font("Abril Fatface", Font.PLAIN, 18));
+        log.setWrapStyleWord(true);
+        log.setLineWrap(true);
+        log.setEditable(false);
+        log.setOpaque(false);
+        //log.setBackground(new Color(0, 0, 0, 0));
+        //log.setBackground(Color.WHITE);
+        //JScrollPane sp = new JScrollPane(description);
+        //Border border = BorderFactory.createLineBorder(Color.BLACK, 1); description.setBorder(border);
+        c.gridx = 0;
+        c.gridy = 15;
+        c.gridwidth = 3;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        p1.add(log,c);
         
         GridBagConstraints c2 = new GridBagConstraints();
         JPanel p2 = new JPanel(new GridBagLayout());
@@ -232,12 +273,17 @@ public class GameGUI extends JFrame implements ActionListener{
         c.gridwidth = 10;
         c.fill = GridBagConstraints.HORIZONTAL;
         p.add(p2,c);
-        p.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        p.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         add(p);
         //f.setSize(900,900);
         pack();
         setVisible(true);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+        //setLogAction(1); 
+        //setLogAction(2);
+        //setLogAction(3);
+        //setLogAction(4);
+        //setLogHarvested(12.78);
     }
     /*
     public static BufferedImage setTileImage(int state, String plant){
@@ -270,7 +316,8 @@ public class GameGUI extends JFrame implements ActionListener{
             case 0 : tileButton.setIcon(new ImageIcon(resizeImage("rocky soil.png",60,60)));
             case 1 : tileButton.setIcon(new ImageIcon(resizeImage("unplowed soil.png",60,60)));
             case 2 : tileButton.setIcon(new ImageIcon(resizeImage("plowed soil.png",60,60)));
-            case 3 : switch(plant){
+            case 3 : tileButton.setIcon(new ImageIcon(resizeImage("seedling.png",60,60)));
+            case 4 : switch(plant){
                         case "Turnip"   :     tileButton.setIcon(new ImageIcon(resizeImage("turnip.png",60,60)));
                         case "Carrot"   :     tileButton.setIcon(new ImageIcon(resizeImage("carrot.png",60,60)));
                         case "Tomato"   :     tileButton.setIcon(new ImageIcon(resizeImage("tomato.png",60,60)));
@@ -284,7 +331,7 @@ public class GameGUI extends JFrame implements ActionListener{
                         case "Banana"   :     tileButton.setIcon(new ImageIcon(resizeImage("banana.png",60,60)));
                         case "Orange"   :     tileButton.setIcon(new ImageIcon(resizeImage("orange.png",60,60)));
                      }
-            case 4: tileButton.setIcon(new ImageIcon(resizeImage("withered soil.png",60,60)));
+            case 5: tileButton.setIcon(new ImageIcon(resizeImage("withered soil.png",60,60)));
             default : System.out.println("Unable to set picture.");;
         }
     }
@@ -305,9 +352,23 @@ public class GameGUI extends JFrame implements ActionListener{
         }
     }
     
+    public void setLogHarvested(double profit){
+        log.setText("Harvest successful.\n" + profit + " added to wallet.");
+    }
+    
+    public void setLogAction(int code){
+        switch(code){
+            case 1: log.setText("Plant watered.");      break;
+            case 2: log.setText("Tile plowed.");        break;
+            case 3: log.setText("Rocks cleared.");      break;
+            case 4: log.setText("Plant fertilized.");   break;
+        }
+    }
+    
     public void actionPerformed (ActionEvent e){
         if(e.getSource()==mainmenu){
              MainMenu m = new MainMenu();
+             dispose();
         }
         else if(e.getSource()==watercan){
             description.setText("Click on a plant to water it.");
