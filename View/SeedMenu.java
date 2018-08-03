@@ -168,9 +168,9 @@ public class SeedMenu extends JFrame implements ActionListener{
     
     public static void main(String[] args){
         SeedMenu s = new SeedMenu();
-        s.getpVeggie().addRow("carrot",5);
-        s.getpFlower().addRow("Sunflower", 3);
-        s.getpTree().addRow("Mango Tree", 10);
+        s.getpVeggie().addRow("Carrot", 7, 1.5, "1(2)", "0(1)", 1, "1-2", 10, 9);
+        s.getpFlower().addRow("Tulip", 3, 1.5, "2(3)", "0(1)", 2, "1", 7, 7);
+        s.getpTree().addRow("Orange", 2, 8, "8(8)", "6(6)", 3, "13-15", 65, 4.5);
     }
 }
 
