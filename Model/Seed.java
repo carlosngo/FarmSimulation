@@ -3,7 +3,6 @@ package Model;
 public abstract class Seed implements Selectable, Purchasable, Comparable<Seed> {
     
     private String name;
-    private long plantTime;
     private long harvestTime;
     private int water;
     private int waterNeeded;
@@ -17,7 +16,6 @@ public abstract class Seed implements Selectable, Purchasable, Comparable<Seed> 
     private int maxProducts;
     private double seedCost;
     private double basePrice;
-    private int state;
 
     public Seed(String name, double harvestTime, int waterNeeded, int waterMax, int fertilizerNeeded, int fertilizerMax, double harvestCost, int minProducts, int maxProducts, double seedCost, double basePrice) {
         this.name = name;
@@ -54,10 +52,6 @@ public abstract class Seed implements Selectable, Purchasable, Comparable<Seed> 
     
     public String getName() {
         return name;
-    }
-
-    public long getPlantTime() {
-        return plantTime;
     }
 
     public long getHarvestTime() {
@@ -107,14 +101,6 @@ public abstract class Seed implements Selectable, Purchasable, Comparable<Seed> 
     public double getBasePrice() {
         return basePrice;
     }
-
-    public int getState() {
-        return state;
-    }
-    
-    public void setState(int state) {
-        this.state = state;
-    }
     
     public void setWater (int water) {
         this.water = water;
@@ -133,11 +119,7 @@ public abstract class Seed implements Selectable, Purchasable, Comparable<Seed> 
     public void setFertilizerMax(int fertilizerMax) {
         this.fertilizerMax = fertilizerMax;
     }
-    
-    public void setPlantTime (long plantTime) {
-        this.plantTime = plantTime;
-    }
-    
+   
     public void setHarvestTime(long harvestTime) {
         this.harvestTime = harvestTime;
     }
@@ -147,27 +129,7 @@ public abstract class Seed implements Selectable, Purchasable, Comparable<Seed> 
     }
     
     public boolean canWater() {
-        if (canHarvest())
-            return false;
         return water < waterMax;
-    }
-    
-    public boolean canHarvest() {
-        if (plantTime != 0) {
-            long timeElapsed = System.currentTimeMillis() - plantTime;
-            return timeElapsed >= harvestTime && timeElapsed - harvestTime <= 60000;
-        }
-        return false;
-    }
-    
-    public boolean isWithered() {
-        if (canHarvest()) {
-            if (water < waterNeeded || fertilizer < fertilizerNeeded)
-                return true;
-            long timeElapsed = System.currentTimeMillis() - plantTime;
-            return timeElapsed - harvestTime > 60000;
-        }
-        return false;
     }
     
     public double computeBuyingPrice() {
