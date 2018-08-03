@@ -13,7 +13,7 @@ public class Pickaxe extends Tool {
     public Pickaxe() { }
     
     public boolean use(Tile t) {
-        if (t.getState() == Tile.ROCKY)
+        if (t.getstate() == Tile.ROCKY)
             t.setState(Tile.UNPLOWED);
         else
             return false;

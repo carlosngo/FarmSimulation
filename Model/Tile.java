@@ -1,11 +1,12 @@
 package Model;
 
-public class Tile implements Selectable {
+public class Tile implements Runnable, Selectable {
     public final static int ROCKY = 0;
     public final static int UNPLOWED = 1;
     public final static int PLOWED = 2;
     public final static int PLANTED = 3;
-    public final static int WITHERED = 4;
+    public final static int READY_TO_HARVEST = 4;
+    public final static int WITHERED = 5;
     private Seed seed;
     private int fertilizer;
     private int state;
@@ -17,11 +18,23 @@ public class Tile implements Selectable {
             setState(UNPLOWED);
     }
 
+    public void run() {
+        try {
+            state = PLANTED;
+            Thread.sleep(seed.getHarvestTime());
+            state = READY_TO_HARVEST;
+            Thread.sleep(60000);
+            state = WITHERED;
+        } catch (InterruptedException e) {
+            
+        }
+    }
+    
     public Seed getSeed() {
         return seed;
     }
     
-    public int getState() {
+    public int getstate() {
         return state;
     }
     
@@ -33,7 +46,6 @@ public class Tile implements Selectable {
         if (state == PLOWED) {
             this.seed = seed;
             this.seed.setFertilizer(fertilizer);
-            this.seed.setPlantTime(System.currentTimeMillis());
         } else
             return false;
         return true;
@@ -48,6 +60,6 @@ public class Tile implements Selectable {
     }
     
     public String getDescription() {
-        return seed.toString();
+        return "";
     }
 }

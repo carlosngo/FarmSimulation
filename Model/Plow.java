@@ -13,9 +13,9 @@ public class Plow extends Tool {
     public Plow() { }
     
     public boolean use(Tile t) {
-        if (t.getState() == Tile.WITHERED) 
-            t = new Tile();
-        else if (t.getState() == Tile.UNPLOWED)
+        if (t.getstate() == Tile.WITHERED) 
+            ;
+        else if (t.getstate() == Tile.UNPLOWED)
             t.setState(Tile.PLOWED);
         else
             return false;

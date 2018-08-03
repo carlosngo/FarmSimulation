@@ -24,9 +24,18 @@ public class Lot {
     public Tile getTile(int row, int col) {
         return tiles[row][col];
     }
-
+    
+    public void resetTile(Tile t) {
+        if (t.getSeed() instanceof Tree) {
+            for (Tile tile : getAdjacentTiles(t)) {
+                tile = new Tile();
+            }
+        }
+        t = new Tile();
+    }
+    
     public boolean plantSeed(Tile t, Seed s) {
-        if (t.getState() == Tile.PLANTED) {
+        if (t.getstate() == Tile.PLANTED) {
             return false;
         }
         if (s instanceof Tree) {
@@ -39,7 +48,7 @@ public class Lot {
             }
         }
         t.setSeed(s);
-        t.setState(Tile.PLANTED);
+        new Thread(t).start();
         return true;
     }
 
@@ -84,7 +93,7 @@ public class Lot {
             canPlantTree = false;
         } else {
             for (Tile tile : list) {
-                if (tile.getState() != Tile.PLOWED) {
+                if (tile.getstate() != Tile.PLOWED) {
                     canPlantTree = false;
                 }
             }

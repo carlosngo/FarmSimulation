@@ -85,7 +85,7 @@ public abstract class Player {
         if (selected == null) {
             if (s instanceof Tile) {
                 tile = (Tile) s;
-                if (tile.getSeed() != null && tile.getSeed().canHarvest()) {
+                if (tile.getSeed() != null && tile.getstate() == Tile.READY_TO_HARVEST) {
                     harvest(tile);
                     addExp(100);
                 }
@@ -98,12 +98,12 @@ public abstract class Player {
                     tile = (Tile) s;
                     if (tool.use(tile)) {
                         addExp(10);
-                        if (tool instanceof Plow && tile.getState() == Tile.WITHERED)
+                        if (tool instanceof Plow && tile.getstate() == Tile.WITHERED) {
                             money -= tile.getSeed().getSeedCost() * 0.1;
+                            lot.resetTile(tile);
+                        }
                     }
                     selected = null;
-                    
-                        
                 }
             } else if (selected instanceof Seed) {
                 seed = (Seed) selected;

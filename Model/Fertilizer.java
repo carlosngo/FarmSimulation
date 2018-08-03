@@ -17,7 +17,7 @@ public class Fertilizer extends Tool implements Purchasable {
 
     public boolean use(Tile t) {
         if (getCount() > 0) {
-            if (t.getState() == Tile.PLOWED) {
+            if (t.getstate() == Tile.PLOWED) {
                 t.setFertilizer(t.getFertilizer() + 1);
                 count--;
                 return true;
