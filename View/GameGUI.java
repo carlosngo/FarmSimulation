@@ -22,9 +22,9 @@ public class GameGUI extends JFrame implements ActionListener{
     private boolean canWater, canPlow, canPickaxe, canFertilize;
     JButton[][] tileButtons;
     JPanel p1;
-    JLabel nameLabel, level, type, money;
+    JLabel nameLabel, level, exp, type, money;
     JTextArea description, log;
-    JButton mainmenu, watercan, plow, pickaxe, fertilizer, seeds;
+    JButton mainmenu, watercan, plow, pickaxe, fertilizer, buyFertilizer, seeds;
 
     public GameGUI(String name) {
         this.name = name;
@@ -51,22 +51,22 @@ public class GameGUI extends JFrame implements ActionListener{
     }
 
     public void setNameLabel(String name) {
-        this.nameLabel = new JLabel("Name: " + name);
+        this.nameLabel.setText("Name: " + name);
         this.nameLabel.setFont(new Font("Abril Fatface", Font.PLAIN, 26));
     }
 
     public void setLevel(int lvl) {
-        level = new JLabel("Level: " + lvl);
+        level.setText("Level: " + lvl);
         level.setFont(new Font("Abril Fatface", Font.PLAIN, 26));
     }
 
     public void setType(String type) {
-        this.type = new JLabel("Type: " + type);
+        this.type.setText("Type: " + type);
         this.type.setFont(new Font("Abril Fatface", Font.PLAIN, 26));
     }
 
     public void setMoney(JLabel money) {
-        this.money = new JLabel("Money: " + money);
+        this.money.setText("Money: " + money);
         this.money.setFont(new Font("Abril Fatface", Font.PLAIN, 26));
     }
     
@@ -74,8 +74,11 @@ public class GameGUI extends JFrame implements ActionListener{
     public void initGameGUI(){
         JPanel p = new JPanel(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints(); 
+        p.setBackground(new Color(208,240,192));
         
         JPanel p1 = new JPanel(new GridBagLayout());
+        p1.setBackground(new Color(208,240,192));
+        
         JLabel title = new JLabel("MyFarm");
         title.setFont(new Font("Abril Fatface", Font.PLAIN, 40));
         //Border border = BorderFactory.createLineBorder(Color.BLUE, 5);    title.setBorder(border);
@@ -103,11 +106,20 @@ public class GameGUI extends JFrame implements ActionListener{
         c.fill = GridBagConstraints.HORIZONTAL;
         p1.add(level,c);
         
+        exp = new JLabel("Exp: ");
+        exp.setFont(new Font("Abril Fatface", Font.PLAIN, 26));
+        //Border border3 = BorderFactory.createLineBorder(Color.BLUE, 1);   type.setBorder(border3);
+        c.gridx = 0;
+        c.gridy = 3;
+        c.gridwidth = 4;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        p1.add(exp,c);
+        
         type = new JLabel("Type: ");
         type.setFont(new Font("Abril Fatface", Font.PLAIN, 26));
         //Border border3 = BorderFactory.createLineBorder(Color.BLUE, 1);   type.setBorder(border3);
         c.gridx = 0;
-        c.gridy = 3;
+        c.gridy = 4;
         c.gridwidth = 4;
         c.fill = GridBagConstraints.HORIZONTAL;
         p1.add(type,c);
@@ -116,7 +128,7 @@ public class GameGUI extends JFrame implements ActionListener{
         money.setFont(new Font("Abril Fatface", Font.PLAIN, 26));
         //Border border4 = BorderFactory.createLineBorder(Color.BLUE, 1);   money.setBorder(border4);
         c.gridx = 0;
-        c.gridy = 4;
+        c.gridy = 5;
         c.gridwidth = 4;
         c.fill = GridBagConstraints.HORIZONTAL;
         p1.add(money,c);
@@ -126,7 +138,7 @@ public class GameGUI extends JFrame implements ActionListener{
         mainmenu.addActionListener(this);
         //Border border5 = BorderFactory.createLineBorder(Color.BLUE, 1);   mainmenu.setBorder(border5);
         c.gridx = 0;
-        c.gridy = 5;
+        c.gridy = 6;
         c.gridwidth = 4;
         c.fill = GridBagConstraints.HORIZONTAL;
         p1.add(mainmenu,c);
@@ -135,7 +147,7 @@ public class GameGUI extends JFrame implements ActionListener{
         inventory.setFont(new Font("Abril Fatface", Font.PLAIN, 30));
         //Border border6 = BorderFactory.createLineBorder(Color.BLUE, 1);   inventory.setBorder(border6);
         c.gridx = 0;
-        c.gridy = 6;
+        c.gridy = 7;
         c.gridwidth = 4;
         c.fill = GridBagConstraints.HORIZONTAL;
         p1.add(inventory,c);
@@ -147,7 +159,7 @@ public class GameGUI extends JFrame implements ActionListener{
         watercan.addActionListener(this);
         //Border border6 = BorderFactory.createLineBorder(Color.BLUE, 1);   watercan.setBorder(border6);
         c.gridx = 0;
-        c.gridy = 7;
+        c.gridy = 8;
         c.gridwidth = 3;
         c.fill = GridBagConstraints.HORIZONTAL;
         p1.add(watercan,c);
@@ -159,7 +171,7 @@ public class GameGUI extends JFrame implements ActionListener{
         plow.addActionListener(this);
         //Border border7 = BorderFactory.createLineBorder(Color.ORANGE, 1);   plow.setBorder(border7);
         c.gridx = 0;
-        c.gridy = 8;
+        c.gridy = 9;
         c.gridwidth = 3;
         c.fill = GridBagConstraints.HORIZONTAL;
         p1.add(plow,c);
@@ -171,7 +183,7 @@ public class GameGUI extends JFrame implements ActionListener{
         pickaxe.addActionListener(this);
         //Border border8 = BorderFactory.createLineBorder(Color.GRAY, 1);   pickaxe.setBorder(border8);
         c.gridx = 0;
-        c.gridy = 9;
+        c.gridy = 10;
         c.gridwidth = 3;
         c.fill = GridBagConstraints.HORIZONTAL;
         p1.add(pickaxe,c);
@@ -183,10 +195,22 @@ public class GameGUI extends JFrame implements ActionListener{
         fertilizer.addActionListener(this);
         //Border border9 = BorderFactory.createLineBorder(Color.GREEN, 1);   fertilizer.setBorder(border9);
         c.gridx = 0;
-        c.gridy = 10;
-        c.gridwidth = 3;
+        c.gridy = 11;
+        c.gridwidth = 2;
         c.fill = GridBagConstraints.HORIZONTAL;
         p1.add(fertilizer,c);
+        
+        buyFertilizer = new JButton("Buy");
+        buyFertilizer.setFont(new Font("Abril Fatface", Font.PLAIN, 26));
+        buyFertilizer.setIcon(new ImageIcon(resizeImage("add fertilizer.png",50,35)));
+        buyFertilizer.setHorizontalAlignment(SwingConstants.LEFT);
+        buyFertilizer.addActionListener(this);
+        //Border border9 = BorderFactory.createLineBorder(Color.GREEN, 1);   fertilizer.setBorder(border9);
+        c.gridx = 2;
+        c.gridy = 11;
+        c.gridwidth = 1;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        p1.add(buyFertilizer,c);
         
         seeds = new JButton("Seeds");
         seeds.setFont(new Font("Abril Fatface", Font.PLAIN, 26));
@@ -195,7 +219,7 @@ public class GameGUI extends JFrame implements ActionListener{
         seeds.addActionListener(this);
         //Border border10 = BorderFactory.createLineBorder(Color.BLUE, 1);  seeds.setBorder(border10);
         c.gridx = 0;
-        c.gridy = 11;
+        c.gridy = 12;
         c.gridwidth = 3;
         c.fill = GridBagConstraints.HORIZONTAL;
         p1.add(seeds,c);
@@ -205,21 +229,22 @@ public class GameGUI extends JFrame implements ActionListener{
         //Border border11 = BorderFactory.createLineBorder(Color.BLUE, 1);  specs.setBorder(border11);
         //specs.setHorizontalAlignment(SwingConstants.LEFT);
         c.gridx = 0;
-        c.gridy = 12;
+        c.gridy = 13;
         c.gridwidth = 3;
         c.fill = GridBagConstraints.HORIZONTAL;
         p1.add(specs,c);
         
-        description = new JTextArea(30,20);
+        description = new JTextArea(40,20);
         description.setFont(new Font("Abril Fatface", Font.PLAIN, 18));
         description.setWrapStyleWord(true);
         description.setLineWrap(true);
         description.setEditable(false);
-        description.setBackground(Color.WHITE);
+        description.setOpaque(false);
+        //description.setBackground(Color.WHITE);
         //JScrollPane sp = new JScrollPane(description);
         //Border border = BorderFactory.createLineBorder(Color.BLACK, 1); description.setBorder(border);
         c.gridx = 0;
-        c.gridy = 13;
+        c.gridy = 14;
         c.gridwidth = 3;
         c.fill = GridBagConstraints.HORIZONTAL;
         p1.add(description,c);
@@ -229,7 +254,7 @@ public class GameGUI extends JFrame implements ActionListener{
         //Border border11 = BorderFactory.createLineBorder(Color.BLUE, 1);  specs.setBorder(border11);
         //specs.setHorizontalAlignment(SwingConstants.LEFT);
         c.gridx = 0;
-        c.gridy = 14;
+        c.gridy = 15;
         c.gridwidth = 3;
         c.fill = GridBagConstraints.HORIZONTAL;
         p1.add(logLabel,c);
@@ -245,13 +270,14 @@ public class GameGUI extends JFrame implements ActionListener{
         //JScrollPane sp = new JScrollPane(description);
         //Border border = BorderFactory.createLineBorder(Color.BLACK, 1); description.setBorder(border);
         c.gridx = 0;
-        c.gridy = 15;
+        c.gridy = 16;
         c.gridwidth = 3;
         c.fill = GridBagConstraints.HORIZONTAL;
         p1.add(log,c);
         
         GridBagConstraints c2 = new GridBagConstraints();
         JPanel p2 = new JPanel(new GridBagLayout());
+        p2.setBackground(new Color(208,240,192));
         
         for(int i=0;i<row;i++){
             for(int j=0;j<col;j++){
@@ -439,6 +465,6 @@ public class GameGUI extends JFrame implements ActionListener{
     }
     
     public static void main(String[] args){
-        GameGUI g = new GameGUI("johanna");
+        GameGUI g = new GameGUI("student");
     }
 }
