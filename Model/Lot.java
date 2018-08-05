@@ -1,18 +1,21 @@
 package Model;
 
 import java.util.*;
+import Controller.*;
 
 public class Lot {
 
     public static final int MAX_ROW = 10;
     public static final int MAX_COL = 10;
     private Tile[][] tiles;
-
-    public Lot() {
+    private GameGUIController controller;
+    
+    public Lot(GameGUIController controller) {
+        this.controller = controller;
         tiles = new Tile[MAX_ROW][MAX_COL];
         for (int i = 0; i < MAX_ROW; i++) {
             for (int j = 0; j < MAX_COL; j++) {
-                tiles[i][j] = new Tile();
+                tiles[i][j] = new Tile(this.controller);
             }
         }
     }
@@ -28,14 +31,14 @@ public class Lot {
     public void resetTile(Tile t) {
         if (t.getSeed() instanceof Tree) {
             for (Tile tile : getAdjacentTiles(t)) {
-                tile = new Tile();
+                tile.init();
             }
         }
-        t = new Tile();
+        t.init();
     }
     
     public boolean plantSeed(Tile t, Seed s) {
-        if (t.getstate() == Tile.PLANTED) {
+        if (t.getstate() != Tile.PLOWED) {
             return false;
         }
         if (s instanceof Tree) {
@@ -64,6 +67,7 @@ public class Lot {
             }
         }
         boolean canPlantTree = true;
+        boolean canRemoveTree = true;
         ArrayList<Tile> list = new ArrayList<>();
         if (row - 1 >= 0) {
             list.add(tiles[row - 1][col]);
@@ -95,10 +99,11 @@ public class Lot {
             for (Tile tile : list) {
                 if (tile.getstate() != Tile.PLOWED) {
                     canPlantTree = false;
-                }
+                } else if (!(tile.getstate() == Tile.PLANTED && tile.getSeed() == null))
+                    canRemoveTree = false;
             }
         }
-        if (canPlantTree) {
+        if (canPlantTree || canRemoveTree) {
             return list;
         } else {
             return null;

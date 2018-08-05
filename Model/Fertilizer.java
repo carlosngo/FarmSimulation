@@ -31,6 +31,7 @@ public class Fertilizer extends Tool implements Purchasable {
     }
 
     public String getDescription() {
-        return "Fertilizes a specific tile. Cannot be placed on a tile with a plant";
+        return "Fertilizes a specific tile. Cannot be placed on a tile with a plant.\n"
+                + "You have " + count + " fertilizers remaining.";
     }
 }

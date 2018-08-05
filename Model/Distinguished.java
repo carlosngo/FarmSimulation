@@ -17,10 +17,15 @@ public class Distinguished extends Player  {
     
     @Override
     public boolean buy(Purchasable p, int quantity) {
-        double cost = p.computeBuyingPrice() * quantity - 3;
+        double cost = (p.computeBuyingPrice() - 3) * quantity;
         if (cost > getMoney())
             return false;
         setMoney(getMoney() - cost);
+        if (p instanceof Fertilizer) {
+            getInventory().addFertilizer(quantity);
+        } else if (p instanceof Seed) {
+            getInventory().setQuantity((Seed) p, getInventory().getQuantity((Seed) p) + quantity);
+        } 
         addExp(25);
         return true;
     }
@@ -36,11 +41,14 @@ public class Distinguished extends Player  {
 
     @Override
     public boolean plant(Tile t, Seed s) {
-        s.setWaterMax(s.getWaterMax() + 1);
-        s.setFertilizerMax(s.getFertilizerMax() + 1);
-        s.setHarvestTime(s.getHarvestTime() - (long)(s.getHarvestTime() * 0.1));
-        if (getLot().plantSeed(t, s))
+        Seed seedClone = getInventory().getSeedClone(s.getName());
+        seedClone.setWaterMax(s.getWaterMax() + 1);
+        seedClone.setFertilizerMax(s.getFertilizerMax() + 1);
+        seedClone.setHarvestTime(s.getHarvestTime() - (long)(s.getHarvestTime() * 0.1));
+        if (getInventory().getQuantity(s) > 0 && getLot().plantSeed(t, seedClone)) {
+            getInventory().removeSeed(s);
             return true;
+        }
         return false;
     }
 
@@ -49,9 +57,9 @@ public class Distinguished extends Player  {
         Seed seed = t.getSeed();
         if (seed instanceof Tree)
             for (Tile tile : getLot().getAdjacentTiles(t))
-                tile = new Tile();
+                tile.init();
         setMoney(getMoney() + ((seed.computeSellingPrice() + 3) * seed.getProducts()));
-        t = new Tile();
+        t.init();
     }
     
 }

@@ -1,5 +1,7 @@
 package Model;
 
+import Controller.*;
+
 public abstract class Player {
     public static final int MAX_LEVEL = 50;
     private String name;
@@ -9,11 +11,14 @@ public abstract class Player {
     private double money;
     private Inventory inv;
     private Selectable selected;
-
-    public Player(String name) {
+    private GameGUIController controller;
+    
+    public Player(String name, GameGUIController controller) {
+        this.controller = controller;
         this.name = name;
-        lot = new Lot();
-        money = 100;
+        lot = new Lot(this.controller);
+        money = 100000;
+        level = 50;
         inv = new Inventory();
     }
     
@@ -25,6 +30,7 @@ public abstract class Player {
         this.money = p.getMoney();
         this.inv = p.getInventory();
         this.selected = p.getSelected();
+        this.controller = p.getController();
     }
     public String getName() {
         return name;
@@ -65,6 +71,10 @@ public abstract class Player {
     public Selectable getSelected() {
         return selected;
     }
+    
+    public GameGUIController getController() {
+        return controller;
+    }
 
     public void setLvl(int level) {
         this.level = level;
@@ -78,7 +88,7 @@ public abstract class Player {
         this.money = money;
     }
 
-    public void select(Selectable s) {
+    public boolean select(Selectable s) {
         Tool tool;
         Tile tile;
         Seed seed;
@@ -88,6 +98,8 @@ public abstract class Player {
                 if (tile.getSeed() != null && tile.getstate() == Tile.READY_TO_HARVEST) {
                     harvest(tile);
                     addExp(100);
+                } else {
+                    selected = s;
                 }
             } else
                 selected = s;
@@ -102,21 +114,31 @@ public abstract class Player {
                             money -= tile.getSeed().getSeedCost() * 0.1;
                             lot.resetTile(tile);
                         }
-                    }
-                    selected = null;
+                    } else
+                        return false;
+                } else {
+                    selected = s;
+                    return true;
                 }
             } else if (selected instanceof Seed) {
                 seed = (Seed) selected;
                 if (s instanceof Tile) {
                     tile = (Tile) s;
-                    plant(tile, seed);
-                    selected = null;
+                    if (!plant(tile, seed))
+                        return false;
+                } else {
+                    selected = s;
                 }
+            } else {
+                selected = s;
             }
-           
         }
+        return true;
     }
     
+    public void deselect() {
+        selected = null;
+    }
     public void addExp(int exp) {
         this.exp += exp;
         level = this.exp / 500;

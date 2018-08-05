@@ -5,22 +5,25 @@
  */
 package Model;
 
-/**
- *
- * @author Carlos
- */
-public class Registered extends Player {
+import Controller.*;
 
+public class Registered extends Player {
+    
     public Registered(Player p) {
         super (p);
     }
     
     @Override
     public boolean buy(Purchasable p, int quantity) {
-        double cost = p.computeBuyingPrice() * quantity - 2;
+        double cost = (p.computeBuyingPrice() - 2)* quantity;
         if (cost > getMoney())
             return false;
         setMoney(getMoney() - cost);
+        if (p instanceof Fertilizer) {
+            getInventory().addFertilizer(quantity);
+        } else if (p instanceof Seed) {
+            getInventory().setQuantity((Seed) p, getInventory().getQuantity((Seed) p) + quantity);
+        }
         addExp(25);
         return true;
     }
@@ -36,9 +39,12 @@ public class Registered extends Player {
 
     @Override
     public boolean plant(Tile t, Seed s) {
-        s.setHarvestTime(s.getHarvestTime() - (long)(s.getHarvestTime() * 0.05));
-        if (getLot().plantSeed(t, s))
+        Seed seedClone = getInventory().getSeedClone(s.getName());
+        seedClone.setHarvestTime(s.getHarvestTime() - (long)(s.getHarvestTime() * 0.05));
+        if (getInventory().getQuantity(s) > 0 && getLot().plantSeed(t, seedClone)) {
+            getInventory().removeSeed(s);
             return true;
+        }
         return false;
     }
 
@@ -47,9 +53,9 @@ public class Registered extends Player {
         Seed seed = t.getSeed();
         if (seed instanceof Tree)
             for (Tile tile : getLot().getAdjacentTiles(t))
-                tile = new Tile();
+                tile.init();
         setMoney(getMoney() + ((seed.computeSellingPrice() + 2) * seed.getProducts()));
-        t = new Tile();
+        t.init();
     }
     
 }

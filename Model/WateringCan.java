@@ -13,7 +13,7 @@ public class WateringCan extends Tool {
     public WateringCan() { }
     
     public boolean use(Tile t) {
-        if (t.getstate() == Tile.PLANTED && t.getSeed().canWater())
+        if (t.getstate() == Tile.PLANTED && t.getSeed() != null && t.getSeed().canWater())
             t.getSeed().setWater(t.getSeed().getWater() + 1);
         else
             return false;

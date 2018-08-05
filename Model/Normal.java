@@ -9,10 +9,12 @@ package Model;
  *
  * @author Carlos
  */
+import Controller.*;
+
 public class Normal extends Player  {
     
-    public Normal(String name) {
-        super (name);
+    public Normal(String name, GameGUIController controller) {
+        super (name, controller);
     }
     
     @Override
@@ -21,6 +23,12 @@ public class Normal extends Player  {
         if (cost > getMoney())
             return false;
         setMoney(getMoney() - cost);
+        if (p instanceof Fertilizer) {
+            getInventory().addFertilizer(quantity);
+        } else if (p instanceof Seed) {
+            getInventory().setQuantity((Seed) p, getInventory().getQuantity((Seed) p) + quantity);
+        } 
+        
         addExp(25);
         return true;
     }
@@ -36,8 +44,11 @@ public class Normal extends Player  {
 
     @Override
     public boolean plant(Tile t, Seed s) {
-        if (getLot().plantSeed(t, s))
+        Seed seedClone = getInventory().getSeedClone(s.getName());
+        if (getInventory().getQuantity(s) > 0 && getLot().plantSeed(t, seedClone)) {
+            getInventory().removeSeed(s);
             return true;
+        }
         return false;
     }
 
@@ -46,9 +57,9 @@ public class Normal extends Player  {
         Seed seed = t.getSeed();
         if (seed instanceof Tree)
             for (Tile tile : getLot().getAdjacentTiles(t))
-                tile = new Tile();
+                tile.init();
         setMoney(getMoney() + (seed.computeSellingPrice() * seed.getProducts()));
-        t = new Tile();
+        t.init();
     }
     
 }

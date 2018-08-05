@@ -5,6 +5,7 @@
  */
 package View;
 
+import Controller.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import java.awt.*;
@@ -14,13 +15,15 @@ import static javax.swing.JFrame.EXIT_ON_CLOSE;
  *
  * @author User
  */
-public class MainMenu extends JFrame implements ActionListener, DocumentListener{
+public class MainMenu extends JFrame implements ActionListener, DocumentListener {
+    GameGUIController controller;
     JTextField nameInput;
     JButton playgame;
     JButton exit;
     String name;
 
-    public MainMenu() {
+    public MainMenu(GameGUIController controller) {
+        this.controller = controller;
         initHomeScreen();
     }
     
@@ -42,6 +45,7 @@ public class MainMenu extends JFrame implements ActionListener, DocumentListener
         
         nameInput = new JTextField("" , 20);
         nameInput.addActionListener(this);
+        nameInput.getDocument().addDocumentListener(this);
         nameInput.setFont(new Font("Abril Fatface", Font.PLAIN, 24));
         subP.add(nameInput);
         subP.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -66,19 +70,18 @@ public class MainMenu extends JFrame implements ActionListener, DocumentListener
         add(p);
         pack();
         setVisible(true);
+        setResizable(false);
+//        setUndecorated(true);
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
     
     public void actionPerformed (ActionEvent e){
-        if(nameInput.getText().equals(""))
-            playgame.setEnabled(false);
-        else{
-            name = nameInput.getText();
-            playgame.setEnabled(true);
-        }
-        
+       
         if(e.getActionCommand().equals("Play Game")){
-            GameGUI g = new GameGUI(name);
+            controller.initializePlayer(nameInput.getText().trim().split("\\s+")[0]);
+            controller.initializeGame();
             dispose();
         }
         else if(e.getActionCommand().equals("Exit")){
@@ -107,7 +110,7 @@ public class MainMenu extends JFrame implements ActionListener, DocumentListener
             playgame.setEnabled(true);
     }
     
-    public static void main(String[] args){
-        MainMenu m = new MainMenu();
-    }
+//    public static void main(String[] args){
+//        MainMenu m = new MainMenu();
+//    }
 }

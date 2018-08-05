@@ -5,6 +5,7 @@
  */
 package View;
 
+import Controller.*;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.event.*;
@@ -17,7 +18,8 @@ import javax.imageio.ImageIO;
 import javax.swing.border.Border;
 import static javax.swing.JFrame.EXIT_ON_CLOSE;
 
-public class SeedMenu extends JFrame implements ActionListener{
+public class SeedMenu extends JFrame implements ActionListener {
+
     private JButton[][] actionButtons;
     private JButton back;
     private JTabbedPane tp;
@@ -25,7 +27,8 @@ public class SeedMenu extends JFrame implements ActionListener{
     private GridBagConstraints c = new GridBagConstraints();
     private static int row;
     private static int col;
-    
+    private GameGUIController controller;
+
     public TabPanel getpVeggie() {
         return pVeggie;
     }
@@ -38,32 +41,31 @@ public class SeedMenu extends JFrame implements ActionListener{
         return pTree;
     }
 
-    
     public JFrame getFrame() {
         return this;
     }
 
-    public SeedMenu() {
+    public SeedMenu(GameGUIController controller) {
+        this.controller = controller;
         row = 0;
         col = 0;
         actionButtons = new JButton[12][6];
         initSeedMenu();
     }
-    
-    public void initSeedMenu(){
+
+    public void initSeedMenu() {
         JPanel p = new JPanel();
         p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
-        
-        tp = new JTabbedPane(); 
-        tp.setSize(500, 500);
+        p.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        tp = new JTabbedPane();
         tp.setFont(new Font("Abril Fatface", Font.PLAIN, 14));
-        
+
         pVeggie = new TabPanel("Vegetables");
         tp.add("Vegetables", pVeggie);
-        
+
         pFlower = new TabPanel("Flowers");
         tp.add("Flowers", pFlower);
-        
+
         pTree = new TabPanel("Trees");
         tp.add("Fruit Tree", pTree);
         
@@ -71,108 +73,73 @@ public class SeedMenu extends JFrame implements ActionListener{
         back.setFont(new Font("Abril Fatface", Font.PLAIN, 18));
         back.setAlignmentX(Component.CENTER_ALIGNMENT);
         back.addActionListener(this);
-        
+
+        JTextArea legend = new JTextArea(3, 50);
+        legend.setText("Legend:\nSN – seed name; CT – crop type; HT – time to harvest in minutes; WN (bl) – water needed (bonus limit); FN (bl) – "
+                + "Fertilizer needed (bonus limit);\nHC – harvest cost; PP – number of products produced; SC – seed cost; BP – base selling"
+                + " cost per piece produced");
+        legend.setFont(new Font("Times New Roman", Font.BOLD, 14));
+        legend.setAlignmentX(Component.CENTER_ALIGNMENT);
+        legend.setLineWrap(true);
+        legend.setWrapStyleWord(true);
+        legend.setOpaque(false);
+        legend.setEditable(false);
+        JScrollPane sp = new JScrollPane(legend);
+        sp.setBorder(BorderFactory.createEmptyBorder());
+        JLabel title = new JLabel("Seed List");
+        title.setFont(new Font("Abril Fatface", Font.BOLD, 24));
+        title.setAlignmentX(Component.CENTER_ALIGNMENT);
+        p.add(title);
         p.add(tp);
+        p.add(Box.createRigidArea(new Dimension(0, 10)));
+        p.add(sp);
+        p.add(Box.createRigidArea(new Dimension(0, 10)));
         p.add(back);
-        add(p);
-        setSize(400,400);
+        setContentPane(p);
+        setSize(1100, 420);
+        setResizable(false);
+        setUndecorated(true);
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
         setVisible(true);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
-    /*
-    public void addTab(String category){
-        TabPanel tab = new TabPanel(category);
-        tp.add(category, tab.getMainPnl());
-    }
-    */
-    /*
-    public JPanel addFirstRow(String category){
-        JPanel firstPnl = new JPanel(new GridBagLayout());
-        JLabel nameLabel = makeLabel(category);
-        c.gridx = 0; 
-        c.gridy = 0; 
-        c.gridwidth = 2; 
-        c.fill = GridBagConstraints.HORIZONTAL;
-        firstPnl.add(nameLabel,c);
-        JLabel amount = makeLabel("Amount");
-        c.gridx = 2; 
-        c.gridy = 0; 
-        c.gridwidth = 2; 
-        c.fill = GridBagConstraints.HORIZONTAL;
-        firstPnl.add(amount,c);
-        JLabel action = makeLabel("Actions");
-        c.gridx = 4; 
-        c.gridy = 0; 
-        c.gridwidth = 2; 
-        c.fill = GridBagConstraints.HORIZONTAL;
-        firstPnl.add(action,c);
-        return firstPnl;
-    }
-    
-    public JPanel addRow(String name, int number){
-        JPanel pnl = new JPanel(new GridBagLayout());
-        JLabel nameLabel = makeLabel(name);
-        c.gridx = 0; 
-        c.gridy = 0; 
-        c.gridwidth = 2; 
-        c.fill = GridBagConstraints.HORIZONTAL;
-        pnl.add(nameLabel,c);
-        JLabel amount = makeLabel("" + number);
-        c.gridx = 2; 
-        c.gridy = 0; 
-        c.gridwidth = 2; 
-        c.fill = GridBagConstraints.HORIZONTAL;
-        pnl.add(amount,c);
-        JPanel actionButtonPnl = new JPanel();
-        actionButtonPnl.setLayout(new BoxLayout(actionButtonPnl, BoxLayout.X_AXIS));
-        Border border = BorderFactory.createLineBorder(Color.BLACK, 1);  
-        actionButtonPnl.setBorder(border);
-        actionButtons[row][col] = new JButton("Buy");
-        actionButtons[row][col].setFont(new Font("Abril Fatface", Font.PLAIN, 18));
-        actionButtonPnl.add(actionButtons[row][col]);
-        col++;
-        actionButtons[row][col] = new JButton("Plant");
-        actionButtons[row][col].setFont(new Font("Abril Fatface", Font.PLAIN, 18));
-        actionButtonPnl.add(actionButtons[row][col]);
-        c.gridx = 4; 
-        c.gridy = 0; 
-        c.gridwidth = 2; 
-        c.fill = GridBagConstraints.HORIZONTAL;
-        pnl.add(actionButtonPnl,c);
-        row++;
-        return pnl;
-    }
-    
-    public JLabel makeLabel(String s){
-        JLabel label = new JLabel(s);
-        label.setFont(new Font("Abril Fatface", Font.PLAIN, 24));
-        Border border = BorderFactory.createLineBorder(Color.BLACK, 1);    
-        label.setBorder(border);
-        return label;
-    }
-    */
-    public void actionPerformed (ActionEvent e){
-        if(e.getSource()==back){
-            dispose();
+
+    public void addActionListeners() {
+        for (ArrayList<JButton> list : pVeggie.getActionButtons()) {
+            for (JButton b : list)
+                b.addActionListener(this);
         }
-        else{
-            for(int i=0;i<12;i++){
-                for(int j=0;j<2;j++){
-                    if(e.getSource()==actionButtons[i][j]){
-                        // do actions from actions panel (buy or plant)
+        
+        for (ArrayList<JButton> list : pFlower.getActionButtons()) {
+            for (JButton b : list)
+                b.addActionListener(this);
+        }
+        
+        for (ArrayList<JButton> list : pTree.getActionButtons()) {
+            for (JButton b : list)
+                b.addActionListener(this);
+        }
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == back) {
+            dispose();
+        } else {
+            TabPanel pnl = (TabPanel) tp.getSelectedComponent();
+            for (int i = 0; i < pnl.getActionButtons().size(); i++) {
+                for (int j = 0; j < 2; j++) {
+                    if (e.getSource().equals(pnl.getActionButtons().get(i).get(j))) {
+                          controller.updateSelected((JButton) e.getSource(), pnl.getNames().get(i), 0);
+                        
                     }
                 }
             }
         }
     }
-    
-    public static void main(String[] args){
-        SeedMenu s = new SeedMenu();
-        s.getpVeggie().addRow("Carrot", 7, 1.5, "1(2)", "0(1)", 1, "1-2", 10, 9);
-        s.getpFlower().addRow("Tulip", 3, 1.5, "2(3)", "0(1)", 2, "1", 7, 7);
-        s.getpTree().addRow("Orange", 2, 8, "8(8)", "6(6)", 3, "13-15", 65, 4.5);
-    }
+
+//    public static void main(String[] args){
+//        
+//        
+//    }
 }
-
-
-

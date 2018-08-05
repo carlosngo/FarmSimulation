@@ -132,12 +132,17 @@ public abstract class Seed implements Selectable, Purchasable, Comparable<Seed> 
         return water < waterMax;
     }
     
+    public boolean isWithered() {
+        return water < waterNeeded || fertilizer < fertilizerNeeded;
+    }
+    
     public double computeBuyingPrice() {
         return seedCost;
     }
     
     public String getDescription() {
-        return "";
+        return "Name: " + getName() + "\nHarvest Time: " + (harvestTime / 60000.0) + " minutes\nWater Needed: "
+                + waterNeeded + "\nFertilizer Needed: " + fertilizerNeeded;
     }
     
     public abstract double computeSellingPrice();

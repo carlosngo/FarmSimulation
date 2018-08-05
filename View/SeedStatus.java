@@ -128,8 +128,8 @@ public class SeedStatus implements ActionListener, DocumentListener{
         
     }
     
-    public static void main(String[] args){
-        SeedStatus s = new SeedStatus("flower",12,2);
-    }
+//    public static void main(String[] args){
+//        SeedStatus s = new SeedStatus("flower",12,2);
+//    }
 }
 
