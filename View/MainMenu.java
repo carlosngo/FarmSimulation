@@ -5,43 +5,56 @@
  */
 package View;
 
+import Controller.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 import static javax.swing.JFrame.EXIT_ON_CLOSE;
 /**
  *
  * @author User
  */
-public class MainMenu extends JFrame implements ActionListener, DocumentListener{
+public class MainMenu extends JFrame implements ActionListener, DocumentListener {
+    GameGUIController controller;
     JTextField nameInput;
     JButton playgame;
     JButton exit;
     String name;
 
-    public MainMenu() {
+    public MainMenu(GameGUIController controller) {
+        this.controller = controller;
         initHomeScreen();
     }
     
     public void initHomeScreen() {
+        JPanel motherPnl = new JPanel();
+        motherPnl.setLayout(new OverlayLayout(motherPnl));
+        
         JPanel p = new JPanel();
         p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
+        p.setOpaque(false);
         
         JLabel title = new JLabel("MyFarm");
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
-        title.setFont(new Font("Abril Fatface", Font.PLAIN, 36));
+        title.setFont(new Font("Abril Fatface", Font.BOLD, 36));
         p.add(title);
         p.add(Box.createRigidArea(new Dimension(0,25))); // add space
         
         JPanel subP = new JPanel();
+        subP.setOpaque(false);
         subP.setLayout(new FlowLayout());
         JLabel nameLabel = new JLabel("Name: ");
-        nameLabel.setFont(new Font("Abril Fatface", Font.PLAIN, 24));
+        nameLabel.setFont(new Font("Abril Fatface", Font.BOLD, 28));
         subP.add(nameLabel);
         
         nameInput = new JTextField("" , 20);
         nameInput.addActionListener(this);
+        nameInput.getDocument().addDocumentListener(this);
         nameInput.setFont(new Font("Abril Fatface", Font.PLAIN, 24));
         subP.add(nameInput);
         subP.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -63,22 +76,44 @@ public class MainMenu extends JFrame implements ActionListener, DocumentListener
         p.add(exit);
         p.add(Box.createRigidArea(new Dimension(0,7))); // add space
         
-        add(p);
+        p.setAlignmentX(0.5f);
+        p.setAlignmentY(0.5f);
+        motherPnl.add(p);
+
+        try{
+             BufferedImage rawHolder = ImageIO.read(new File("farm.png"));
+             Image raw = rawHolder.getScaledInstance(550, 300, Image.SCALE_SMOOTH);
+             BufferedImage resized = new BufferedImage(550, 300, BufferedImage.TYPE_INT_ARGB);
+             Graphics2D g2d = resized.createGraphics();
+             g2d.drawImage(raw, 0, 0, null);
+             g2d.dispose();
+             JLabel farmImg = new JLabel(new ImageIcon(resized));                   
+             farmImg.setAlignmentX(0.5f);
+             farmImg.setAlignmentY(0.5f);
+             motherPnl.add(farmImg);
+             add(motherPnl);
+        }
+        catch(IOException e){
+             System.out.println("Picture not found.");
+        }
+
+        
+        
+        add(motherPnl);
         pack();
         setVisible(true);
+        setResizable(false);
+      //setUndecorated(true);
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
     
     public void actionPerformed (ActionEvent e){
-        if(nameInput.getText().equals(""))
-            playgame.setEnabled(false);
-        else{
-            name = nameInput.getText();
-            playgame.setEnabled(true);
-        }
-        
+       
         if(e.getActionCommand().equals("Play Game")){
-            GameGUI g = new GameGUI(name);
+            controller.initializePlayer(nameInput.getText().trim().split("\\s+")[0]);
+            controller.initializeGame();
             dispose();
         }
         else if(e.getActionCommand().equals("Exit")){
@@ -107,7 +142,9 @@ public class MainMenu extends JFrame implements ActionListener, DocumentListener
             playgame.setEnabled(true);
     }
     
-    public static void main(String[] args){
+   /* 
+   public static void main(String[] args){
         MainMenu m = new MainMenu();
-    }
+   }
+   */
 }
