@@ -41,7 +41,7 @@ public class MainMenu extends JFrame implements ActionListener, DocumentListener
         
         JLabel title = new JLabel("MyFarm");
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
-        title.setFont(new Font("Abril Fatface", Font.BOLD, 36));
+        title.setFont(new Font("Abril Fatface", Font.BOLD, 60));
         p.add(title);
         p.add(Box.createRigidArea(new Dimension(0,25))); // add space
         
@@ -49,22 +49,22 @@ public class MainMenu extends JFrame implements ActionListener, DocumentListener
         subP.setOpaque(false);
         subP.setLayout(new FlowLayout());
         JLabel nameLabel = new JLabel("Name: ");
-        nameLabel.setFont(new Font("Abril Fatface", Font.BOLD, 28));
+        nameLabel.setFont(new Font("Marker Felt", Font.BOLD, 28));
         subP.add(nameLabel);
         
         nameInput = new JTextField("" , 20);
         nameInput.addActionListener(this);
         nameInput.getDocument().addDocumentListener(this);
-        nameInput.setFont(new Font("Abril Fatface", Font.PLAIN, 24));
+        nameInput.setFont(new Font("Marker Felt", Font.BOLD, 24));
         subP.add(nameInput);
         subP.setAlignmentX(Component.CENTER_ALIGNMENT);
         p.add(subP);
-        p.add(Box.createRigidArea(new Dimension(0,7))); // add space
+        //p.add(Box.createRigidArea(new Dimension(0,7))); // add space
         
         playgame = new JButton("Play Game");
         playgame.setAlignmentX(Component.CENTER_ALIGNMENT);
         playgame.addActionListener(this);
-        playgame.setFont(new Font("Abril Fatface", Font.PLAIN, 24));
+        playgame.setFont(new Font("Marker Felt", Font.BOLD, 24));
         playgame.setEnabled(false);
         p.add(playgame);
         p.add(Box.createRigidArea(new Dimension(0,7))); // add space
@@ -72,7 +72,7 @@ public class MainMenu extends JFrame implements ActionListener, DocumentListener
         exit = new JButton("Exit");
         exit.setAlignmentX(Component.CENTER_ALIGNMENT);
         exit.addActionListener(this);
-        exit.setFont(new Font("Abril Fatface", Font.PLAIN, 24));
+        exit.setFont(new Font("Marker Felt", Font.PLAIN, 24));
         p.add(exit);
         p.add(Box.createRigidArea(new Dimension(0,7))); // add space
         
