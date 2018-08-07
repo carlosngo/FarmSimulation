@@ -340,31 +340,34 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         */
         
         JPanel seedmenu = new JPanel();
+        seedmenu.setLayout(new BoxLayout(seedmenu, BoxLayout.Y_AXIS));
         JScrollPane scrollPane = new JScrollPane(seedmenu,   ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setPreferredSize(new Dimension(400, 200));
         //JScrollPane seedMenuLogScroll = new JScrollPane(seedmenu, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS, JScrollPane.VERTICAL_SCROLLBAR_NEVER);
         //seedMenuLogScroll.setOpaque(false);
         //leftPanel.add(seedMenuLogScroll);
-        seedmenu.setVisible(true);
+        //seedmenu.setVisible(true);
         //seedmenu.setFont(new Font("Arial", Font.PLAIN, 16));
         JTabbedPane tp = new JTabbedPane();
         pVeggie = new JPanel();
         pVeggie.setLayout(new BoxLayout(pVeggie, BoxLayout.X_AXIS));
-        pVeggie.setOpaque(false);
+        //pVeggie.setOpaque(false);
         SeedPanel carrot = new SeedPanel("Carrot",5);
         pVeggie.add(carrot.getProduct());
         tp.add("Vegetables", pVeggie);
         pFlower = new JPanel();
         pFlower.setLayout(new BoxLayout(pFlower, BoxLayout.X_AXIS));
-        pFlower.setOpaque(false);
+        //pFlower.setOpaque(false);
         tp.add("Flowers", pFlower);
         pTree = new JPanel();
         pTree.setLayout(new BoxLayout(pTree, BoxLayout.X_AXIS));
         pTree.setOpaque(false);
         tp.add("Fruit Tree", pTree);
+        seedmenu.add(tp);
+        
         c.gridx = 0;
         c.gridy = 11;
-        c.gridwidth = 3;
+        c.gridwidth = 6;
         leftPanel.add(seedmenu,c);
        
         GridBagConstraints c2 = new GridBagConstraints();
