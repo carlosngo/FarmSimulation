@@ -350,9 +350,9 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         descriptionPanel.add(specs);
         descriptionPanel.add(Box.createRigidArea(new Dimension(0, 5)));
         description = new JTextArea(5,20);
-        Border round = new LineBorder(new Color(0,78,56),5,true);
+        Border round = new LineBorder(new Color(0,78,56),10,true);
         description.setBorder(round);
-        description.setBackground( new Color(157, 193, 131) ); //new Color(152, 251, 152, 50)
+        description.setBackground( new Color(152, 251, 152) ); //new Color(152, 251, 152, 50)
         description.setFont(new Font("Marker Felt", Font.PLAIN, 18));
         description.setWrapStyleWord(true);
         description.setLineWrap(true);
@@ -372,7 +372,7 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         logPanel.add(logLabel);
         logPanel.add(Box.createRigidArea(new Dimension(0, 5)));
         log = new JTextArea(10,20);
-        Border round2 = new LineBorder(new Color(0,78,56),5,true);
+        Border round2 = new LineBorder(new Color(0,78,56),10,true);
         log.setBorder(round);
         log.setBackground( new Color(208, 240, 192, 50) );
         log.setFont(new Font("Marker Felt", Font.PLAIN, 18));
