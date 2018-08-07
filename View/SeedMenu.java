@@ -84,6 +84,7 @@ public class SeedMenu extends JFrame implements ActionListener {
         back.setOpaque(true);
         back.setBorderPainted(false);
         back.setFont(new Font("Marker Felt", Font.PLAIN, 18));
+        back.setForeground(new Color(208,240,192));
         back.setAlignmentX(Component.CENTER_ALIGNMENT);
         back.addActionListener(this);
 
