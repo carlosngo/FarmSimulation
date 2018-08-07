@@ -448,7 +448,7 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
             case PLOWED : tileButton.setIcon(new ImageIcon(resizeImage("plowed soil.png",65,65))); break;
             case PLANTED : 
                 if (plant.isEmpty())
-                    tileButton.setIcon(new ImageIcon(resizeImage("sapling.png",65,65))); 
+                    tileButton.setIcon(new ImageIcon(resizeImage("leaf.png",65,65))); 
                 else
                     tileButton.setIcon(new ImageIcon(resizeImage("seedling.png",65,65))); 
                 break;
