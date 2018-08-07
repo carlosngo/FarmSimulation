@@ -65,6 +65,10 @@ public class MainMenu extends JFrame implements ActionListener, DocumentListener
         playgame.setAlignmentX(Component.CENTER_ALIGNMENT);
         playgame.addActionListener(this);
         playgame.setFont(new Font("Marker Felt", Font.BOLD, 24));
+        playgame.setForeground(Color.white);
+        playgame.setBackground(new Color(0,78,56));
+        playgame.setOpaque(true);
+        playgame.setBorderPainted(false);
         playgame.setEnabled(false);
         p.add(playgame);
         p.add(Box.createRigidArea(new Dimension(0,7))); // add space
@@ -73,6 +77,10 @@ public class MainMenu extends JFrame implements ActionListener, DocumentListener
         exit.setAlignmentX(Component.CENTER_ALIGNMENT);
         exit.addActionListener(this);
         exit.setFont(new Font("Marker Felt", Font.PLAIN, 24));
+        exit.setForeground(Color.white);
+        exit.setBackground(new Color(0,78,56));
+        exit.setOpaque(true);
+        exit.setBorderPainted(false);
         p.add(exit);
         p.add(Box.createRigidArea(new Dimension(0,7))); // add space
         
