@@ -15,6 +15,7 @@ import java.time.format.DateTimeFormatter;
 import javax.imageio.ImageIO;
 import javax.swing.border.Border;
 import static javax.swing.JFrame.EXIT_ON_CLOSE;
+import javax.swing.border.LineBorder;
 import sun.audio.*;
 
 
@@ -30,13 +31,15 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
     private JButton[][] tileButtons;
     private JLabel nameLabel, level, type, exp, money, selected;
     private JTextArea description, log;
-    private JButton mainmenu, register, watercan, plow, pickaxe, fertilizer, buyFertilizer, seeds;
+    private JButton mainmenu, register, watercan, plow, pickaxe, fertilizer, buyFertilizer, seeds, help;
+    private JPanel pVeggie, pFlower, pTree;
     private GameGUIController controller;
 
     public GameGUI(GameGUIController controller) {
         this.controller = controller;
         tileButtons = new JButton[MAX_ROW][MAX_COL];
         initGameGUI();
+        /*
         AudioPlayer MGP = AudioPlayer.player;
         AudioStream BGM;
         AudioData MD;
@@ -51,6 +54,7 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
             System.out.println("Unable to load audio.");
         }
         MGP.start(loop);
+        */
     }
 
     public void setNameLabel(String name) {
@@ -74,7 +78,7 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
 
     public void setMoney(double money) {
         this.money.setText("Money: " + money);
-        this.money.setFont(new Font("Abril Fatface", Font.PLAIN, 24));
+        this.money.setFont(new Font("Arial", Font.PLAIN, 24));
     }
     
     public void setDescription(String description) {
@@ -83,25 +87,45 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
     
     public void setSelected(String s) {
         selected.setText("Selected: " + s);
+        selected.setFont(new Font("Arial", Font.PLAIN, 24));
     }
     
     public JButton[][] getTileButtons() {
         return tileButtons;
     }
+
+    public JPanel getpVeggie() {
+        return pVeggie;
+    }
+
+    public JPanel getpFlower() {
+        return pFlower;
+    }
+
+    public JPanel getpTree() {
+        return pTree;
+    }
+    
     
     public JTextArea getLog() {
         return log;
     }
     
     public void initGameGUI(){
+        JPanel motherPnl = new JPanel();
+        motherPnl.setLayout(new OverlayLayout(motherPnl));
+        
         JPanel content = new JPanel();
+        content.setOpaque(false);
         content.setLayout(new BoxLayout(content, BoxLayout.X_AXIS));
         content.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         GridBagConstraints c = new GridBagConstraints(); 
         
         JPanel leftPanel = new JPanel(new GridBagLayout());
+        //leftPanel.setBackground( new Color(241, 241, 241, 50) );
+        leftPanel.setOpaque(false);
         JLabel title = new JLabel("MyFarm");
-        title.setFont(new Font("Abril Fatface", Font.PLAIN, 40));
+        title.setFont(new Font("Abril Fatface", Font.BOLD, 55));
         //Border border = BorderFactory.createLineBorder(Color.BLUE, 5);    title.setBorder(border);
         c.gridx = 0;
         c.gridy = 0;
@@ -110,7 +134,7 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         leftPanel.add(title,c);
         
         nameLabel = new JLabel("Name:  ");
-        nameLabel.setFont(new Font("Abril Fatface", Font.PLAIN, 24));
+        nameLabel.setFont(new Font("Arial", Font.PLAIN, 30));
         //Border border1 = BorderFactory.createLineBorder(Color.BLUE, 1);   name.setBorder(border1);
         c.gridx = 0;
         c.gridy = 1;
@@ -119,7 +143,7 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         leftPanel.add(nameLabel,c);
         
         level = new JLabel("Level: ");
-        level.setFont(new Font("Abril Fatface", Font.PLAIN, 24));
+        level.setFont(new Font("Arial", Font.PLAIN, 30));
         //Border border2 = BorderFactory.createLineBorder(Color.BLUE, 1);   level.setBorder(border2);
         c.gridx = 0;
         c.gridy = 2;
@@ -128,7 +152,7 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         leftPanel.add(level,c);
         
         exp = new JLabel("Exp: ");
-        exp.setFont(new Font("Abril Fatface", Font.PLAIN, 24));
+        exp.setFont(new Font("Arial", Font.PLAIN, 30));
         //Border border3 = BorderFactory.createLineBorder(Color.BLUE, 1);   type.setBorder(border3);
         c.gridx = 0;
         c.gridy = 3;
@@ -137,7 +161,7 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         leftPanel.add(exp,c);
         
         type = new JLabel("Type: ");
-        type.setFont(new Font("Abril Fatface", Font.PLAIN, 24));
+        type.setFont(new Font("Arial", Font.PLAIN, 30));
         //Border border3 = BorderFactory.createLineBorder(Color.BLUE, 1);   type.setBorder(border3);
         c.gridx = 0;
         c.gridy = 4;
@@ -146,7 +170,7 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         leftPanel.add(type,c);
         
         money = new JLabel("Money: ");
-        money.setFont(new Font("Abril Fatface", Font.PLAIN, 24));
+        money.setFont(new Font("Arial", Font.PLAIN, 30));
         //Border border4 = BorderFactory.createLineBorder(Color.BLUE, 1);   money.setBorder(border4);
         c.gridx = 0;
         c.gridy = 5;
@@ -155,7 +179,7 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         leftPanel.add(money,c);
         
         selected = new JLabel("Selected: none");
-        selected.setFont(new Font("Abril Fatface", Font.PLAIN, 24));
+        selected.setFont(new Font("Arial", Font.PLAIN, 30));
         //Border border4 = BorderFactory.createLineBorder(Color.BLUE, 1);   money.setBorder(border4);
         c.gridx = 0;
         c.gridy = 6;
@@ -164,7 +188,12 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         leftPanel.add(selected,c);
         
         register = new JButton("Register");
-        register.setFont(new Font("Abril Fatface", Font.PLAIN, 30));
+        register.setFont(new Font("Arial", Font.PLAIN, 30));
+        register.setBackground(new Color(152,251,152));
+        register.setOpaque(true);
+        //register.setBorderPainted(false);
+        register.setBorder(BorderFactory.createLineBorder(new Color(0,78,56),1));
+        
         register.addActionListener(this);
         //Border border5 = BorderFactory.createLineBorder(Color.BLUE, 1);   mainmenu.setBorder(border5);
         c.gridx = 0;
@@ -174,7 +203,7 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         leftPanel.add(register,c);
         
         JLabel inventory = new JLabel("Inventory: ");
-        inventory.setFont(new Font("Abril Fatface", Font.PLAIN, 30));
+        inventory.setFont(new Font("Arial", Font.PLAIN, 35));
         //Border border6 = BorderFactory.createLineBorder(Color.BLUE, 1);   inventory.setBorder(border6);
         c.gridx = 0;
         c.gridy = 8;
@@ -182,94 +211,171 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         c.fill = GridBagConstraints.HORIZONTAL;
         leftPanel.add(inventory,c);
         
-        watercan = new JButton("Watering Can");
-        watercan.setFont(new Font("Abril Fatface", Font.PLAIN, 24));
-        watercan.setIcon(new ImageIcon(resizeImage("watering can.png",50,35)));
-        watercan.setHorizontalAlignment(SwingConstants.LEFT);
+        watercan = new JButton(); //"Watering Can"
+        //watercan.setFont(new Font("Marker Felt", Font.PLAIN, 30));
+        watercan.setBackground(new Color(152,251,152));
+        watercan.setOpaque(true);
+        watercan.setBorder(BorderFactory.createLineBorder(new Color(0,78,56),1));
+        //watercan.setBorderPainted(false);
+        watercan.setIcon(new ImageIcon(resizeImage("watering can.png",70,55)));
+        //watercan.setHorizontalAlignment(SwingConstants.LEFT);
         watercan.addActionListener(this);
         //Border border6 = BorderFactory.createLineBorder(Color.BLUE, 1);   watercan.setBorder(border6);
         c.gridx = 0;
         c.gridy = 9;
-        c.gridwidth = 3;
+        c.gridwidth = 1;
         c.fill = GridBagConstraints.HORIZONTAL;
         leftPanel.add(watercan,c);
         
-        plow = new JButton("Plow");
-        plow.setFont(new Font("Abril Fatface", Font.PLAIN, 24));
-        plow.setIcon(new ImageIcon(resizeImage("plow.png",50,35)));
+        plow = new JButton(); //"Plow"
+        //plow.setFont(new Font("Marker Felt", Font.PLAIN, 30));
+        plow.setBackground(new Color(152,251,152));
+        plow.setOpaque(true);
+        //plow.setBorderPainted(false);
+        plow.setBorder(BorderFactory.createLineBorder(new Color(0,78,56),1));
+        plow.setIcon(new ImageIcon(resizeImage("plow.png",70,55)));
         plow.setHorizontalAlignment(SwingConstants.LEFT);
         plow.addActionListener(this);
         //Border border7 = BorderFactory.createLineBorder(Color.ORANGE, 1);   plow.setBorder(border7);
-        c.gridx = 0;
-        c.gridy = 10;
-        c.gridwidth = 3;
+        c.gridx = 1;
+        c.gridy = 9;
+        c.gridwidth = 1;
         c.fill = GridBagConstraints.HORIZONTAL;
         leftPanel.add(plow,c);
         
-        pickaxe = new JButton("Pickaxe");
-        pickaxe.setFont(new Font("Abril Fatface", Font.PLAIN, 24));
-        pickaxe.setIcon(new ImageIcon(resizeImage("pickaxe.png",50,35)));
-        pickaxe.setHorizontalAlignment(SwingConstants.LEFT);
+        pickaxe = new JButton(); //"Pickaxe"
+        //pickaxe.setFont(new Font("Marker Felt", Font.PLAIN, 30));
+        pickaxe.setBackground(new Color(152,251,152));
+        pickaxe.setOpaque(true);
+        //pickaxe.setBorderPainted(false);
+        pickaxe.setBorder(BorderFactory.createLineBorder(new Color(0,78,56),1));
+        pickaxe.setIcon(new ImageIcon(resizeImage("pickaxe.png",70,55)));
+        //pickaxe.setHorizontalAlignment(SwingConstants.LEFT);
         pickaxe.addActionListener(this);
         //Border border8 = BorderFactory.createLineBorder(Color.GRAY, 1);   pickaxe.setBorder(border8);
-        c.gridx = 0;
-        c.gridy = 11;
-        c.gridwidth = 3;
+        c.gridx = 2;
+        c.gridy = 9;
+        c.gridwidth = 1;
         c.fill = GridBagConstraints.HORIZONTAL;
         leftPanel.add(pickaxe,c);
         
-        fertilizer = new JButton("Fertilizer");
-        fertilizer.setFont(new Font("Abril Fatface", Font.PLAIN, 26));
-        fertilizer.setIcon(new ImageIcon(resizeImage("fertilizer.png",50,35)));
-        fertilizer.setHorizontalAlignment(SwingConstants.LEFT);
+        fertilizer = new JButton(); //"Fertilizer"
+        //fertilizer.setFont(new Font("Marker Felt", Font.PLAIN, 30));
+        fertilizer.setBackground(new Color(152,251,152));
+        fertilizer.setOpaque(true);
+        //fertilizer.setBorderPainted(false);
+        fertilizer.setBorder(BorderFactory.createLineBorder(new Color(0,78,56),1));
+        fertilizer.setIcon(new ImageIcon(resizeImage("fertilizer.png",70,55)));
+        //fertilizer.setHorizontalAlignment(SwingConstants.LEFT);
         fertilizer.addActionListener(this);
         //Border border9 = BorderFactory.createLineBorder(Color.GREEN, 1);   fertilizer.setBorder(border9);
         c.gridx = 0;
-        c.gridy = 12;
-        c.gridwidth = 2;
+        c.gridy = 10;
+        c.gridwidth = 1;
         c.fill = GridBagConstraints.HORIZONTAL;
         leftPanel.add(fertilizer,c);
         
-        buyFertilizer = new JButton("Buy");
-        buyFertilizer.setFont(new Font("Abril Fatface", Font.PLAIN, 26));
-        buyFertilizer.setIcon(new ImageIcon(resizeImage("add fertilizer.png",50,35)));
-        buyFertilizer.setHorizontalAlignment(SwingConstants.LEFT);
+        buyFertilizer = new JButton(); //"Buy"
+        //buyFertilizer.setFont(new Font("Marker Felt", Font.PLAIN, 30));
+        buyFertilizer.setBackground(new Color(152,251,152));
+        buyFertilizer.setOpaque(true);
+        //buyFertilizer.setBorderPainted(false);
+        buyFertilizer.setBorder(BorderFactory.createLineBorder(new Color(0,78,56),1));
+        buyFertilizer.setIcon(new ImageIcon(resizeImage("add fertilizer.png",70,55)));
+        //buyFertilizer.setHorizontalAlignment(SwingConstants.LEFT);
         buyFertilizer.addActionListener(this);
         //Border border9 = BorderFactory.createLineBorder(Color.GREEN, 1);   fertilizer.setBorder(border9);
-        c.gridx = 2;
-        c.gridy = 12;
+        c.gridx = 1;
+        c.gridy = 10;
         c.gridwidth = 1;
         c.fill = GridBagConstraints.HORIZONTAL;
         leftPanel.add(buyFertilizer,c);
         
-        seeds = new JButton("Seeds");
-        seeds.setFont(new Font("Abril Fatface", Font.PLAIN, 24));
-        seeds.setIcon(new ImageIcon(resizeImage("seeds.png",50,35)));
+        seeds = new JButton(); //"Seeds"
+        //seeds.setFont(new Font("Marker Felt", Font.BOLD, 30));
+        seeds.setBackground(new Color(152,251,152));
+        seeds.setOpaque(true);
+        //seeds.setBorderPainted(false);
+        seeds.setBorder(BorderFactory.createLineBorder(new Color(0,78,56),1));
+        seeds.setIcon(new ImageIcon(resizeImage("seeds.png",70,55)));
         seeds.setHorizontalAlignment(SwingConstants.LEFT);
         seeds.addActionListener(this);
         //Border border10 = BorderFactory.createLineBorder(Color.BLUE, 1);  seeds.setBorder(border10);
-        c.gridx = 0;
-        c.gridy = 13;
-        c.gridwidth = 3;
+        c.gridx = 2;
+        c.gridy = 10;
+        c.gridwidth = 1;
         c.fill = GridBagConstraints.HORIZONTAL;
         leftPanel.add(seeds,c);
+        /*
+        help = new JButton("Help");
+        help.setFont(new Font("Marker Felt", Font.BOLD, 30));
+        help.setBackground(new Color(152,251,152));
+        help.setOpaque(true);
+        //help.setBorderPainted(false);
+        help.setBorder(BorderFactory.createLineBorder(new Color(0,78,56),1));
+        help.setIcon(new ImageIcon(resizeImage("help.png",50,35)));
+        help.setHorizontalAlignment(SwingConstants.LEFT);
+        help.addActionListener(this);
+        //Border border10 = BorderFactory.createLineBorder(Color.BLUE, 1);  seeds.setBorder(border10);
+        c.gridx = 0;
+        c.gridy = 14;
+        c.gridwidth = 3;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        leftPanel.add(help,c);
         
-        mainmenu = new JButton("EXIT GAME");
-        mainmenu.setFont(new Font("Abril Fatface", Font.PLAIN, 30));
+        mainmenu = new JButton(); //"EXIT GAME"
+        mainmenu.setFont(new Font("Arial", Font.PLAIN, 30));
+        mainmenu.setIcon(new ImageIcon(resizeImage("exit door.png",70,55)));
+        mainmenu.setBackground(new Color(152,251,152));
+        mainmenu.setOpaque(true);
+        //mainmenu.setBorderPainted(false);
+        mainmenu.setBorder(BorderFactory.createLineBorder(new Color(0,78,56),1));
         mainmenu.addActionListener(this);
         //Border border5 = BorderFactory.createLineBorder(Color.BLUE, 1);   mainmenu.setBorder(border5);
         c.gridx = 0;
-        c.gridy = 14;
-        c.gridwidth = 4;
+        c.gridy = 11;
+        c.gridwidth = 3;
         c.fill = GridBagConstraints.HORIZONTAL;
         leftPanel.add(mainmenu,c);
+        */
         
+        JPanel seedmenu = new JPanel();
+        JScrollPane scrollPane = new JScrollPane(seedmenu,   ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setPreferredSize(new Dimension(400, 200));
+        //JScrollPane seedMenuLogScroll = new JScrollPane(seedmenu, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS, JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+        //seedMenuLogScroll.setOpaque(false);
+        //leftPanel.add(seedMenuLogScroll);
+        seedmenu.setVisible(true);
+        //seedmenu.setFont(new Font("Arial", Font.PLAIN, 16));
+        JTabbedPane tp = new JTabbedPane();
+        pVeggie = new JPanel();
+        pVeggie.setLayout(new BoxLayout(pVeggie, BoxLayout.X_AXIS));
+        pVeggie.setOpaque(false);
+        SeedPanel carrot = new SeedPanel("Carrot",5);
+        pVeggie.add(carrot.getProduct());
+        tp.add("Vegetables", pVeggie);
+        pFlower = new JPanel();
+        pFlower.setLayout(new BoxLayout(pFlower, BoxLayout.X_AXIS));
+        pFlower.setOpaque(false);
+        tp.add("Flowers", pFlower);
+        pTree = new JPanel();
+        pTree.setLayout(new BoxLayout(pTree, BoxLayout.X_AXIS));
+        pTree.setOpaque(false);
+        tp.add("Fruit Tree", pTree);
+        c.gridx = 0;
+        c.gridy = 11;
+        c.gridwidth = 3;
+        leftPanel.add(seedmenu,c);
+       
         GridBagConstraints c2 = new GridBagConstraints();
         JPanel middlePanel = new JPanel(new GridBagLayout());
+        middlePanel.setOpaque(false);
         
         for(int i=0; i < MAX_ROW; i++){
             for(int j=0;j<MAX_COL;j++){
                 tileButtons[i][j] = new JButton();
+                tileButtons[i][j].setBackground(new Color(76,187,23));
+                tileButtons[i][j].setBorderPainted(false);
                 tileButtons[i][j].addActionListener(this);
                 c2.gridx = j;
                 c2.gridy = i;
@@ -294,49 +400,69 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         
         JPanel rightPanel = new JPanel();
         rightPanel.setLayout(new BorderLayout());
+        rightPanel.setOpaque(false);
         JPanel descriptionPanel = new JPanel();
+        descriptionPanel.setOpaque(false);
         descriptionPanel.setLayout(new BoxLayout(descriptionPanel, BoxLayout.Y_AXIS));
         
         JLabel specs = new JLabel("Description:");
-        specs.setFont(new Font("Abril Fatface", Font.PLAIN, 30));
+        specs.setFont(new Font("Arial", Font.PLAIN, 35));
         specs.setAlignmentX(Component.CENTER_ALIGNMENT);
         specs.setHorizontalAlignment(SwingConstants.LEFT);
         descriptionPanel.add(specs);
         descriptionPanel.add(Box.createRigidArea(new Dimension(0, 5)));
         description = new JTextArea(5,20);
-        description.setFont(new Font("Abril Fatface", Font.PLAIN, 18));
+        Border round = new LineBorder(new Color(0,78,56),10,true);
+        description.setBorder(round);
+        description.setBackground( new Color(152, 251, 152) ); //new Color(152, 251, 152, 50)
+        description.setFont(new Font("Arial", Font.PLAIN, 18));
         description.setWrapStyleWord(true);
         description.setLineWrap(true);
         description.setEditable(false);
-        description.setOpaque(false);
+        //description.setOpaque(false);
         description.setMargin(new Insets(5,10,5,10));
         JScrollPane descriptionScroll = new JScrollPane(description);
-//        descriptionScroll.setBorder(BorderFactory.createEmptyBorder());
+        //descriptionScroll.setBorder(BorderFactory.createEmptyBorder());
         descriptionPanel.add(descriptionScroll);
         
         JPanel logPanel = new JPanel();
+        logPanel.setOpaque(false);
         logPanel.setLayout(new BoxLayout(logPanel, BoxLayout.Y_AXIS));
         JLabel logLabel = new JLabel("Log:");
-        logLabel.setFont(new Font("Abril Fatface", Font.PLAIN, 30));
+        logLabel.setFont(new Font("Arial", Font.PLAIN, 35));
         logLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         logPanel.add(logLabel);
         logPanel.add(Box.createRigidArea(new Dimension(0, 5)));
         log = new JTextArea(10,20);
-        log.setFont(new Font("Abril Fatface", Font.PLAIN, 18));
+        Border round2 = new LineBorder(new Color(0,78,56),10,true);
+        log.setBorder(round2);
+        log.setBackground( new Color(152, 251, 152) );
+        log.setFont(new Font("Arial", Font.PLAIN, 18));
         log.setWrapStyleWord(true);
         log.setLineWrap(true);
         log.setEditable(false);
-        log.setOpaque(false);
+        //log.setOpaque(false);
         log.setMargin(new Insets(5,10,5,10));
         JScrollPane logScroll = new JScrollPane(log, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-//        logScroll.setBorder(BorderFactory.createEmptyBorder());
+        //logScroll.setBorder(BorderFactory.createEmptyBorder());
+        logScroll.setOpaque(false);
         logPanel.add(logScroll);
         rightPanel.add(descriptionPanel, BorderLayout.NORTH);
         rightPanel.add(logPanel, BorderLayout.CENTER);
         rightPanel.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
         content.add(rightPanel);
         content.add(Box.createRigidArea(new Dimension(30, 0)));
-        add(content);
+        
+        content.setAlignmentX(0.5f);
+        content.setAlignmentY(0.5f);
+        motherPnl.add(content);
+        
+        JLabel grasspic = new JLabel(new ImageIcon(resizeImage("grass.png",1450,850)));                   
+        grasspic.setAlignmentX(0.5f);
+        grasspic.setAlignmentY(0.5f);
+        motherPnl.add(grasspic);
+        
+        add(motherPnl);
         setExtendedState(JFrame.MAXIMIZED_BOTH); 
         setBackground(Color.WHITE);
         setResizable(false);
@@ -377,30 +503,31 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
     }
     */
     
+    
     public void setTileImage(int state, String plant, JButton tileButton){
         switch(state){
-            case ROCKY : tileButton.setIcon(new ImageIcon(resizeImage("rocky soil.png",60,60))); break;
-            case UNPLOWED : tileButton.setIcon(new ImageIcon(resizeImage("unplowed soil.png",60,60))); break;
-            case PLOWED : tileButton.setIcon(new ImageIcon(resizeImage("plowed soil.png",60,60))); break;
+            case ROCKY : tileButton.setIcon(new ImageIcon(resizeImage("rocky soil.png",65,65))); break;
+            case UNPLOWED : tileButton.setIcon(new ImageIcon(resizeImage("unplowed soil.png",65,65))); break;
+            case PLOWED : tileButton.setIcon(new ImageIcon(resizeImage("plowed soil.png",65,65))); break;
             case PLANTED : 
                 if (plant.isEmpty())
-                    tileButton.setIcon(new ImageIcon(resizeImage("root.jpg",60,60))); 
+                    tileButton.setIcon(new ImageIcon(resizeImage("leaf.png",65,65))); 
                 else
-                    tileButton.setIcon(new ImageIcon(resizeImage("seedling.png",60,60))); 
+                    tileButton.setIcon(new ImageIcon(resizeImage("seedling.png",65,65))); 
                 break;
             case READY_TO_HARVEST : switch(plant){
-                        case "Turnip"   :     tileButton.setIcon(new ImageIcon(resizeImage("turnip.png",60,60))); break;
-                        case "Carrot"   :     tileButton.setIcon(new ImageIcon(resizeImage("carrot.png",60,60))); break;
-                        case "Tomato"   :     tileButton.setIcon(new ImageIcon(resizeImage("tomato.png",60,60))); break;
-                        case "Potato"   :     tileButton.setIcon(new ImageIcon(resizeImage("potato.png",60,60))); break;
-                        case "Rose"     :     tileButton.setIcon(new ImageIcon(resizeImage("rose.png",60,60))); break;
-                        case "Tulip"    :     tileButton.setIcon(new ImageIcon(resizeImage("tulip.png",60,60))); break;
-                        case "Stargazer":     tileButton.setIcon(new ImageIcon(resizeImage("stargazer.png",60,60))); break;
-                        case "Sunflower":     tileButton.setIcon(new ImageIcon(resizeImage("sunflower.png",60,60))); break;
-                        case "Mango"    :     tileButton.setIcon(new ImageIcon(resizeImage("mango.png",60,60))); break;
-                        case "Apple"    :     tileButton.setIcon(new ImageIcon(resizeImage("apple.png",60,60))); break;
-                        case "Banana"   :     tileButton.setIcon(new ImageIcon(resizeImage("banana.png",60,60))); break;
-                        case "Orange"   :     tileButton.setIcon(new ImageIcon(resizeImage("orange.png",60,60))); break;
+                        case "Turnip"   :     tileButton.setIcon(new ImageIcon(resizeImage("turnip.png",65,65))); break;
+                        case "Carrot"   :     tileButton.setIcon(new ImageIcon(resizeImage("carrot.png",65,65))); break;
+                        case "Tomato"   :     tileButton.setIcon(new ImageIcon(resizeImage("tomato.png",65,65))); break;
+                        case "Potato"   :     tileButton.setIcon(new ImageIcon(resizeImage("potato.png",65,65))); break;
+                        case "Rose"     :     tileButton.setIcon(new ImageIcon(resizeImage("rose.png",65,65))); break;
+                        case "Tulip"    :     tileButton.setIcon(new ImageIcon(resizeImage("tulip.png",65,65))); break;
+                        case "Stargazer":     tileButton.setIcon(new ImageIcon(resizeImage("stargazer.png",65,65))); break;
+                        case "Sunflower":     tileButton.setIcon(new ImageIcon(resizeImage("sunflower.png",65,65))); break;
+                        case "Mango"    :     tileButton.setIcon(new ImageIcon(resizeImage("mango.png",65,65))); break;
+                        case "Apple"    :     tileButton.setIcon(new ImageIcon(resizeImage("apple.png",65,65))); break;
+                        case "Banana"   :     tileButton.setIcon(new ImageIcon(resizeImage("banana.png",65,65))); break;
+                        case "Orange"   :     tileButton.setIcon(new ImageIcon(resizeImage("orange.png",65,65))); break;
                      } break;
             case WITHERED: tileButton.setIcon(new ImageIcon(resizeImage("withered.png",60,60))); break;
             default : System.out.println("Unable to set picture.");;
@@ -454,11 +581,11 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         
     }
   
-    
-//    public static void main(String[] args){
-//        GameGUI g = new GameGUI("johanna");
-//    }
-
+    /*
+    public static void main(String[] args){
+        GameGUI g = new GameGUI("Farmer");
+    }
+    */
     @Override
     public void mouseClicked(MouseEvent e) { }
 
