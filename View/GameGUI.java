@@ -78,7 +78,7 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
 
     public void setMoney(double money) {
         this.money.setText("Money: " + money);
-        this.money.setFont(new Font("Arial", Font.PLAIN, 24));
+        this.money.setFont(new Font("Arial", Font.PLAIN, 30));
     }
     
     public void setDescription(String description) {
