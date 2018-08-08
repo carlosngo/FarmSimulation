@@ -389,7 +389,7 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         pVeggie.add(turnip.getProduct());
         pVeggie.add(tomato.getProduct());
         pVeggie.add(potato.getProduct());
-        tp.add("Vegetables", scrollPane1);
+        //tp.add("", scrollPane1);
         pFlower = new JPanel();
         JScrollPane scrollPane2 = new JScrollPane(pFlower,JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         //scrollPane2.setPreferredSize(new Dimension(300, 240));
@@ -403,7 +403,7 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         pFlower.add(tulip.getProduct());
         pFlower.add(stargazer.getProduct());
         pFlower.add(sunflower.getProduct());
-        tp.add("Flowers", scrollPane2);
+        //tp.add("", scrollPane2);
         pTree = new JPanel();
         JScrollPane scrollPane3 = new JScrollPane(pTree,JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         //scrollPane3.setPreferredSize(new Dimension(300, 240));
@@ -417,7 +417,14 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         pTree.add(apple.getProduct());
         pTree.add(banana.getProduct());
         pTree.add(orange.getProduct());
-        tp.add("Fruit Tree", scrollPane3);
+        //tp.add("", scrollPane3);
+        
+        String veggie = "Vegetables";
+        String flower = "Flower";
+        String trees = "Fruit Trees";
+        tp.addTab("", new ImageIcon(resizeImage("carrot.png",30,25)), scrollPane1, veggie);
+        tp.addTab("", new ImageIcon(resizeImage("stargazer.png",30,25)), scrollPane2, flower);
+        tp.addTab("", new ImageIcon(resizeImage("banana.png",30,25)), scrollPane3, trees);
         seedmenu.add(tp);
         
         seedmenu.setAlignmentX(0.5f);
