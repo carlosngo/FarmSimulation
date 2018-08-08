@@ -7,6 +7,17 @@ package Controller;
 
 import Model.*;
 import View.*;
+import java.io.File;
+import java.io.IOException;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.DataLine;
+import javax.sound.sampled.LineEvent;
+import javax.sound.sampled.LineListener;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 
 /**
@@ -19,18 +30,55 @@ public class GameGUIController {
     private MainMenu mainMenu;
     private GameGUI game;
     private SeedMenu seedMenu;
+    private Clip music;
+    private AudioInputStream audioSource;
 
     public void startGame() {
         mainMenu = new MainMenu(this);
-
     }
-
+    
+    public void playMusic() {
+        try{
+            /*
+            audioSource = AudioSystem.getAudioInputStream(new File("Pineapple Overture.wav"));
+ 
+            AudioFormat format = audioSource.getFormat();
+ 
+            DataLine.Info info = new DataLine.Info(Clip.class, format);
+ 
+            music = (Clip) AudioSystem.getLine(info);
+ 
+            music.addLineListener(info);
+ 
+            music.open(audioSource);
+             
+            music.start();
+            
+            music.loop(Clip.LOOP_CONTINUOUSLY);
+               */
+            audioSource = AudioSystem.getAudioInputStream(new File("Pineapple Overture.wav"));
+            music = AudioSystem.getClip();
+            music.open(audioSource);
+            music.loop(Clip.LOOP_CONTINUOUSLY);
+        }
+        catch(LineUnavailableException e){
+            System.out.println("error");
+        }
+        catch(UnsupportedAudioFileException e){
+            System.out.println("error");
+        }
+        catch(IOException e){
+            System.out.println("error");
+        }
+    }
+    
     public void initializePlayer(String name) {
         player = new Normal(name, this);
     }
 
     public void initializeGame() {
         game = new GameGUI(this);
+        playMusic();
         updateGameGUI();
     }
 
@@ -81,7 +129,7 @@ public class GameGUIController {
         game.repaint();
     }
 
-    public void updateSelected(JButton btn, String name, int quantity) {
+    public void updateSelected(JButton btn, String name, int quantity) throws IOException {
         boolean isTile = false;
         double moneyTemp = player.getMoney();
         for (int i = 0; i < GameGUI.MAX_ROW && !isTile; i++) {
@@ -119,6 +167,8 @@ public class GameGUIController {
                 game.setSelected("Fertilizer");
                 player.select(player.getInventory().getFertilizers());
             } else if (cmd.equals("EXIT GAME")) {
+                music.close();
+                audioSource.close();
                 game.dispose();
             } else if (cmd.equals("Seeds")) {
                 updateInventory();
