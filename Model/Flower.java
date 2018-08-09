@@ -21,6 +21,6 @@ public class Flower extends Seed {
     
     public double computeSellingPrice() {
         double sum = getBasePrice() + getWater() * 0.25 * getBasePrice() + getFertilizer() * 0.5 * getBasePrice();
-        return sum + sum * 0.05;
+        return sum + sum * 0.05 - getHarvestCost();
     }
 }

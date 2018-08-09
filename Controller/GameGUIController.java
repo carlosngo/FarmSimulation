@@ -29,16 +29,15 @@ public class GameGUIController {
     private Player player;
     private MainMenu mainMenu;
     private GameGUI game;
-    private SeedMenu seedMenu;
     private Clip music;
     private AudioInputStream audioSource;
 
     public void startGame() {
         mainMenu = new MainMenu(this);
     }
-    
+
     public void playMusic() {
-        try{
+        try {
             /*
             audioSource = AudioSystem.getAudioInputStream(new File("Pineapple Overture.wav"));
  
@@ -55,23 +54,20 @@ public class GameGUIController {
             music.start();
             
             music.loop(Clip.LOOP_CONTINUOUSLY);
-               */
+             */
             audioSource = AudioSystem.getAudioInputStream(new File("Pineapple Overture.wav"));
             music = AudioSystem.getClip();
             music.open(audioSource);
             music.loop(Clip.LOOP_CONTINUOUSLY);
-        }
-        catch(LineUnavailableException e){
+        } catch (LineUnavailableException e) {
             System.out.println("error");
-        }
-        catch(UnsupportedAudioFileException e){
+        } catch (UnsupportedAudioFileException e) {
             System.out.println("error");
-        }
-        catch(IOException e){
+        } catch (IOException e) {
             System.out.println("error");
         }
     }
-    
+
     public void initializePlayer(String name) {
         player = new Normal(name, this);
     }
@@ -79,31 +75,47 @@ public class GameGUIController {
     public void initializeGame() {
         game = new GameGUI(this);
         playMusic();
+        for (Seed s : player.getInventory().getSeeds().keySet()) {
+            game.addPlantImage(s.getName());
+        }
+        initInventory();
         updateGameGUI();
     }
 
     public void updateInventory() {
-        seedMenu = new SeedMenu(this);
+        Inventory inv = player.getInventory();
+        for (SeedPanel sp : game.getSeedPanels()) {
+            sp.setQty(inv.getQuantity(inv.getSeed(sp.getPlantName())));
+            
+        }
+    }
+    
+    public void initInventory() {
         Inventory inv = player.getInventory();
         for (Seed s : inv.getVegetables().keySet()) {
-            seedMenu.getpVeggie().addRow(s.getName(), inv.getQuantity(s),
-                    s.getHarvestTime() / 60000.0, s.getWaterNeeded(), s.getWaterMax(),
-                    s.getFertilizerNeeded(), s.getFertilizerMax(), s.getHarvestCost(), s.getMinProducts(), s.getMaxProducts(),
-                    s.getSeedCost(), s.getBasePrice());
+            System.out.println("Added" + s.getName());
+            game.addVegetablePanel(s.getName(), this);
+//            seedMenu.getpVeggie().addRow(s.getName(), inv.getQuantity(s),
+//                    s.getHarvestTime() / 60000.0, s.getWaterNeeded(), s.getWaterMax(),
+//                    s.getFertilizerNeeded(), s.getFertilizerMax(), s.getHarvestCost(), s.getMinProducts(), s.getMaxProducts(),
+//                    s.getSeedCost(), s.getBasePrice());
         }
         for (Seed s : inv.getFlowers().keySet()) {
-            seedMenu.getpFlower().addRow(s.getName(), inv.getQuantity(s),
-                    s.getHarvestTime() / 60000.0, s.getWaterNeeded(), s.getWaterMax(),
-                    s.getFertilizerNeeded(), s.getFertilizerMax(), s.getHarvestCost(), s.getMinProducts(), s.getMaxProducts(),
-                    s.getSeedCost(), s.getBasePrice());
+            game.addFlowerPanel(s.getName(), this);
+//            seedMenu.getpFlower().addRow(s.getName(), inv.getQuantity(s),
+//                    s.getHarvestTime() / 60000.0, s.getWaterNeeded(), s.getWaterMax(),
+//                    s.getFertilizerNeeded(), s.getFertilizerMax(), s.getHarvestCost(), s.getMinProducts(), s.getMaxProducts(),
+//                    s.getSeedCost(), s.getBasePrice());
         }
         for (Seed s : inv.getTrees().keySet()) {
-            seedMenu.getpTree().addRow(s.getName(), inv.getQuantity(s),
-                    s.getHarvestTime() / 60000.0, s.getWaterNeeded(), s.getWaterMax(),
-                    s.getFertilizerNeeded(), s.getFertilizerMax(), s.getHarvestCost(), s.getMinProducts(), s.getMaxProducts(),
-                    s.getSeedCost(), s.getBasePrice());
+            game.addTreePanel(s.getName(), this);
+//            seedMenu.getpTree().addRow(s.getName(), inv.getQuantity(s),
+//                    s.getHarvestTime() / 60000.0, s.getWaterNeeded(), s.getWaterMax(),
+//                    s.getFertilizerNeeded(), s.getFertilizerMax(), s.getHarvestCost(), s.getMinProducts(), s.getMaxProducts(),
+//                    s.getSeedCost(), s.getBasePrice());
+
         }
-        seedMenu.addActionListeners();
+//        seedMenu.addActionListeners();
 //        seedMenu.setFocusable(true);
 //        seedMenu.requestFocusInWindow();
     }
@@ -114,6 +126,9 @@ public class GameGUIController {
         game.setMoney(player.getMoney());
         game.setExp(player.getExp());
         game.setType(player.getType());
+        if (player.getSelected() != null) 
+            game.setDescription(player.getSelected().getDescription() + "\nClick the background to deselect this tool.");
+        
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 5; j++) {
                 Tile tile = player.getLot().getTile(i, j);
@@ -129,89 +144,73 @@ public class GameGUIController {
         game.repaint();
     }
 
-    public void updateSelected(JButton btn, String name, int quantity) throws IOException {
-        boolean isTile = false;
+    public void updateSelected (JButton btn) {
         double moneyTemp = player.getMoney();
-        for (int i = 0; i < GameGUI.MAX_ROW && !isTile; i++) {
-            for (int j = 0; j < GameGUI.MAX_COL && !isTile; j++) {
-                if (btn.equals(game.getTileButtons()[i][j])) {
-                    if (player.getSelected() instanceof WateringCan) {
-                        game.setLogAction(1, player.select(player.getLot().getTile(i, j)));
-                    } else if (player.getSelected() instanceof Plow) {
-                        game.setLogAction(2, player.select(player.getLot().getTile(i, j)));
-                    } else if (player.getSelected() instanceof Pickaxe) {
-                        game.setLogAction(3, player.select(player.getLot().getTile(i, j)));
-                    } else if (player.getSelected() instanceof Fertilizer) {
-                        game.setLogAction(4, player.select(player.getLot().getTile(i, j)));
-                    } else if (player.getSelected() instanceof Seed) {
-                        game.setLogAction(5, player.select(player.getLot().getTile(i, j)));
-                    } else {
-                        player.select(player.getLot().getTile(i, j));
-                    }
-                    isTile = true;
+        String cmd = btn.getActionCommand();
+        if (cmd.equals("Watering Can")) {
+            player.select(Inventory.WATERING_CAN);
+            game.setSelected("Watering Can");
+        } else if (cmd.equals("Plow")) {
+            player.select(Inventory.PLOW);
+            game.setSelected("Plow");
+        } else if (cmd.equals("Pickaxe")) {
+            game.setSelected("Pickaxe");
+            player.select(Inventory.PICKAXE);
+        } else if (cmd.equals("Fertilizer")) {
+            game.setSelected("Fertilizer");
+            player.select(player.getInventory().getFertilizers());
+        } else if (cmd.equals("EXIT GAME")) {
+            music.close();
+//            audioSource.close();
+            game.dispose();
+        } else if (cmd.equals("View Seeds")) {
+            if (game.getSeedMenu().isVisible())
+                game.getSeedMenu().setVisible(false);
+            else
+                game.getSeedMenu().setVisible(true);
+        } else if (cmd.equals("Register")) {
+            Player p = player.register();
+            if (p != null) {
+                player = p;
+                player.addExp(25);
+            } else {
+                JOptionPane.showMessageDialog(null, "You do not meet the requirements to register.");
+            }
+        } else if (cmd.equals("Buy Fertilizer")) {
+            int qty = askQuantity();
+            if (qty != 0) {
+                if (!player.buy(player.getInventory().getFertilizers(), qty)) {
+                    JOptionPane.showMessageDialog(null, "Insufficient Object Coins");
+                } else {
+                    game.appendLog("Bought " + qty + " fertilizers.");
+                    updateGameGUI();
                 }
             }
-        }
-        if (!isTile) {
-            String cmd = btn.getActionCommand();
-            if (cmd.equals("Watering Can")) {
-                player.select(Inventory.WATERING_CAN);
-                game.setSelected("Watering Can");
-            } else if (cmd.equals("Plow")) {
-                player.select(Inventory.PLOW);
-                game.setSelected("Plow");
-            } else if (cmd.equals("Pickaxe")) {
-                game.setSelected("Pickaxe");
-                player.select(Inventory.PICKAXE);
-            } else if (cmd.equals("Fertilizer")) {
-                game.setSelected("Fertilizer");
-                player.select(player.getInventory().getFertilizers());
-            } else if (cmd.equals("EXIT GAME")) {
-                music.close();
-                audioSource.close();
-                game.dispose();
-            } else if (cmd.equals("Seeds")) {
-                updateInventory();
-            } else if (cmd.equals("Plant")) {
-                Seed s = player.getInventory().getSeed(name);
-                if (player.getInventory().getQuantity(s) > 0) {
-                    player.select(s);
-                    game.setSelected(s.getName());
-                    seedMenu.dispose();                    
-                } else {
-                    JOptionPane.showMessageDialog(null, "You have insufficient seeds.");
-                }
-            } else if (cmd.equals("Register")) {
-                Player p = player.register();
-                if (p != null) {
-                    player = p;
-                    player.addExp(25);
-                } else {
-                    JOptionPane.showMessageDialog(null, "You do not meet the requirements to register.");
-                }
-            } else if (cmd.equals("Buy")) {
-                int qty = askQuantity();
-                if (qty != 0) {
-                    if (!name.isEmpty()) {
-                        if (!player.buy(player.getInventory().getSeed(name), qty)) {
-                            JOptionPane.showMessageDialog(null, "Insufficient Object Coins");
+        } else {
+            boolean found = false;
+            for (int i = 0; i < GameGUI.MAX_ROW && !found; i++) {
+                for (int j = 0; j < GameGUI.MAX_COL && !found; j++) {
+                    if (btn.equals(game.getTileButtons()[i][j])) {
+                        if (player.getSelected() instanceof WateringCan) {
+                            game.setLogAction(1, player.select(player.getLot().getTile(i, j)));
+                        } else if (player.getSelected() instanceof Plow) {
+                            game.setLogAction(2, player.select(player.getLot().getTile(i, j)));
+                        } else if (player.getSelected() instanceof Pickaxe) {
+                            game.setLogAction(3, player.select(player.getLot().getTile(i, j)));
+                        } else if (player.getSelected() instanceof Fertilizer) {
+                            game.setLogAction(4, player.select(player.getLot().getTile(i, j)));
+                        } else if (player.getSelected() instanceof Seed) {
+                            game.setLogAction(5, player.select(player.getLot().getTile(i, j)));
                         } else {
-                            seedMenu.dispose();
-                            updateInventory();
+                            player.select(player.getLot().getTile(i, j));
                         }
-                    } else {
-                        if (!player.buy(player.getInventory().getFertilizers(), qty)) {
-                            JOptionPane.showMessageDialog(null, "Insufficient Object Coins");
-                        } else {
-                            updateGameGUI();
-                        }
+                        found = true;
                     }
                 }
             }
         }
-        if (player.getSelected() != null) {
-            game.setDescription(player.getSelected().getDescription());
-        }
+
+        
         if (moneyTemp != player.getMoney()) {
             if (moneyTemp > player.getMoney()) {
                 game.setLogPurchase(moneyTemp - player.getMoney());
@@ -221,6 +220,34 @@ public class GameGUIController {
         }
         updateGameGUI();
 
+    }
+
+    public void buySeed(String name) {
+        int qty = askQuantity();
+        if (qty != 0) {
+            if (!name.isEmpty()) {
+                if (!player.buy(player.getInventory().getSeed(name), qty)) {
+                    JOptionPane.showMessageDialog(null, "Insufficient Object Coins");
+                } else {
+                    updateInventory();
+                    updateGameGUI();
+                    game.appendLog("Bought " + qty + " " + name + "s.");
+                    game.setLogPurchase(player.getInventory().getSeed(name).computeBuyingPrice() * qty);
+                }
+            }
+        }
+    }
+
+    public void selectSeed(String name) {
+
+        Seed s = player.getInventory().getSeed(name);
+        if (player.getInventory().getQuantity(s) > 0) {
+            player.select(s);
+            game.setSelected(s.getName());
+            updateGameGUI();
+        } else {
+            JOptionPane.showMessageDialog(null, "You have insufficient seeds.");
+        }
     }
 
     public void updateTile(Tile t) {
@@ -234,7 +261,7 @@ public class GameGUIController {
     public void deselect() {
         player.deselect();
         game.setSelected("none");
-        game.setDescription("");
+        game.setDescription("Click on a tool to select it, or click on a tile to view its details.");
     }
 
     public int askQuantity() {
@@ -243,8 +270,12 @@ public class GameGUIController {
                 String qty = JOptionPane.showInputDialog(null, "How many do you want to buy?");
                 if (qty == null) {
                     break;
-                }
-                return Integer.parseInt(qty);
+                } 
+                int quantity = Integer.parseInt(qty);
+                if (quantity > 0)
+                    return quantity;
+                else
+                    JOptionPane.showMessageDialog(null, "Please input a positive integer");
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(null, "Please input an integer");
             }

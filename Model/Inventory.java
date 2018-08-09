@@ -5,7 +5,7 @@ import java.util.*;
 public class Inventory {
 
     private HashMap<Seed, Integer> seeds;
-    private Fertilizer fertilizers;
+    private final Fertilizer FERTILIZERS = new Fertilizer();
     public static final Pickaxe PICKAXE = new Pickaxe();
     public static final Plow PLOW = new Plow();
     public static final WateringCan WATERING_CAN = new WateringCan();
@@ -15,8 +15,6 @@ public class Inventory {
         for (Seed s : getAvailableSeeds()) {
             seeds.put(s, 0);
         }
-        fertilizers = new Fertilizer();
-        fertilizers.setCount(5);
     }
 
     private ArrayList<Seed> getAvailableSeeds() {
@@ -48,6 +46,10 @@ public class Inventory {
         return seeds;
     }
 
+    public HashMap<Seed, Integer> getSeeds() {
+        return seeds;
+    }
+    
     public TreeMap<Tree, Integer> getTrees() {
         TreeMap<Tree, Integer> trees = new TreeMap<>();
         for (Seed s : seeds.keySet()) {
@@ -79,7 +81,7 @@ public class Inventory {
     }
 
     public Fertilizer getFertilizers() {
-        return fertilizers;
+        return FERTILIZERS;
     }
 
     public int getQuantity(Seed s) {
@@ -113,7 +115,7 @@ public class Inventory {
     }
 
     public void addFertilizer(int quantity) {
-        fertilizers.setCount(fertilizers.getCount() + quantity);
+        FERTILIZERS.setCount(FERTILIZERS.getCount() + quantity);
     }
 
     public void addSeed(Seed s) {

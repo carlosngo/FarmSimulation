@@ -10,12 +10,14 @@ public class Tile implements Runnable, Selectable {
     public final static int READY_TO_HARVEST = 4;
     public final static int WITHERED = 5;
     private GameGUIController controller;
+    private Thread thread;
     private Seed seed;
     private int fertilizer;
     private int state;
 
     public Tile(GameGUIController controller) {
         this.controller = controller;
+        thread = new Thread(this);
         init();
     }
 
@@ -42,12 +44,13 @@ public class Tile implements Runnable, Selectable {
             if (state == WITHERED)
                 controller.updateTile(this);
             controller.updateGameGUI();
-        } catch (InterruptedException e) {
-            
-        }
+        } catch (InterruptedException e) { }
     }
     
     public void init() {
+        if (thread.isAlive())
+            thread.interrupt();
+        thread = new Thread(this);
         if (Math.random() * 100 <= 10)
             setState(ROCKY);
         else
@@ -68,10 +71,15 @@ public class Tile implements Runnable, Selectable {
         return fertilizer;
     }
     
+    public Thread getThread() {
+        return thread;
+    }
+    
     public boolean setSeed(Seed seed) {
         if (state == PLOWED) {
             this.seed = seed;
             this.seed.setFertilizer(fertilizer);
+            this.seed.setPlantTime(System.currentTimeMillis());
         } else
             return false;
         return true;
@@ -107,7 +115,8 @@ public class Tile implements Runnable, Selectable {
         if (state == PLANTED) {
             if (seed != null) {
                 sb.append("\nSeed: " + seed.getName() + "\n");
-                sb.append("Water: " + seed.getWater());
+                sb.append("Water: " + seed.getWater() + "\n");
+                sb.append("Time until harvest: " + ((seed.getHarvestTime() - seed.getTimeElapsed()) / 1000.0) + " seconds");
             } else {
                 sb.append("\nSeed: none (part of a Tree)");
             }

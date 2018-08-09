@@ -20,6 +20,6 @@ public class Tree extends Seed {
     }
     
     public double computeSellingPrice() {
-        return getBasePrice() + getWater() * 0.25 * getBasePrice() + getFertilizer() * 0.5 * getBasePrice();
+        return getBasePrice() + getWater() * 0.25 * getBasePrice() + getFertilizer() * 0.5 * getBasePrice() - getHarvestCost();
     }
 }

@@ -13,9 +13,9 @@ public class Plow extends Tool {
     public Plow() { }
     
     public boolean use(Tile t) {
-        if (t.getstate() == Tile.WITHERED) 
+        if (t.getstate() == Tile.WITHERED || (t.getstate() == Tile.PLANTED && t.getSeed() != null)) {
             ;
-        else if (t.getstate() == Tile.UNPLOWED)
+        } else if (t.getstate() == Tile.UNPLOWED)
             t.setState(Tile.PLOWED);
         else
             return false;
@@ -23,6 +23,6 @@ public class Plow extends Tool {
     }
     
     public String getDescription() {
-        return "Prepares a specific title for planting; Also removes withered plants (costs 2 OC to remove)";
+        return "Prepares a specific title for planting; Also removes plants (costs 10% of seed cost to remove)";
     }
 }

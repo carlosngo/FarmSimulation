@@ -1,10 +1,16 @@
 package Model;
 
+/**
+ * A tool that helps plants survive the farm heat. It also boosts 
+ * the selling price of the plant.
+ * @author Carlos & Johanna
+ */
 public class Fertilizer extends Tool implements Purchasable {
 
     private int count;
 
     public Fertilizer() {
+        count = 5;
     }
 
     public int getCount() {

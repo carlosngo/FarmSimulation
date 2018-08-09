@@ -6,10 +6,10 @@ import Controller.*;
 public class Lot {
 
     public static final int MAX_ROW = 10;
-    public static final int MAX_COL = 10;
+    public static final int MAX_COL = 5;
     private Tile[][] tiles;
     private GameGUIController controller;
-    
+
     public Lot(GameGUIController controller) {
         this.controller = controller;
         tiles = new Tile[MAX_ROW][MAX_COL];
@@ -27,7 +27,7 @@ public class Lot {
     public Tile getTile(int row, int col) {
         return tiles[row][col];
     }
-    
+
     public void resetTile(Tile t) {
         if (t.getSeed() instanceof Tree) {
             for (Tile tile : getAdjacentTiles(t)) {
@@ -36,13 +36,30 @@ public class Lot {
         }
         t.init();
     }
-    
+
+    /**
+     * Sets the seed parameter as the seed of the tile parameter. If the seed 
+     * is a tree, the adjacent 
+     * tiles of the tile parameter will have roots.
+     * @param t
+     * @param s
+     * @return 
+     */
     public boolean plantSeed(Tile t, Seed s) {
         if (t.getstate() != Tile.PLOWED) {
             return false;
         }
         if (s instanceof Tree) {
-            if (getAdjacentTiles(t) != null) {
+            boolean canPlant = true;
+            for (Tile tile : getAdjacentTiles(t)) {
+                boolean isValidTile = false;
+                if (tile.getstate() == Tile.PLOWED ||
+                        tile.getstate() == Tile.PLANTED && tile.getSeed() == null) 
+                    isValidTile = true;
+                if (!isValidTile)
+                    canPlant = false;
+            }
+            if (canPlant) {
                 for (Tile tile : getAdjacentTiles(t)) {
                     tile.setState(Tile.PLANTED);
                 }
@@ -51,7 +68,7 @@ public class Lot {
             }
         }
         t.setSeed(s);
-        new Thread(t).start();
+        t.getThread().start();
         return true;
     }
 
@@ -66,8 +83,6 @@ public class Lot {
                 }
             }
         }
-        boolean canPlantTree = true;
-        boolean canRemoveTree = true;
         ArrayList<Tile> list = new ArrayList<>();
         if (row - 1 >= 0) {
             list.add(tiles[row - 1][col]);
@@ -93,20 +108,6 @@ public class Lot {
         if (row + 1 < MAX_ROW && col + 1 < MAX_COL) {
             list.add(tiles[row + 1][col + 1]);
         }
-        if (list.size() < 8) {
-            canPlantTree = false;
-        } else {
-            for (Tile tile : list) {
-                if (tile.getstate() != Tile.PLOWED) {
-                    canPlantTree = false;
-                } else if (!(tile.getstate() == Tile.PLANTED && tile.getSeed() == null))
-                    canRemoveTree = false;
-            }
-        }
-        if (canPlantTree || canRemoveTree) {
-            return list;
-        } else {
-            return null;
-        }
+        return list;
     }
 }
