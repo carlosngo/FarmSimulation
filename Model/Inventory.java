@@ -135,29 +135,26 @@ public class Inventory {
     }
     
     /**
-     * Returns a clone object of the Seed with the matching name with the parameter's name.
-     * @param name the String name of the chosen Seed object to be cloned
-     * @return Seed object if a match is found, otherwise null
+     * Sets the HashMap ID of the parameter's Seed object to the parameter's quantity.
+     * @param s the Seed object whose ID is to be changed
+     * @param quantity the new ID to be used
      */
-    public Seed getSeedClone(String name) {
-        for (Seed s : seeds.keySet()) {
-            if (s.getName().equals(name)) {
-                if (s instanceof Tree) {
-                    return new Tree((Tree) s);
-                } else if (s instanceof Flower) {
-                    return new Flower((Flower) s);
-                } else if (s instanceof Vegetable) {
-                    return new Vegetable((Vegetable) s);
-                }
-            }
+    public Seed getClone(Seed s) {
+        if (s instanceof Tree) {
+            return new Tree((Tree) s);
+        } else if (s instanceof Flower) {
+            return new Flower((Flower) s);
+        } else if (s instanceof Vegetable) {
+            return new Vegetable((Vegetable) s);
         }
+
         return null;
     }
 
     /**
-     * Sets the HashMap ID of the parameter's Seed object to the parameter's quantity.
-     * @param s the Seed object whose ID is to be changed
-     * @param quantity the new ID to be used
+     * Returns a clone object of the Seed with the matching name with the parameter's name.
+     * @param name the String name of the chosen Seed object to be cloned
+     * @return Seed object if a match is found, otherwise null
      */
     public void setQuantity(Seed s, int quantity) {
         seeds.put(s, quantity);

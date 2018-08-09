@@ -7,6 +7,7 @@ package Controller;
 
 import Model.*;
 import View.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import javax.sound.sampled.AudioFormat;
@@ -28,6 +29,7 @@ public class GameGUIController {
 
     private Player player;
     private MainMenu mainMenu;
+    private SeedMenu seedMenu;
     private GameGUI game;
     private Clip music;
     private AudioInputStream audioSource;
@@ -68,12 +70,34 @@ public class GameGUIController {
         }
     }
 
+    public BufferedImage getPlantImage(String name) {
+        return game.getPlantImages().get(name);
+    }
+
+    public SeedMenu getSeedMenu() {
+        return seedMenu;
+    }
+
+    public void updateSeedInfo(String name) {
+        Seed s = player.getInventory().getSeed(name);
+        seedMenu.setPic(game.getPlantImages().get(s.getName()));
+        seedMenu.setName(s.getName());
+        seedMenu.setHc(s.getHarvestCost() + " OC");
+        seedMenu.setWn(s.getWaterNeeded() + " (" + s.getWaterMax() + ")");
+        seedMenu.setFn(s.getFertilizerNeeded() + " (" + s.getFertilizerMax() + ")");
+        seedMenu.setBp(s.getBasePrice() + " OC");
+        seedMenu.setSc(s.getSeedCost() + " OC");
+        seedMenu.setPp(s.getMinProducts() + " - " + s.getMaxProducts());
+        seedMenu.setHt(s.getHarvestTime() / 60000.0 + " mins.");
+    }
+
     public void initializePlayer(String name) {
         player = new Normal(name, this);
     }
 
     public void initializeGame() {
         game = new GameGUI(this);
+        seedMenu = new SeedMenu(this);
         playMusic();
         for (Seed s : player.getInventory().getSeeds().keySet()) {
             game.addPlantImage(s.getName());
@@ -86,38 +110,24 @@ public class GameGUIController {
         Inventory inv = player.getInventory();
         for (SeedPanel sp : game.getSeedPanels()) {
             sp.setQty(inv.getQuantity(inv.getSeed(sp.getPlantName())));
-            
+
         }
     }
-    
+
     public void initInventory() {
         Inventory inv = player.getInventory();
         for (Seed s : inv.getVegetables().keySet()) {
-            System.out.println("Added" + s.getName());
             game.addVegetablePanel(s.getName(), this);
-//            seedMenu.getpVeggie().addRow(s.getName(), inv.getQuantity(s),
-//                    s.getHarvestTime() / 60000.0, s.getWaterNeeded(), s.getWaterMax(),
-//                    s.getFertilizerNeeded(), s.getFertilizerMax(), s.getHarvestCost(), s.getMinProducts(), s.getMaxProducts(),
-//                    s.getSeedCost(), s.getBasePrice());
+            seedMenu.addSeed(s.getName());
         }
         for (Seed s : inv.getFlowers().keySet()) {
             game.addFlowerPanel(s.getName(), this);
-//            seedMenu.getpFlower().addRow(s.getName(), inv.getQuantity(s),
-//                    s.getHarvestTime() / 60000.0, s.getWaterNeeded(), s.getWaterMax(),
-//                    s.getFertilizerNeeded(), s.getFertilizerMax(), s.getHarvestCost(), s.getMinProducts(), s.getMaxProducts(),
-//                    s.getSeedCost(), s.getBasePrice());
+            seedMenu.addSeed(s.getName());
         }
         for (Seed s : inv.getTrees().keySet()) {
             game.addTreePanel(s.getName(), this);
-//            seedMenu.getpTree().addRow(s.getName(), inv.getQuantity(s),
-//                    s.getHarvestTime() / 60000.0, s.getWaterNeeded(), s.getWaterMax(),
-//                    s.getFertilizerNeeded(), s.getFertilizerMax(), s.getHarvestCost(), s.getMinProducts(), s.getMaxProducts(),
-//                    s.getSeedCost(), s.getBasePrice());
-
+            seedMenu.addSeed(s.getName());
         }
-//        seedMenu.addActionListeners();
-//        seedMenu.setFocusable(true);
-//        seedMenu.requestFocusInWindow();
     }
 
     public void updateGameGUI() {
@@ -126,9 +136,11 @@ public class GameGUIController {
         game.setMoney(player.getMoney());
         game.setExp(player.getExp());
         game.setType(player.getType());
-        if (player.getSelected() != null) 
-            game.setDescription(player.getSelected().getDescription() + "\nClick the background to deselect this tool.");
-        
+        if (player.getSelected() != null) {
+            game.setDescription(player.getSelected().getDescription() + "\n"
+                    + "Click on the background to deselect this object.");
+        }
+
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 5; j++) {
                 Tile tile = player.getLot().getTile(i, j);
@@ -144,7 +156,7 @@ public class GameGUIController {
         game.repaint();
     }
 
-    public void updateSelected (JButton btn) {
+    public void updateSelected(JButton btn) {
         double moneyTemp = player.getMoney();
         String cmd = btn.getActionCommand();
         if (cmd.equals("Watering Can")) {
@@ -164,17 +176,61 @@ public class GameGUIController {
 //            audioSource.close();
             game.dispose();
         } else if (cmd.equals("View Seeds")) {
-            if (game.getSeedMenu().isVisible())
+            if (game.getSeedMenu().isVisible()) {
                 game.getSeedMenu().setVisible(false);
-            else
-                game.getSeedMenu().setVisible(true);
-        } else if (cmd.equals("Register")) {
-            Player p = player.register();
-            if (p != null) {
-                player = p;
-                player.addExp(25);
             } else {
-                JOptionPane.showMessageDialog(null, "You do not meet the requirements to register.");
+                game.getSeedMenu().setVisible(true);
+            }
+        } else if (cmd.equals("Register")) {
+            
+            int choice = -1;
+            switch (player.getType()) {
+                case "Farmer":
+                    choice = JOptionPane.showConfirmDialog(null, "REGISTRATION BENEFITS\n+"
+                            + Registered.HARVEST_TIME_REDUCTION + "% harvest time reduction\n+"
+                            + Registered.WATER_FERTILIZER_BONUS + " max fertilizer per tile\n+"
+                            + Registered.WATER_FERTILIZER_BONUS + " max water per plant\n+"
+                            + Registered.TRANSACTION_BENEFIT + " OC selling price per individual produce\n-"
+                            + Registered.TRANSACTION_BENEFIT + " OC buying price per individual item\n"
+                            + "REGISTRATION REQUIREMENTS\n"
+                            + "Registration Fee: " + Registered.REGISTRATION_FEE + " OC\n"
+                            + "Level Requirement: " + Registered.LEVEL_REQUIREMENT 
+                            , "Sign up as Registered", JOptionPane.YES_NO_OPTION);
+                    break;
+                case "Registered":
+                    choice = JOptionPane.showConfirmDialog(null, "REGISTRATION BENEFITS\n+"
+                            + Distinguished.HARVEST_TIME_REDUCTION + "% harvest time reduction\n+"
+                            + Distinguished.WATER_FERTILIZER_BONUS + " max fertilizer per tile\n+"
+                            + Distinguished.WATER_FERTILIZER_BONUS + " max water per plant\n+"
+                            + Distinguished.TRANSACTION_BENEFITS + " OC selling price per individual produce\n-"
+                            + Distinguished.TRANSACTION_BENEFITS + " OC buying price per individual item\n"
+                            + "REGISTRATION REQUIREMENTS\n"
+                            + "Registration Fee: " + Distinguished.REGISTRATION_FEE + " OC\n"
+                            + "Level Requirement: " + Distinguished.LEVEL_REQUIREMENT 
+                            , "Sign up as Distinguished", JOptionPane.YES_NO_OPTION);
+                    break;
+                case "Distinguished":
+                    choice = JOptionPane.showConfirmDialog(null, "REGISTRATION BENEFITS\n+"
+                            + Honorable.HARVEST_TIME_REDUCTION + "% harvest time reduction\n+"
+                            + Honorable.WATER_FERTILIZER_BONUS + " max fertilizer per tile\n+"
+                            + Honorable.WATER_FERTILIZER_BONUS + " max water per plant\n+"
+                            + Honorable.TRANSACTION_BENEFIT + " OC selling price per individual produce\n-"
+                            + Honorable.TRANSACTION_BENEFIT + " OC buying price per individual item\n"
+                            + "REGISTRATION REQUIREMENTS\n"
+                            + "Registration Fee: " + Honorable.REGISTRATION_FEE + " OC\n"
+                            + "Level Requirement: " + Honorable.LEVEL_REQUIREMENT 
+                            , "Sign up as Honorable", JOptionPane.YES_NO_OPTION);
+                    break;
+            }
+            
+            if (choice == JOptionPane.YES_OPTION) {
+                Player p = player.register();
+                if (p != null) {
+                    player = p;
+                    player.addExp(25);
+                } else {
+                    JOptionPane.showMessageDialog(null, "You do not meet the requirements to register.");
+                }
             }
         } else if (cmd.equals("Buy Fertilizer")) {
             int qty = askQuantity();
@@ -194,13 +250,24 @@ public class GameGUIController {
                         if (player.getSelected() instanceof WateringCan) {
                             game.setLogAction(1, player.select(player.getLot().getTile(i, j)));
                         } else if (player.getSelected() instanceof Plow) {
-                            game.setLogAction(2, player.select(player.getLot().getTile(i, j)));
+                            Tile t = player.getLot().getTile(i, j);
+                            if (t.getSeed() != null) {
+                                if (JOptionPane.showConfirmDialog(null,
+                                        "Are you sure you want to remove this plant?") == JOptionPane.YES_OPTION) {
+                                    game.setLogAction(2, player.select(t));
+                                }
+                            } else {
+                                game.setLogAction(2, player.select(t));
+                            }
                         } else if (player.getSelected() instanceof Pickaxe) {
                             game.setLogAction(3, player.select(player.getLot().getTile(i, j)));
                         } else if (player.getSelected() instanceof Fertilizer) {
                             game.setLogAction(4, player.select(player.getLot().getTile(i, j)));
                         } else if (player.getSelected() instanceof Seed) {
                             game.setLogAction(5, player.select(player.getLot().getTile(i, j)));
+                            if (player.getInventory().getQuantity((Seed) player.getSelected()) == 0) {
+                                deselect();
+                            }
                         } else {
                             player.select(player.getLot().getTile(i, j));
                         }
@@ -211,7 +278,6 @@ public class GameGUIController {
             }
         }
 
-        
         if (moneyTemp != player.getMoney()) {
             if (moneyTemp > player.getMoney()) {
                 game.setLogPurchase(moneyTemp - player.getMoney());
@@ -265,18 +331,23 @@ public class GameGUIController {
         game.setDescription("Click on a tool to select it, or click on a tile to view its details.");
     }
 
+    public void showHelp() {
+        seedMenu.setVisible(true);
+    }
+
     public int askQuantity() {
         while (true) {
             try {
                 String qty = JOptionPane.showInputDialog(null, "How many do you want to buy?");
                 if (qty == null) {
                     break;
-                } 
+                }
                 int quantity = Integer.parseInt(qty);
-                if (quantity > 0)
+                if (quantity > 0) {
                     return quantity;
-                else
+                } else {
                     JOptionPane.showMessageDialog(null, "Please input a positive integer");
+                }
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(null, "Please input an integer");
             }

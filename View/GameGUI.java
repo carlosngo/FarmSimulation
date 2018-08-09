@@ -123,6 +123,10 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         return log;
     }
     
+    public HashMap<String, BufferedImage> getPlantImages() {
+        return plantImages;
+        
+    }
     public void initGameGUI(){
         JPanel motherPnl = new JPanel();
         motherPnl.setLayout(new OverlayLayout(motherPnl));
@@ -166,6 +170,8 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         register = new JButton();
         register.setIcon(new ImageIcon(resizeImage("register.png",60,45)));
         register.setActionCommand("Register");
+        register.setToolTipText("Register");
+        
         //register.setFont(new Font("Arial", Font.PLAIN, 30));
         //register.setBackground(new Color(152,251,152));
         //register.setOpaque(false);
@@ -173,6 +179,7 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         register.setBorderPainted(false);
         //register.setBorder(BorderFactory.createLineBorder(new Color(0,78,56),1));
         register.addActionListener(this);
+        register.addMouseListener(this);
         //Border border5 = BorderFactory.createLineBorder(Color.BLUE, 1);   mainmenu.setBorder(border5);
         c.gridx = 2;
         c.gridy = 2;
@@ -245,12 +252,12 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         watercan.setContentAreaFilled(false);
         watercan.setToolTipText("Watering Can");
         watercan.setOpaque(false);
-        watercan.setBorder(BorderFactory.createLineBorder(new Color(0,78,56),1));
         //watercan.setBorderPainted(false);
         watercan.setIcon(new ImageIcon(resizeImage("watering can.png",80,65)));
         //watercan.setHorizontalAlignment(SwingConstants.LEFT);
         watercan.setActionCommand("Watering Can");
         watercan.addActionListener(this);
+        watercan.addMouseListener(this);
         //Border border6 = BorderFactory.createLineBorder(Color.BLUE, 1);   watercan.setBorder(border6);
         c.gridx = 0;
         c.gridy = 9;
@@ -269,7 +276,9 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         plow.setIcon(new ImageIcon(resizeImage("plow.png",80,65)));
         plow.setHorizontalAlignment(SwingConstants.LEFT);
         plow.setActionCommand("Plow");
+        
         plow.addActionListener(this);
+        plow.addMouseListener(this);
         //Border border7 = BorderFactory.createLineBorder(Color.ORANGE, 1);   plow.setBorder(border7);
         c.gridx = 1;
         c.gridy = 9;
@@ -289,6 +298,7 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         pickaxe.setActionCommand("Pickaxe");
         //pickaxe.setHorizontalAlignment(SwingConstants.LEFT);
         pickaxe.addActionListener(this);
+        pickaxe.addMouseListener(this);
         //Border border8 = BorderFactory.createLineBorder(Color.GRAY, 1);   pickaxe.setBorder(border8);
         c.gridx = 2;
         c.gridy = 9;
@@ -308,6 +318,7 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         fertilizer.setIcon(new ImageIcon(resizeImage("fertilizer.png",80,65)));
         //fertilizer.setHorizontalAlignment(SwingConstants.LEFT);
         fertilizer.addActionListener(this);
+        fertilizer.addMouseListener(this);
         //Border border9 = BorderFactory.createLineBorder(Color.GREEN, 1);   fertilizer.setBorder(border9);
         c.gridx = 0;
         c.gridy = 10;
@@ -327,6 +338,7 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         buyFertilizer.setIcon(new ImageIcon(resizeImage("add fertilizer.png",80,65)));
         //buyFertilizer.setHorizontalAlignment(SwingConstants.LEFT);
         buyFertilizer.addActionListener(this);
+        buyFertilizer.addMouseListener(this);
         //Border border9 = BorderFactory.createLineBorder(Color.GREEN, 1);   fertilizer.setBorder(border9);
         c.gridx = 1;
         c.gridy = 10;
@@ -348,6 +360,7 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         seeds.setIcon(new ImageIcon(resizeImage("seeds.png",80,65)));
         seeds.setHorizontalAlignment(SwingConstants.LEFT);
         seeds.addActionListener(this);
+        seeds.addMouseListener(this);
         //Border border10 = BorderFactory.createLineBorder(Color.BLUE, 1);  seeds.setBorder(border10);
         c.gridx = 2;
         c.gridy = 10;
@@ -398,11 +411,20 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         Border round3 = new LineBorder(new Color(0,78,56),10,true);
         seedmenu.setBorder(round3);
         seedmenu.setPreferredSize(new Dimension(290, 270));
+        
+        JPanel seedMenuTitlePanel = new JPanel();
+        seedMenuTitlePanel.setLayout(new BorderLayout());
         JLabel seedmenuLabel = new JLabel("Seeds");
         seedmenuLabel.setFont(new Font("Arial", Font.BOLD, 26));
         seedmenuLabel.setForeground(new Color(208,240,192));
         seedmenuLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        seedmenu.add(seedmenuLabel);
+        seedMenuTitlePanel.add(seedmenuLabel, BorderLayout.CENTER);
+        JButton help = new JButton();
+        help.addActionListener((ActionEvent e) -> {
+            controller.getSeedMenu().setVisible(true);
+        });
+        seedMenuTitlePanel.add(help, BorderLayout.EAST);
+        seedmenu.add(seedMenuTitlePanel);
         //JScrollPane seedMenuLogScroll = new JScrollPane(seedmenu, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS, JScrollPane.VERTICAL_SCROLLBAR_NEVER);
         //seedMenuLogScroll.setOpaque(false);
         //leftPanel.add(seedMenuLogScroll);
@@ -460,7 +482,9 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
                 tileButtons[i][j] = new JButton();
                 tileButtons[i][j].setBackground(new Color(76,187,23));
                 tileButtons[i][j].setBorderPainted(false);
+                tileButtons[i][j].setContentAreaFilled(false);
                 tileButtons[i][j].addActionListener(this);
+                tileButtons[i][j].addMouseListener(this);
                 c2.gridx = j;
                 c2.gridy = i;
                 middlePanel.add(tileButtons[i][j], c2);
@@ -503,7 +527,7 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         description.setEditable(false);
         //description.setOpaque(false);
         description.setMargin(new Insets(5,10,5,10));
-        JScrollPane descriptionScroll = new JScrollPane(description,ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+        JScrollPane descriptionScroll = new JScrollPane(description,ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
 								  ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         Border round = new LineBorder(new Color(0,78,56),10,true);
         descriptionScroll.setBorder(round);
@@ -526,7 +550,7 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         log.setEditable(false);
         //log.setOpaque(false);
         log.setMargin(new Insets(5,10,5,10));
-        JScrollPane logScroll = new JScrollPane(log, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+        JScrollPane logScroll = new JScrollPane(log, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
                                                      ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         //logScroll.setBorder(BorderFactory.createEmptyBorder());
         Border round2 = new LineBorder(new Color(0,78,56),10,true);
@@ -669,6 +693,7 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
     
     public void actionPerformed (ActionEvent e){
         controller.updateSelected((JButton)e.getSource());
+        
     }
   
     /*
@@ -681,16 +706,28 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        if (e.getButton() == MouseEvent.BUTTON1)
-            controller.deselect();
+        if (e.getButton() == MouseEvent.BUTTON1) {
+            if (!(e.getSource() instanceof JButton))
+                controller.deselect();
+        }
     }
 
     @Override
     public void mouseReleased(MouseEvent e) { }
 
     @Override
-    public void mouseEntered(MouseEvent e) { }
+    public void mouseEntered(MouseEvent e) { 
+        if (e.getSource() instanceof JButton) {
+            JButton btn = (JButton)e.getSource();
+            btn.setContentAreaFilled(true);
+        }
+    }
 
     @Override
-    public void mouseExited(MouseEvent e) { }
+    public void mouseExited(MouseEvent e) { 
+        if (e.getSource() instanceof JButton) {
+            JButton btn = (JButton)e.getSource();
+            btn.setContentAreaFilled(false);
+        }
+    }
 }

@@ -25,8 +25,8 @@ public abstract class Player {
         this.controller = controller;
         this.name = name;
         lot = new Lot(this.controller);
-        money = 1000;
-        level = 0;
+        money = 10000;
+        level = 40;
         inv = new Inventory();
     }
     
@@ -56,11 +56,11 @@ public abstract class Player {
         if (this instanceof Normal)
             return "Farmer";
         else if (this instanceof Distinguished)
-            return "Distinguished Farmer";
+            return "Distinguished";
         else if (this instanceof Honorable)
-            return "Honorable Farmer";
+            return "Honorable";
         else 
-            return "Registered Farmer";
+            return "Registered";
         
     }
     
