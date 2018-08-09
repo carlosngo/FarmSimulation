@@ -57,6 +57,7 @@ public class SeedPanel extends JPanel implements ActionListener {
         //this.setOpaque(true);
         JButton seedPic = new JButton();
         seedPic.setActionCommand("Plant Seed");
+        seedPic.setToolTipText(name);
         seedPic.addActionListener(this);
         seedPic.setIcon(new ImageIcon(resizeImage(name.toLowerCase() + ".png", 120, 100)));
         c.gridx = 0;
@@ -73,6 +74,7 @@ public class SeedPanel extends JPanel implements ActionListener {
         functional.add(qty);
         buy = new JButton();
         buy.setActionCommand("Buy Seed");
+        buy.setToolTipText("Buy Seed");
         buy.addActionListener(this);
         buy.setIcon(new ImageIcon(resizeImage("add seed.png",35,25)));
         functional.add(buy);
