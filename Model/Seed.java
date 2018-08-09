@@ -3,6 +3,7 @@ package Model;
 public abstract class Seed implements Selectable, Purchasable, Comparable<Seed> {
     
     private String name;
+    private long plantTime;
     private long harvestTime;
     private int water;
     private int waterNeeded;
@@ -53,7 +54,7 @@ public abstract class Seed implements Selectable, Purchasable, Comparable<Seed> 
     public String getName() {
         return name;
     }
-
+    
     public long getHarvestTime() {
         return harvestTime;
     }
@@ -102,6 +103,14 @@ public abstract class Seed implements Selectable, Purchasable, Comparable<Seed> 
         return basePrice;
     }
     
+    public long getTimeElapsed() {
+        long timeElapsed = System.currentTimeMillis() - plantTime;
+        if (timeElapsed <= harvestTime)
+            return timeElapsed;
+        else
+            return harvestTime;
+    }
+    
     public void setWater (int water) {
         this.water = water;
     }
@@ -109,7 +118,7 @@ public abstract class Seed implements Selectable, Purchasable, Comparable<Seed> 
     public void setWaterMax(int waterMax) {
         this.waterMax = waterMax;
     }
-    
+
     public void setFertilizer (int fertilizer) {
         if (fertilizer > fertilizerMax)
             fertilizer = fertilizerMax;
@@ -120,6 +129,10 @@ public abstract class Seed implements Selectable, Purchasable, Comparable<Seed> 
         this.fertilizerMax = fertilizerMax;
     }
    
+    public void setPlantTime(long plantTime) {
+        this.plantTime = plantTime;
+    }
+    
     public void setHarvestTime(long harvestTime) {
         this.harvestTime = harvestTime;
     }
