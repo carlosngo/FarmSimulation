@@ -11,13 +11,19 @@ package Model;
  */
 public class Honorable extends Player  {
 
+    public static final int HARVEST_TIME_REDUCTION = 15;
+    public static final int LEVEL_REQUIREMENT = 20;
+    public static final int TRANSACTION_BENEFIT = 5;
+    public static final int WATER_FERTILIZER_BONUS = 2;
+    public static final int REGISTRATION_FEE = 350;
+    
     public Honorable(Player p) {
         super (p);
     }
     
     @Override
     public boolean buy(Purchasable p, int quantity) {
-        double cost = (p.computeBuyingPrice() - 5) * quantity;
+        double cost = (p.computeBuyingPrice() - TRANSACTION_BENEFIT) * quantity;
         if (cost > getMoney())
             return false;
         setMoney(getMoney() - cost);
@@ -38,10 +44,10 @@ public class Honorable extends Player  {
 
     @Override
     public boolean plant(Tile t, Seed s) {
-        Seed seedClone = getInventory().getSeedClone(s.getName());
-        seedClone.setWaterMax(s.getWaterMax() + 2);
-        seedClone.setFertilizerMax(s.getFertilizerMax() + 2);
-        seedClone.setHarvestTime(s.getHarvestTime() - (long)(s.getHarvestTime() * 0.15));
+        Seed seedClone = getInventory().getClone(s);
+        seedClone.setWaterMax(s.getWaterMax() + WATER_FERTILIZER_BONUS);
+        seedClone.setFertilizerMax(s.getFertilizerMax() + WATER_FERTILIZER_BONUS);
+        seedClone.setHarvestTime(s.getHarvestTime() - (long)(s.getHarvestTime() * HARVEST_TIME_REDUCTION / 100));
         if (getInventory().getQuantity(s) > 0 && getLot().plantSeed(t, seedClone)) {
             getInventory().removeSeed(s);
             return true;
@@ -55,7 +61,7 @@ public class Honorable extends Player  {
         if (seed instanceof Tree)
             for (Tile tile : getLot().getAdjacentTiles(t))
                 tile.init();
-        setMoney(getMoney() + ((seed.computeSellingPrice() + 5) * seed.getProducts()));
+        setMoney(getMoney() + ((seed.computeSellingPrice() + TRANSACTION_BENEFIT) * seed.getProducts()));
         t.init();
     }
     

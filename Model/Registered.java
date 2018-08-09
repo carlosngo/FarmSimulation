@@ -9,13 +9,19 @@ import Controller.*;
 
 public class Registered extends Player {
     
+    public static final int HARVEST_TIME_REDUCTION = 5;
+    public static final int LEVEL_REQUIREMENT = 10;
+    public static final int TRANSACTION_BENEFIT = 2;
+    public static final int WATER_FERTILIZER_BONUS = 0;
+    public static final int REGISTRATION_FEE = 200;
+    
     public Registered(Player p) {
         super (p);
     }
     
     @Override
     public boolean buy(Purchasable p, int quantity) {
-        double cost = (p.computeBuyingPrice() - 2)* quantity;
+        double cost = (p.computeBuyingPrice() - TRANSACTION_BENEFIT)* quantity;
         if (cost > getMoney())
             return false;
         setMoney(getMoney() - cost);
@@ -30,8 +36,8 @@ public class Registered extends Player {
 
     @Override
     public Player register() {
-        if (getMoney() >= 250 && getLevel() >= 15) {
-            setMoney(getMoney() - 250);
+        if (getMoney() >= Distinguished.REGISTRATION_FEE && getLevel() >= Distinguished.LEVEL_REQUIREMENT) {
+            setMoney(getMoney() - Distinguished.REGISTRATION_FEE);
             return new Distinguished(this);
         } 
         return null;
@@ -39,8 +45,10 @@ public class Registered extends Player {
 
     @Override
     public boolean plant(Tile t, Seed s) {
-        Seed seedClone = getInventory().getSeedClone(s.getName());
-        seedClone.setHarvestTime(s.getHarvestTime() - (long)(s.getHarvestTime() * 0.05));
+        Seed seedClone = getInventory().getClone(s);
+        seedClone.setWaterMax(s.getWaterMax() + WATER_FERTILIZER_BONUS);
+        seedClone.setFertilizerMax(s.getFertilizerMax() + WATER_FERTILIZER_BONUS);
+        seedClone.setHarvestTime(s.getHarvestTime() - (long)(s.getHarvestTime() * HARVEST_TIME_REDUCTION / 100));
         if (getInventory().getQuantity(s) > 0 && getLot().plantSeed(t, seedClone)) {
             getInventory().removeSeed(s);
             return true;
@@ -54,7 +62,7 @@ public class Registered extends Player {
         if (seed instanceof Tree)
             for (Tile tile : getLot().getAdjacentTiles(t))
                 tile.init();
-        setMoney(getMoney() + ((seed.computeSellingPrice() + 2) * seed.getProducts()));
+        setMoney(getMoney() + ((seed.computeSellingPrice() + TRANSACTION_BENEFIT) * seed.getProducts()));
         t.init();
     }
     

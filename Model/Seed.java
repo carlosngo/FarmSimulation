@@ -44,7 +44,7 @@ public abstract class Seed implements Selectable, Purchasable, Comparable<Seed> 
         this.maxProducts = s.getMaxProducts();
         this.seedCost = s.getSeedCost();
         this.basePrice = s.getBasePrice();
-        this.products = minProducts + (int)(Math.random() * (maxProducts - minProducts));
+        this.products = minProducts + (int)(Math.random() * (maxProducts - minProducts + 1));
     }
 
     public int getProducts() {

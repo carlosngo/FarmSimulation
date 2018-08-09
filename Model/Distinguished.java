@@ -10,14 +10,19 @@ package Model;
  * @author Carlos
  */
 public class Distinguished extends Player  {
-
+    public static final int HARVEST_TIME_REDUCTION = 10;
+    public static final int LEVEL_REQUIREMENT = 15;
+    public static final int TRANSACTION_BENEFITS = 3;
+    public static final int WATER_FERTILIZER_BONUS = 1;
+    public static final int REGISTRATION_FEE = 250;
+    
     public Distinguished(Player p) {
         super (p);
     }
     
     @Override
     public boolean buy(Purchasable p, int quantity) {
-        double cost = (p.computeBuyingPrice() - 3) * quantity;
+        double cost = (p.computeBuyingPrice() - TRANSACTION_BENEFITS) * quantity;
         if (cost > getMoney())
             return false;
         setMoney(getMoney() - cost);
@@ -32,8 +37,8 @@ public class Distinguished extends Player  {
 
     @Override
     public Player register() {
-        if (getMoney() >= 350 && getLevel() >= 20) {
-            setMoney(getMoney() - 350);
+        if (getMoney() >= Honorable.REGISTRATION_FEE && getLevel() >= Honorable.LEVEL_REQUIREMENT) {
+            setMoney(getMoney() - Honorable.REGISTRATION_FEE);
             return new Honorable(this);
         } 
         return null;
@@ -41,10 +46,10 @@ public class Distinguished extends Player  {
 
     @Override
     public boolean plant(Tile t, Seed s) {
-        Seed seedClone = getInventory().getSeedClone(s.getName());
-        seedClone.setWaterMax(s.getWaterMax() + 1);
-        seedClone.setFertilizerMax(s.getFertilizerMax() + 1);
-        seedClone.setHarvestTime(s.getHarvestTime() - (long)(s.getHarvestTime() * 0.1));
+        Seed seedClone = getInventory().getClone(s);
+        seedClone.setWaterMax(s.getWaterMax() + WATER_FERTILIZER_BONUS);
+        seedClone.setFertilizerMax(s.getFertilizerMax() + WATER_FERTILIZER_BONUS);
+        seedClone.setHarvestTime(s.getHarvestTime() - (long)(s.getHarvestTime() * HARVEST_TIME_REDUCTION / 100));
         if (getInventory().getQuantity(s) > 0 && getLot().plantSeed(t, seedClone)) {
             getInventory().removeSeed(s);
             return true;
@@ -58,7 +63,7 @@ public class Distinguished extends Player  {
         if (seed instanceof Tree)
             for (Tile tile : getLot().getAdjacentTiles(t))
                 tile.init();
-        setMoney(getMoney() + ((seed.computeSellingPrice() + 3) * seed.getProducts()));
+        setMoney(getMoney() + ((seed.computeSellingPrice() + TRANSACTION_BENEFITS) * seed.getProducts()));
         t.init();
     }
     

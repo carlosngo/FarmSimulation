@@ -35,8 +35,8 @@ public class Normal extends Player  {
 
     @Override
     public Player register() {
-        if (getMoney() >= 200 && getLevel() >= 10) {
-            setMoney(getMoney() - 200);
+        if (getMoney() >= Registered.REGISTRATION_FEE && getLevel() >= Registered.LEVEL_REQUIREMENT) {
+            setMoney(getMoney() - Registered.REGISTRATION_FEE);
             return new Registered(this);
         } 
         return null;
@@ -44,7 +44,7 @@ public class Normal extends Player  {
 
     @Override
     public boolean plant(Tile t, Seed s) {
-        Seed seedClone = getInventory().getSeedClone(s.getName());
+        Seed seedClone = getInventory().getClone(s);
         if (getInventory().getQuantity(s) > 0 && getLot().plantSeed(t, seedClone)) {
             getInventory().removeSeed(s);
             return true;

@@ -49,7 +49,7 @@ public class Inventory {
     public HashMap<Seed, Integer> getSeeds() {
         return seeds;
     }
-    
+
     public TreeMap<Tree, Integer> getTrees() {
         TreeMap<Tree, Integer> trees = new TreeMap<>();
         for (Seed s : seeds.keySet()) {
@@ -89,24 +89,23 @@ public class Inventory {
     }
 
     public Seed getSeed(String name) {
-        for (Seed s : seeds.keySet()) 
-            if (s.getName().equals(name)) 
-                return s;
-        return null;
-    }
-    
-    public Seed getSeedClone(String name) {
         for (Seed s : seeds.keySet()) {
             if (s.getName().equals(name)) {
-                if (s instanceof Tree) {
-                    return new Tree((Tree) s);
-                } else if (s instanceof Flower) {
-                    return new Flower((Flower) s);
-                } else if (s instanceof Vegetable) {
-                    return new Vegetable((Vegetable) s);
-                }
+                return s;
             }
         }
+        return null;
+    }
+
+    public Seed getClone(Seed s) {
+        if (s instanceof Tree) {
+            return new Tree((Tree) s);
+        } else if (s instanceof Flower) {
+            return new Flower((Flower) s);
+        } else if (s instanceof Vegetable) {
+            return new Vegetable((Vegetable) s);
+        }
+
         return null;
     }
 

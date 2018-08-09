@@ -69,52 +69,62 @@ public class SeedMenu extends JFrame implements ActionListener {
         JPanel content = new JPanel();
         content.setLayout(new BoxLayout(content, BoxLayout.Y_AXIS));
         setContentPane(content);        
+        content.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        pic = new JLabel();
+        pic.setIcon(new ImageIcon("seed.png"));
+        pic.setPreferredSize(new Dimension(120, 0));
         informationPanel = new JPanel();
-        informationPanel.setLayout(new BorderLayout());
+        informationPanel.setLayout(new BoxLayout(informationPanel, BoxLayout.X_AXIS));
         JPanel seedInfo = new JPanel();
         seedInfo.setLayout(new GridLayout(4, 2));
         
         name = new JLabel("Name: ");
-        name.setHorizontalAlignment(SwingConstants.CENTER);
+        
         seedInfo.add(name);
         
         ht = new JLabel("Harvest Time: ");        
-        ht.setHorizontalAlignment(SwingConstants.CENTER);
+        
         seedInfo.add(ht);
         
         wn = new JLabel("Water Needed (max): ");        
-        wn.setHorizontalAlignment(SwingConstants.CENTER);
+        
         seedInfo.add(wn);
         
         fn = new JLabel("Fertilizer Needed (max): ");        
-        fn.setHorizontalAlignment(SwingConstants.CENTER);
+        
         seedInfo.add(fn);
         
         hc = new JLabel("Harvest Cost: ");        
-        hc.setHorizontalAlignment(SwingConstants.CENTER);
+        
         seedInfo.add(hc);
         
         pp = new JLabel("Products Produced: ");        
-        pp.setHorizontalAlignment(SwingConstants.CENTER);
+        
         seedInfo.add(pp);
         
         sc = new JLabel("Seed Cost: ");        
-        sc.setHorizontalAlignment(SwingConstants.CENTER);
+        
         seedInfo.add(sc);
         
         bp = new JLabel("Base Price: ");        
-        bp.setHorizontalAlignment(SwingConstants.CENTER);
+        
         seedInfo.add(bp);
         
-        informationPanel.add(pic, BorderLayout.WEST);
-        informationPanel.add(seedInfo, BorderLayout.EAST);
+        informationPanel.add(pic);
+        informationPanel.add(Box.createRigidArea(new Dimension(10, 0)));
+        informationPanel.add(seedInfo);
         
         seedPanel = new JPanel();
         JScrollPane sp = new JScrollPane(seedPanel);
+        sp.setPreferredSize(new Dimension(65, 100));
 //        sp.setBorder(BorderFactory.createEmptyBorder());
-        JLabel title = new JLabel("Seed List");
-        title.setFont(new Font("Abril Fatface", Font.BOLD, 24));
+        JLabel title = new JLabel("Seed Information");
+        title.setFont(new Font("Abril Fatface", Font.BOLD, 16));
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
+        
+        back = new JButton("Back");
+        back.addActionListener(this);
+        back.setAlignmentX(Component.CENTER_ALIGNMENT);
         content.add(title);
         content.add(informationPanel);
         content.add(Box.createRigidArea(new Dimension(0, 10)));
@@ -122,13 +132,15 @@ public class SeedMenu extends JFrame implements ActionListener {
         content.add(Box.createRigidArea(new Dimension(0, 10)));
         content.add(back);
         setContentPane(content);
-        setSize(1100, 420);
+//        setSize(1100, 420);
+        pack();
         setResizable(false);
-        setUndecorated(true);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
         setVisible(false);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        
+        
     }
 
     public void addSeed(String name) {
@@ -142,7 +154,7 @@ public class SeedMenu extends JFrame implements ActionListener {
         if (e.getSource() == back) {
             setVisible(false);
         } else {
-            updateSeedInfo(e.getActionCommand());
+            controller.updateSeedInfo(e.getActionCommand());
         }
     }
 
