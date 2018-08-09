@@ -241,6 +241,7 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         watercan = new JButton(); //"Watering Can"
         //watercan.setFont(new Font("Marker Felt", Font.PLAIN, 30));
         //watercan.setBackground(new Color(152,251,152));
+        watercan.setToolTipText("Watering Can");
         watercan.setOpaque(false);
         //watercan.setBorder(BorderFactory.createLineBorder(new Color(0,78,56),1));
         //watercan.setBorderPainted(false);
@@ -259,6 +260,7 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         //plow.setFont(new Font("Marker Felt", Font.PLAIN, 30));
         //plow.setBackground(new Color(152,251,152));
         plow.setOpaque(false);
+        plow.setToolTipText("Plow");
         //plow.setBorderPainted(false);
         //plow.setBorder(BorderFactory.createLineBorder(new Color(0,78,56),1));
         plow.setIcon(new ImageIcon(resizeImage("plow.png",80,65)));
@@ -276,6 +278,7 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         //pickaxe.setFont(new Font("Marker Felt", Font.PLAIN, 30));
         //pickaxe.setBackground(new Color(152,251,152));
         pickaxe.setOpaque(false);
+        pickaxe.setToolTipText("Pickaxe");
         //pickaxe.setBorderPainted(false);
         //pickaxe.setBorder(BorderFactory.createLineBorder(new Color(0,78,56),1));
         pickaxe.setIcon(new ImageIcon(resizeImage("pickaxe.png",80,65)));
@@ -291,6 +294,8 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         
         fertilizer = new JButton(); //"Fertilizer"
         fertilizer.setActionCommand("Fertilizer");
+        fertilizer.setToolTipText("Fertilizer");
+
         //fertilizer.setFont(new Font("Marker Felt", Font.PLAIN, 30));
         //fertilizer.setBackground(new Color(152,251,152));
         fertilizer.setOpaque(false);
@@ -311,6 +316,7 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         //buyFertilizer.setBackground(new Color(152,251,152));
         buyFertilizer.setOpaque(false);
         buyFertilizer.setActionCommand("Buy Fertilizer");
+        buyFertilizer.setToolTipText("Buy Fertilizer");
         //buyFertilizer.setBorderPainted(false);
         //buyFertilizer.setBorder(BorderFactory.createLineBorder(new Color(0,78,56),1));
         buyFertilizer.setIcon(new ImageIcon(resizeImage("add fertilizer.png",80,65)));
@@ -328,6 +334,7 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         //seeds.setBackground(new Color(152,251,152));
         seeds.setOpaque(false);
         seeds.setActionCommand("View Seeds");
+        seeds.setToolTipText("View Seeds");
         //seeds.setBorderPainted(false);
         //seeds.setBorder(BorderFactory.createLineBorder(new Color(0,78,56),1));
         seeds.setIcon(new ImageIcon(resizeImage("seeds.png",80,65)));
