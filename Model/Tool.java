@@ -15,5 +15,9 @@ public abstract class Tool implements Selectable {
      */
     public abstract boolean use(Tile t);
     
+    /**
+    * {@inheritDoc}
+    */
+    @Override
     public abstract String getDescription();
 }

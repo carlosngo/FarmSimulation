@@ -1,5 +1,9 @@
 package Model;
 
+/**
+ * The seed to be bought, planted, and harvested.
+ * @author Carlos
+ */
 public abstract class Seed implements Selectable, Purchasable, Comparable<Seed> {
     
     private String name;
@@ -47,62 +51,122 @@ public abstract class Seed implements Selectable, Purchasable, Comparable<Seed> 
         this.products = minProducts + (int)(Math.random() * (maxProducts - minProducts + 1));
     }
 
+    /**
+     * 
+     * @return the number of products produced by the seed
+     */
     public int getProducts() {
         return products;
     }
     
+    /**
+     * 
+     * @return the Seed object's name
+     */
     public String getName() {
         return name;
     }
     
+    /**
+     * 
+     * @return the harvest time of the Seed object
+     */
     public long getHarvestTime() {
         return harvestTime;
     }
 
+    /**
+     * 
+     * @return the number of times the Seed object has been watered
+     */
     public int getWater() {
         return water;
     }
 
+    /**
+     * 
+     * @return the Seed object's required water
+     */
     public int getWaterNeeded() {
         return waterNeeded;
     }
 
+    /**
+     * 
+     * @return the Seed object's maximum number of water
+     */
     public int getWaterMax() {
         return waterMax;
     }
 
+    /**
+     * 
+     * @return the Seed object's number of fertilizers 
+     */
     public int getFertilizer() {
         return fertilizer;
     }
 
+    /**
+     * 
+     * @return the Seed object's required number of fertilizers
+     */
     public int getFertilizerNeeded() {
         return fertilizerNeeded;
     }
 
+    /**
+     * 
+     * @return the Seed object's maximum number of fertilizers
+     */
     public int getFertilizerMax() {
         return fertilizerMax;
     }
 
+    /**
+     * 
+     * @return the harvest cost of the Seed object
+     */
     public double getHarvestCost() {
         return harvestCost;
     }
 
+    /**
+     * 
+     * @return the minimum number of products the Seed object produces
+     */
     public int getMinProducts() {
         return minProducts;
     }
 
+    /**
+     * 
+     * @return the maximum number of products the Seed object produces
+     */
     public int getMaxProducts() {
         return maxProducts;
     }
 
+    /**
+     * 
+     * @return the cost of the Seed object
+     */
     public double getSeedCost() {
         return seedCost;
     }
 
+    /**
+     * 
+     * @return the base price of the Seed object
+     */
     public double getBasePrice() {
         return basePrice;
     }
     
+    /**
+     * 
+     * @return the elapsed time since the Seed object has been planted
+     */
     public long getTimeElapsed() {
         long timeElapsed = System.currentTimeMillis() - plantTime;
         if (timeElapsed <= harvestTime)
@@ -111,60 +175,120 @@ public abstract class Seed implements Selectable, Purchasable, Comparable<Seed> 
             return harvestTime;
     }
     
+    /**
+     * 
+     * @param water the integer to be set as the new water integer 
+     */
     public void setWater (int water) {
         this.water = water;
     }
     
+    /**
+     * 
+     * @param waterMax the integer to be set as the Seed object's maximum number of water
+     */
     public void setWaterMax(int waterMax) {
         this.waterMax = waterMax;
     }
 
+    /**
+     * 
+     * @param fertilizer the integer value to be set as the Seed object's number of fertilizers
+     */
     public void setFertilizer (int fertilizer) {
         if (fertilizer > fertilizerMax)
             fertilizer = fertilizerMax;
         this.fertilizer = fertilizer;
     }
     
+    /**
+     * 
+     * @param fertilizerMax the integer to be set as the Seed object's maximum number of fertilizers
+     */
     public void setFertilizerMax(int fertilizerMax) {
         this.fertilizerMax = fertilizerMax;
     }
    
+    /**
+     * 
+     * @param plantTime the long value to be set as the Seed object's time planted
+     */
     public void setPlantTime(long plantTime) {
         this.plantTime = plantTime;
     }
     
+    /**
+     * 
+     * @param harvestTime the long value to be set as the Seed object's harvest time
+     */
     public void setHarvestTime(long harvestTime) {
         this.harvestTime = harvestTime;
     }
     
+    /**
+     * 
+     * @return true if the Seed object's number of fertilizations are valid, otherwise false
+     */
     public boolean canFertilize() {
         return fertilizer < fertilizerMax;
     }
     
+    /**
+     * 
+     * @return true if the Seed object's number of waterings are valid, otherwise false
+     */
     public boolean canWater() {
         return water < waterMax;
     }
     
+    /**
+     * 
+     * @return true if the plant is withered, otherwise false
+     */
     public boolean isWithered() {
         return water < waterNeeded || fertilizer < fertilizerNeeded;
     }
     
+    /**
+    * {@inheritDoc}
+    */
+    @Override
     public double computeBuyingPrice() {
         return seedCost;
     }
     
+    /**
+    * {@inheritDoc}
+    */
+    @Override
     public String getDescription() {
         return "Name: " + getName() + "\nHarvest Time: " + (harvestTime / 60000.0) + " minutes\nWater Needed: "
                 + waterNeeded + "\nFertilizer Needed: " + fertilizerNeeded;
     }
     
+    /**
+     * Computes and returns the selling price of the Seed object's produce
+     * @return the selling price of the Seed object's produce
+     */
     public abstract double computeSellingPrice();
     
+    /**
+     * This method checks whether two Seed objects are equal or not
+     * @param obj the object to be checked
+     * @return true if the object is equal to the Seed object, otherwise false
+     */
     public boolean equals (Object obj) {
         Seed s = (Seed)obj;
         return name.equals(s.getName());
     }
     
+    /**
+     * 
+     * @param s the Seed object to be compared with
+     * @return 0 if the Seed objects being compared are equal
+     *         1 if the Seed argument is less than the Seed object
+     *         -1 if the Seed argument is greater than the Seed object
+     */
     public int compareTo(Seed s) {
         return name.compareTo(s.getName());
     }

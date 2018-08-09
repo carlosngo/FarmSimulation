@@ -21,6 +21,10 @@ public class Pickaxe extends Tool {
         return true;
     }
     
+    /**
+    * {@inheritDoc}
+    */
+    @Override
     public String getDescription() {
         return "Used for destroying rocks obstructing tiles.";
     }

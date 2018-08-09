@@ -1,12 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Model;
 
 /**
- *
+ * This class contains an implementation of a method from the Seed Class;
+ * it is specialized for a Vegetable object.
  * @author Carlos
  */
 public class Vegetable extends Seed {
@@ -19,6 +15,10 @@ public class Vegetable extends Seed {
         super (v);
     }
      
+    /**
+    * {@inheritDoc}
+    */
+    @Override
     public double computeSellingPrice() {
         return getBasePrice() + getWater() * 0.25 * getBasePrice() + getFertilizer() * 0.5 * getBasePrice() - getHarvestCost();
     }

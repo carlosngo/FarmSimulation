@@ -3,6 +3,10 @@ package Model;
 import java.util.*;
 import Controller.*;
 
+/**
+ * The lot that contains the tiles.
+ * @author Carlos
+ */
 public class Lot {
 
     public static final int MAX_ROW = 10;
@@ -20,14 +24,28 @@ public class Lot {
         }
     }
 
+    /**
+     * 
+     * @return the 2D array of Tile objects
+     */
     public Tile[][] getLot() {
         return tiles;
     }
 
+    /**
+     * 
+     * @param row the number of rows
+     * @param col the number of columns
+     * @return the Tile object associated with the parameter's row and col
+     */
     public Tile getTile(int row, int col) {
         return tiles[row][col];
     }
 
+    /**
+     * Resets the tiles around a Tile planted with a Tree Seed.
+     * @param t the Tile to be initialized
+     */
     public void resetTile(Tile t) {
         if (t.getSeed() instanceof Tree) {
             for (Tile tile : getAdjacentTiles(t)) {
@@ -38,12 +56,12 @@ public class Lot {
     }
 
     /**
-     * Sets the seed parameter as the seed of the tile parameter. If the seed 
-     * is a tree, the adjacent 
-     * tiles of the tile parameter will have roots.
-     * @param t
-     * @param s
-     * @return 
+     * Sets (plants) the parameter's Seed as the seed of the parameter's Tile 
+     * and returns true. 
+     * If the seed is a tree, the adjacent tiles of the tile parameter will have leaves.
+     * @param t the Tile object to take in the Seed object
+     * @param s the Seed object to be planted in the tile object 
+     * @return true if planting is successful, otherwise false
      */
     public boolean plantSeed(Tile t, Seed s) {
         if (t.getstate() != Tile.PLOWED) {
@@ -72,6 +90,11 @@ public class Lot {
         return true;
     }
 
+    /**
+     * Returns the list of the adjacent tiles around the parameter's Tile object.
+     * @param t the Tile object that is the center of the adjacent Tile objects
+     * @return ArrayList of Tile objects
+     */
     public ArrayList<Tile> getAdjacentTiles(Tile t) {
         int row = -1;
         int col = -1;
