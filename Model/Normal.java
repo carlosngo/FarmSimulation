@@ -1,12 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Model;
 
 /**
- *
+ * This class contains implemented Player class methods personalized for an "Unregistered" player
  * @author Carlos
  */
 import Controller.*;
@@ -17,6 +12,9 @@ public class Normal extends Player  {
         super (name, controller);
     }
     
+    /**
+    * {@inheritDoc}
+    */
     @Override
     public boolean buy(Purchasable p, int quantity) {
         double cost = p.computeBuyingPrice() * quantity;
@@ -33,6 +31,9 @@ public class Normal extends Player  {
         return true;
     }
 
+    /**
+    * {@inheritDoc}
+    */
     @Override
     public Player register() {
         if (getMoney() >= 200 && getLevel() >= 10) {
@@ -42,6 +43,9 @@ public class Normal extends Player  {
         return null;
     }
 
+    /**
+    * {@inheritDoc}
+    */
     @Override
     public boolean plant(Tile t, Seed s) {
         Seed seedClone = getInventory().getSeedClone(s.getName());
@@ -52,6 +56,9 @@ public class Normal extends Player  {
         return false;
     }
 
+    /**
+    * {@inheritDoc}
+    */
     @Override
     public void harvest(Tile t) {
         Seed seed = t.getSeed();

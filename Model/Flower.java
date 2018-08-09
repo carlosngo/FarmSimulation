@@ -1,12 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Model;
 
 /**
- *
+ * This class contains an implementation of a method from the Seed Class;
+ * it is specialized for a Flower object.
  * @author Carlos
  */
 public class Flower extends Seed {
@@ -19,6 +15,11 @@ public class Flower extends Seed {
         super (f);
     }
     
+    
+    /**
+    * {@inheritDoc}
+    */
+    @Override
     public double computeSellingPrice() {
         double sum = getBasePrice() + getWater() * 0.25 * getBasePrice() + getFertilizer() * 0.5 * getBasePrice();
         return sum + sum * 0.05 - getHarvestCost();

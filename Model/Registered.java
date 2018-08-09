@@ -7,12 +7,19 @@ package Model;
 
 import Controller.*;
 
+/**
+ * This class contains implemented Player class methods personalized for a "Registered" player
+ * @author Carlos 
+ */
 public class Registered extends Player {
     
     public Registered(Player p) {
         super (p);
     }
     
+    /**
+    * {@inheritDoc}
+    */
     @Override
     public boolean buy(Purchasable p, int quantity) {
         double cost = (p.computeBuyingPrice() - 2)* quantity;
@@ -28,6 +35,9 @@ public class Registered extends Player {
         return true;
     }
 
+    /**
+    * {@inheritDoc}
+    */
     @Override
     public Player register() {
         if (getMoney() >= 250 && getLevel() >= 15) {
@@ -37,6 +47,9 @@ public class Registered extends Player {
         return null;
     }
 
+    /**
+    * {@inheritDoc}
+    */
     @Override
     public boolean plant(Tile t, Seed s) {
         Seed seedClone = getInventory().getSeedClone(s.getName());
@@ -48,6 +61,9 @@ public class Registered extends Player {
         return false;
     }
 
+    /**
+    * {@inheritDoc}
+    */
     @Override
     public void harvest(Tile t) {
         Seed seed = t.getSeed();

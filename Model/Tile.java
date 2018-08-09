@@ -2,6 +2,10 @@ package Model;
 
 import Controller.*;
 
+/**
+ * The tile on which the seed will be planted.
+ * @author Carlos
+ */
 public class Tile implements Runnable, Selectable {
     public final static int ROCKY = 0;
     public final static int UNPLOWED = 1;
@@ -21,6 +25,9 @@ public class Tile implements Runnable, Selectable {
         init();
     }
 
+    /**
+     * runs a Seed thread
+     */
     public void run() {
         try {
             state = PLANTED;
@@ -47,6 +54,10 @@ public class Tile implements Runnable, Selectable {
         } catch (InterruptedException e) { }
     }
     
+    /**
+     * initializes the Tile.
+     * Depending on the result of Math.random(), the tile can either be rocky or not
+     */
     public void init() {
         if (thread.isAlive())
             thread.interrupt();
@@ -59,22 +70,48 @@ public class Tile implements Runnable, Selectable {
         fertilizer = 0;
     }
     
+    /**
+     * 
+     * @return the Tile object's Seed object
+     */
     public Seed getSeed() {
         return seed;
     }
     
+    /**
+     * Returns the state of the tile object.
+     * @return 0 if the Tile object is rocky
+     *         1 if the Tile object is unplowed
+     *         2 if the Tile object is plowed
+     *         3 if the Tile object is planted
+     *         4 if the Tile object is ready to be harvested
+     *         5 if the Tile object is withered
+     */
     public int getstate() {
         return state;
     }
     
+    /**
+     * 
+     * @return the number of fertilizers in the tile
+     */
     public int getFertilizer() {
         return fertilizer;
     }
     
+    /**
+     * 
+     * @return the Tile object's thread
+     */
     public Thread getThread() {
         return thread;
     }
     
+    /**
+     * Sets the parameter's Seed object as the Tile object's Seed object 
+     * @param seed the Seed object to be set as the Tile object's Seed object
+     * @return true is the setting is successful, otherwise false
+     */
     public boolean setSeed(Seed seed) {
         if (state == PLOWED) {
             this.seed = seed;
@@ -85,14 +122,26 @@ public class Tile implements Runnable, Selectable {
         return true;
     }
     
+    /**
+     * 
+     * @param state the integer to be set as the Tile object's state
+     */
     public void setState(int state) {
         this.state = state;
     }
     
+    /**
+     * 
+     * @param fertilizer the integer to be set as the See object's fertilizer
+     */
     public void setFertilizer(int fertilizer) {
         this.fertilizer = fertilizer;
     }
     
+    /**
+    * {@inheritDoc}
+    */
+    @Override
     public String getDescription() {
         StringBuilder sb = new StringBuilder("State: ");
         switch (state) {

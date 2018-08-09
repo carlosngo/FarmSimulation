@@ -6,7 +6,7 @@
 package Model;
 
 /**
- *
+ * This class contains implemented Player class methods personalized for an "Honorable" player
  * @author Carlos
  */
 public class Honorable extends Player  {
@@ -15,6 +15,9 @@ public class Honorable extends Player  {
         super (p);
     }
     
+    /**
+    * {@inheritDoc}
+    */
     @Override
     public boolean buy(Purchasable p, int quantity) {
         double cost = (p.computeBuyingPrice() - 5) * quantity;
@@ -31,11 +34,17 @@ public class Honorable extends Player  {
         return true;
     }
 
+    /**
+    * {@inheritDoc}
+    */
     @Override
     public Player register() {
         return this;
     }
 
+    /**
+    * {@inheritDoc}
+    */
     @Override
     public boolean plant(Tile t, Seed s) {
         Seed seedClone = getInventory().getSeedClone(s.getName());
@@ -49,6 +58,9 @@ public class Honorable extends Player  {
         return false;
     }
 
+    /**
+    * {@inheritDoc}
+    */
     @Override
     public void harvest(Tile t) {
         Seed seed = t.getSeed();
