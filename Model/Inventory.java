@@ -2,6 +2,10 @@ package Model;
 
 import java.util.*;
 
+/**
+ * This class contains methods for tools' actions to be executed.
+ * @author Carlos
+ */
 public class Inventory {
 
     private HashMap<Seed, Integer> seeds;
@@ -17,6 +21,10 @@ public class Inventory {
         }
     }
 
+    /**
+     * This list is used to initialize the HashMap seeds list
+     * @return ArrayList of Seed objects
+     */
     private ArrayList<Seed> getAvailableSeeds() {
         ArrayList<Seed> seeds = new ArrayList<>();
         Seed turnip = new Vegetable("Turnip", 1, 1, 2, 0, 1, 1, 1, 1, 5, 6);
@@ -46,10 +54,18 @@ public class Inventory {
         return seeds;
     }
 
+    /**
+     * 
+     * @return the HashMap list of Seed objects
+     */
     public HashMap<Seed, Integer> getSeeds() {
         return seeds;
     }
     
+    /**
+     * 
+     * @return the subHashMap seeds list or the Tree objects HashMap list
+     */
     public TreeMap<Tree, Integer> getTrees() {
         TreeMap<Tree, Integer> trees = new TreeMap<>();
         for (Seed s : seeds.keySet()) {
@@ -60,6 +76,10 @@ public class Inventory {
         return trees;
     }
 
+    /**
+     * 
+     * @return the subHashMap seeds list or the Flower objects HashMap list
+     */
     public TreeMap<Flower, Integer> getFlowers() {
         TreeMap<Flower, Integer> flowers = new TreeMap<>();
         for (Seed s : seeds.keySet()) {
@@ -70,6 +90,10 @@ public class Inventory {
         return flowers;
     }
 
+    /**
+     * 
+     * @return the subHashMap seeds list or the Vegetable objects HashMap list
+     */
     public TreeMap<Vegetable, Integer> getVegetables() {
         TreeMap<Vegetable, Integer> vegetables = new TreeMap<>();
         for (Seed s : seeds.keySet()) {
@@ -80,14 +104,29 @@ public class Inventory {
         return vegetables;
     }
 
+    /**
+     * 
+     * @return the initial Fertilizer object
+     */
     public Fertilizer getFertilizers() {
         return FERTILIZERS;
     }
 
+    /**
+     * 
+     * @param s the Seed object of the requested ID
+     * @return the HashMap ID of the parameter's Seed object
+     */
     public int getQuantity(Seed s) {
         return seeds.get(s);
     }
 
+    /**
+     * Returns the Seed object with the matching name with the parameter's name.
+     * If no matches are found, null is returned.
+     * @param name the String name of the chosen Seed object
+     * @return Seed object if a match is found, otherwise null
+     */
     public Seed getSeed(String name) {
         for (Seed s : seeds.keySet()) 
             if (s.getName().equals(name)) 
@@ -95,6 +134,11 @@ public class Inventory {
         return null;
     }
     
+    /**
+     * Returns a clone object of the Seed with the matching name with the parameter's name.
+     * @param name the String name of the chosen Seed object to be cloned
+     * @return Seed object if a match is found, otherwise null
+     */
     public Seed getSeedClone(String name) {
         for (Seed s : seeds.keySet()) {
             if (s.getName().equals(name)) {
@@ -110,18 +154,36 @@ public class Inventory {
         return null;
     }
 
+    /**
+     * Sets the HashMap ID of the parameter's Seed object to the parameter's quantity.
+     * @param s the Seed object whose ID is to be changed
+     * @param quantity the new ID to be used
+     */
     public void setQuantity(Seed s, int quantity) {
         seeds.put(s, quantity);
     }
 
+    /**
+     * Adds the parameter's quantity to the count of fertilizers.
+     * @param quantity the integer to be added to the current number of fertilizers
+     */
     public void addFertilizer(int quantity) {
         FERTILIZERS.setCount(FERTILIZERS.getCount() + quantity);
     }
 
+    /**
+     * Adds the parameter's Seed object to the list of seeds.
+     * @param s the Seed object to be added to the seeds ArrayList
+     */
     public void addSeed(Seed s) {
         seeds.put(s, 0);
     }
 
+    /**
+     * Decreases the number of Seed objects in the HashMap seeds list and returns true.
+     * @param s the Seed object to be removed
+     * @return true if removal is successful, otherwise null
+     */
     public boolean removeSeed(Seed s) {
         if (getQuantity(s) < 1) {
             return false;
