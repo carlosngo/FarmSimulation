@@ -205,6 +205,7 @@ public class GameGUIController {
                             player.select(player.getLot().getTile(i, j));
                         }
                         found = true;
+                        updateInventory();
                     }
                 }
             }
