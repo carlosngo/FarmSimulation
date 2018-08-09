@@ -3,7 +3,7 @@ import java.lang.*;
 /**
  * This class contains methods which generates random numbers to be used for 
  * determining the number of rocky tiles and the number of produce.
- * @author User
+ * @author Carlos & Johanna
  */
 public class GetRandomNumber{
 	private int produce;
