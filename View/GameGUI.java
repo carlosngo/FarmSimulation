@@ -173,7 +173,7 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         register.setToolTipText("Register");
         
         //register.setFont(new Font("Arial", Font.PLAIN, 30));
-        //register.setBackground(new Color(152,251,152));
+        register.setBackground(new Color(255,255,0));
         //register.setOpaque(false);
         register.setContentAreaFilled(false);
         register.setBorderPainted(false);
@@ -248,11 +248,11 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         
         watercan = new JButton(); //"Watering Can"
         //watercan.setFont(new Font("Marker Felt", Font.PLAIN, 30));
-        //watercan.setBackground(new Color(152,251,152));
+        watercan.setBackground(new Color(255,255,0));
         watercan.setContentAreaFilled(false);
         watercan.setToolTipText("Watering Can");
         watercan.setOpaque(false);
-        //watercan.setBorderPainted(false);
+        watercan.setBorderPainted(false);
         watercan.setIcon(new ImageIcon(resizeImage("watering can.png",80,65)));
         //watercan.setHorizontalAlignment(SwingConstants.LEFT);
         watercan.setActionCommand("Watering Can");
@@ -267,7 +267,7 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         
         plow = new JButton(); //"Plow"
         //plow.setFont(new Font("Marker Felt", Font.PLAIN, 30));
-        //plow.setBackground(new Color(152,251,152));
+        plow.setBackground(new Color(255,255,0));
         plow.setContentAreaFilled(false);
         plow.setOpaque(false);
         plow.setBorderPainted(false);
@@ -288,7 +288,7 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         
         pickaxe = new JButton(); //"Pickaxe"
         //pickaxe.setFont(new Font("Marker Felt", Font.PLAIN, 30));
-        //pickaxe.setBackground(new Color(152,251,152));
+        pickaxe.setBackground(new Color(255,255,0));
         pickaxe.setContentAreaFilled(false);
         pickaxe.setOpaque(false);
         pickaxe.setBorderPainted(false);
@@ -306,11 +306,12 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         c.fill = GridBagConstraints.HORIZONTAL;
         leftPanel.add(pickaxe,c);
         
+        
         fertilizer = new JButton(); //"Fertilizer"
         fertilizer.setActionCommand("Fertilizer");
         fertilizer.setToolTipText("Fertilizer");
         //fertilizer.setFont(new Font("Marker Felt", Font.PLAIN, 30));
-        //fertilizer.setBackground(new Color(152,251,152));
+        fertilizer.setBackground(new Color(255,255,0));
         fertilizer.setContentAreaFilled(false);
         fertilizer.setOpaque(false);
         fertilizer.setBorderPainted(false);
@@ -328,7 +329,7 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         
         buyFertilizer = new JButton(); //"Buy"
         //buyFertilizer.setFont(new Font("Marker Felt", Font.PLAIN, 30));
-        //buyFertilizer.setBackground(new Color(152,251,152));
+        buyFertilizer.setBackground(new Color(255,255,0));
         buyFertilizer.setContentAreaFilled(false);
         buyFertilizer.setOpaque(false);
         buyFertilizer.setActionCommand("Buy Fertilizer");
@@ -348,7 +349,7 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         
         seeds = new JButton(); //"Seeds"
         //seeds.setFont(new Font("Marker Felt", Font.BOLD, 30));
-        //seeds.setBackground(new Color(152,251,152));
+        seeds.setBackground(new Color(255,255,0));
         seeds.setContentAreaFilled(false);
         seeds.setBorderPainted(false);
         seeds.setActionCommand("View Seeds");
@@ -410,20 +411,28 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         seedmenu.setLayout(new BoxLayout(seedmenu, BoxLayout.Y_AXIS));
         Border round3 = new LineBorder(new Color(0,78,56),10,true);
         seedmenu.setBorder(round3);
-        seedmenu.setPreferredSize(new Dimension(290, 270));
+        seedmenu.setPreferredSize(new Dimension(315, 270));
         
         JPanel seedMenuTitlePanel = new JPanel();
-        seedMenuTitlePanel.setLayout(new BorderLayout());
+        seedMenuTitlePanel.setLayout(new BoxLayout(seedMenuTitlePanel, BoxLayout.X_AXIS));
+        seedMenuTitlePanel.setOpaque(false);
+        seedMenuTitlePanel.add(Box.createRigidArea(new Dimension(90, 0)));
         JLabel seedmenuLabel = new JLabel("Seeds");
         seedmenuLabel.setFont(new Font("Arial", Font.BOLD, 26));
         seedmenuLabel.setForeground(new Color(208,240,192));
-        seedmenuLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-        seedMenuTitlePanel.add(seedmenuLabel, BorderLayout.CENTER);
-        JButton help = new JButton();
+        //seedmenuLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        seedMenuTitlePanel.add(seedmenuLabel); //, BorderLayout.CENTER
+        seedMenuTitlePanel.add(Box.createRigidArea(new Dimension(45, 0)));
+        JButton help = new JButton(new ImageIcon(resizeImage("help.png",20,17)));
+        help.setBackground(new Color(255,255,0));
+        help.addMouseListener(this);
+        help.setContentAreaFilled(false);
+        help.setBorderPainted(false);
+        help.setOpaque(false);
         help.addActionListener((ActionEvent e) -> {
             controller.getSeedMenu().setVisible(true);
         });
-        seedMenuTitlePanel.add(help, BorderLayout.EAST);
+        seedMenuTitlePanel.add(help); //, BorderLayout.EAST
         seedmenu.add(seedMenuTitlePanel);
         //JScrollPane seedMenuLogScroll = new JScrollPane(seedmenu, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS, JScrollPane.VERTICAL_SCROLLBAR_NEVER);
         //seedMenuLogScroll.setOpaque(false);
@@ -463,7 +472,7 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         seedmenu.setAlignmentY(0.5f);
         seedmenuMotherPnl.add(seedmenu);
         
-        JLabel woodpic = new JLabel(new ImageIcon(resizeImage("wood.png",275,250)));                   
+        JLabel woodpic = new JLabel(new ImageIcon(resizeImage("wood.png",315,270)));                   
         woodpic.setAlignmentX(0.5f);
         woodpic.setAlignmentY(0.5f);
         seedmenuMotherPnl.add(woodpic);
@@ -480,7 +489,7 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         for(int i=0; i < MAX_ROW; i++){
             for(int j=0;j<MAX_COL;j++){
                 tileButtons[i][j] = new JButton();
-                tileButtons[i][j].setBackground(new Color(76,187,23));
+                tileButtons[i][j].setBackground(new Color(255,255,0)); //76,187,23
                 tileButtons[i][j].setBorderPainted(false);
                 tileButtons[i][j].setContentAreaFilled(false);
                 tileButtons[i][j].addActionListener(this);

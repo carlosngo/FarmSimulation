@@ -49,13 +49,13 @@ public class MainMenu extends JFrame implements ActionListener, DocumentListener
         subP.setOpaque(false);
         subP.setLayout(new FlowLayout());
         JLabel nameLabel = new JLabel("Name: ");
-        nameLabel.setFont(new Font("Marker Felt", Font.BOLD, 28));
+        nameLabel.setFont(new Font("Arial", Font.BOLD, 28));
         subP.add(nameLabel);
         
         nameInput = new JTextField("" , 20);
         nameInput.addActionListener(this);
         nameInput.getDocument().addDocumentListener(this);
-        nameInput.setFont(new Font("Marker Felt", Font.BOLD, 24));
+        nameInput.setFont(new Font("Arial", Font.BOLD, 24));
         subP.add(nameInput);
         subP.setAlignmentX(Component.CENTER_ALIGNMENT);
         p.add(subP);
@@ -64,7 +64,7 @@ public class MainMenu extends JFrame implements ActionListener, DocumentListener
         playgame = new JButton("Play Game");
         playgame.setAlignmentX(Component.CENTER_ALIGNMENT);
         playgame.addActionListener(this);
-        playgame.setFont(new Font("Marker Felt", Font.BOLD, 24));
+        playgame.setFont(new Font("Arial", Font.BOLD, 24));
         playgame.setForeground(Color.white);
         playgame.setBackground(new Color(0,78,56));
         playgame.setOpaque(true);
@@ -76,7 +76,7 @@ public class MainMenu extends JFrame implements ActionListener, DocumentListener
         exit = new JButton("Exit");
         exit.setAlignmentX(Component.CENTER_ALIGNMENT);
         exit.addActionListener(this);
-        exit.setFont(new Font("Marker Felt", Font.PLAIN, 24));
+        exit.setFont(new Font("Arial", Font.PLAIN, 24));
         exit.setForeground(Color.white);
         exit.setBackground(new Color(0,78,56));
         exit.setOpaque(true);
@@ -111,7 +111,7 @@ public class MainMenu extends JFrame implements ActionListener, DocumentListener
         pack();
         setVisible(true);
         setResizable(false);
-      //setUndecorated(true);
+        //setUndecorated(true);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
