@@ -77,13 +77,17 @@ public class SeedMenu extends JFrame implements ActionListener {
         //content.setBackground(new Color(152, 251, 152));
         pic = new JLabel();
         pic.setIcon(new ImageIcon(resizeImage("seed.png",90,90)));
-        pic.setPreferredSize(new Dimension(120, 0));
+        Border border = BorderFactory.createLineBorder(new Color(68, 76, 56), 10, true);    
+        pic.setBorder(border);
+        pic.setPreferredSize(new Dimension(110, 0));
         informationPanel = new JPanel();
         informationPanel.setOpaque(false);
         informationPanel.setLayout(new BoxLayout(informationPanel, BoxLayout.X_AXIS));
         JPanel seedInfo = new JPanel();
         seedInfo.setBackground( new Color(152, 251, 152) ); 
         seedInfo.setLayout(new GridLayout(4, 2));
+        Border infoBorder = BorderFactory.createLineBorder(new Color(68, 76, 56), 5, true);    
+        seedInfo.setBorder(infoBorder);
         
         name = new JLabel(" Name: ");
         name.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -159,6 +163,7 @@ public class SeedMenu extends JFrame implements ActionListener {
         back.setBorderPainted(false);
         
         content.add(titlePnl);
+        content.add(Box.createRigidArea(new Dimension(0, 10)));
         content.add(informationPanel);
         content.add(Box.createRigidArea(new Dimension(0, 10)));
         content.add(sp);
