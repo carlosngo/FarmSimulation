@@ -18,13 +18,26 @@ public class Tile implements Runnable, Selectable {
     private Seed seed;
     private int fertilizer;
     private int state;
+    private int row;
+    private int col;
 
-    public Tile(GameGUIController controller) {
+    public Tile(GameGUIController controller, int row, int col) {
         this.controller = controller;
+        this.row = row;
+        this.col = col;
         thread = new Thread(this);
         init();
     }
 
+    public int getRow() {
+        return row;
+    }
+
+    public int getCol() {
+        return col;
+    }
+
+    
     /**
      * runs a Seed thread
      */
@@ -39,18 +52,21 @@ public class Tile implements Runnable, Selectable {
                 state = WITHERED;
                 controller.updateLog("A plant has withered.");
             }
-            controller.updateGameGUI();
+//            controller.updateGameGUI();
+            controller.updateTile(row, col);
             Thread.sleep(60000);
             if (state == READY_TO_HARVEST) {
                 state = WITHERED;
                 controller.updateLog("A plant has withered.");
             }
-            controller.updateGameGUI();
+//            controller.updateGameGUI();
+            controller.updateTile(row, col);
             if (seed != null)
                 Thread.sleep(seed.getHarvestTime() * 2);
             if (state == WITHERED)
                 controller.updateTile(this);
-            controller.updateGameGUI();
+//            controller.updateGameGUI();
+            controller.updateTile(row, col);
         } catch (InterruptedException e) { }
     }
     
@@ -160,16 +176,19 @@ public class Tile implements Runnable, Selectable {
             default:
                 sb.append("Planted\n");
         }
-        sb.append("Fertilizer: " + fertilizer);
+       
         if (state == PLANTED) {
             if (seed != null) {
+                sb.append("Fertilizer: " + seed.getFertilizer());
                 sb.append("\nSeed: " + seed.getName() + "\n");
                 sb.append("Water: " + seed.getWater() + "\n");
+                sb.append("Water Needed: " + seed.getWaterNeeded() + "\n");
                 sb.append("Time until harvest: " + ((seed.getHarvestTime() - seed.getTimeElapsed()) / 1000.0) + " seconds");
             } else {
                 sb.append("\nSeed: none (part of a Tree)");
             }
-        }
+        } else
+            sb.append("Fertilizer: " + fertilizer);
         return sb.toString();
     }
 }

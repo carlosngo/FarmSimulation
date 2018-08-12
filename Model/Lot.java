@@ -19,7 +19,7 @@ public class Lot {
         tiles = new Tile[MAX_ROW][MAX_COL];
         for (int i = 0; i < MAX_ROW; i++) {
             for (int j = 0; j < MAX_COL; j++) {
-                tiles[i][j] = new Tile(this.controller);
+                tiles[i][j] = new Tile(this.controller, i, j);
             }
         }
     }
@@ -49,7 +49,18 @@ public class Lot {
     public void resetTile(Tile t) {
         if (t.getSeed() instanceof Tree) {
             for (Tile tile : getAdjacentTiles(t)) {
-                tile.init();
+                if (tile.getstate() == Tile.PLANTED && tile.getSeed() == null) {
+                    boolean hasTreeAdjacent = false;
+                    for (Tile adjacent : getAdjacentTiles(tile)) {
+                        if (!(adjacent.equals(t)) && adjacent.getSeed() instanceof Tree) {
+                            hasTreeAdjacent = true;
+                        }
+                    }
+                    if (!hasTreeAdjacent)
+                        tile.init();
+                } else {
+                    tile.init();
+                }
             }
         }
         t.init();

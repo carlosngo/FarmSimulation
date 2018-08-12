@@ -198,6 +198,16 @@ public abstract class Player {
                 } else {
                     selected = s;
                 }
+            } else if (selected instanceof Tile) {
+                if (s instanceof Tile) {
+                    tile = (Tile) s;
+                    if (tile.getSeed() != null && tile.getstate() == Tile.READY_TO_HARVEST) {
+                        harvest(tile);
+                        addExp(100);
+                    } else
+                        selected = s;
+                } else
+                    selected = s;
             } else {
                 selected = s;
             }
