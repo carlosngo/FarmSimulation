@@ -435,7 +435,7 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         seedMenuTitlePanel.add(Box.createRigidArea(new Dimension(45, 0)));
         JButton help = new JButton(new ImageIcon(resizeImage("help.png",20,17)));
         help.setBackground(new Color(255,255,0));
-        help.setToolTipText("Help");
+        help.setToolTipText("Seed Information");
         help.addMouseListener(this);
         help.setContentAreaFilled(false);
         help.setBorderPainted(false);
