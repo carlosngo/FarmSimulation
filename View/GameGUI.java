@@ -30,7 +30,8 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
     public final static int READY_TO_HARVEST = 4;
     public final static int WITHERED = 5;
     private JButton[][] tileButtons;
-    private JLabel nameLabel, level, type, exp, money, selected;
+    private JLabel nameLabel, level, type, money, selected;
+    private JProgressBar exp;
     private JTextArea description, log;
     private JButton mainmenu, register, watercan, plow, pickaxe, fertilizer, buyFertilizer, seeds, help;
     private JPanel pVeggie, pFlower, pTree, seedmenuMotherPnl;
@@ -73,7 +74,10 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
     }
 
     public void setExp(int exp) {
-        this.exp.setText("EXP: " + exp + " / " + ((exp / 500 + 1) * 500));
+        this.exp.setMinimum(exp / 250 * 250);
+        this.exp.setMaximum((exp / 250 + 1) * 250);
+        this.exp.setString(exp + " EXP / " + this.exp.getMaximum() + " EXP");
+        this.exp.setValue(exp);
     }
     
     public void setType(String type) {
@@ -187,8 +191,13 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         c.fill = GridBagConstraints.HORIZONTAL;
         leftPanel.add(register,c);
         
-        exp = new JLabel("Exp: ");
-        exp.setFont(new Font("Arial", Font.PLAIN, 30));
+//        exp = new JLabel("Exp: ");
+        exp = new JProgressBar();
+        exp.setFont(new Font("Arial", Font.PLAIN, 15));
+        exp.setMinimum(0);
+        exp.setMaximum(250);
+        exp.setValue(0);
+        exp.setStringPainted(true);
         //Border border3 = BorderFactory.createLineBorder(Color.BLUE, 1);   type.setBorder(border3);
         c.gridx = 0;
         c.gridy = 3;
@@ -489,7 +498,7 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         
         for(int i=0; i < MAX_ROW; i++){
             for(int j=0;j<MAX_COL;j++){
-                tileButtons[i][j] = new JButton();
+                tileButtons[i][j] = new TileButton(i, j);
                 tileButtons[i][j].setBackground(new Color(255,255,0)); //76,187,23
                 tileButtons[i][j].setBorderPainted(false);
                 tileButtons[i][j].setContentAreaFilled(false);
@@ -678,7 +687,7 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
     }
     
     public void setLogHarvested(double profit){
-        appendLog("Harvest successful. " + profit + " Object Coins added to wallet. Gained 100 EXP");
+        appendLog(profit + " Object Coins added to wallet. Gained 100 EXP");
     }
     
     public void setLogPurchase(double cost) {
@@ -686,7 +695,7 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
     }
     
     public void appendLog(String text) {
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss");  
         LocalDateTime now = LocalDateTime.now();
         log.setText(log.getText() + dtf.format(now) + " - " + text + "\n");
     }
@@ -697,7 +706,7 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
             case 2: appendLog(success ? "Tile plowed. Gained 10 EXP." : "Plowing failed.");        break;
             case 3: appendLog(success ? "Rocks cleared. Gained 10 EXP." : "There are no rocks on the tile.");      break;
             case 4: appendLog(success ? "Tile fertilized. Gained 10 EXP." : "Fertilizing failed");   break;
-            case 5: appendLog(success ? "Planted a seed." : "Plant failed."); break;
+            case 5: appendLog(success ? "Planted a seed. Gained 50 EXP." : "Plant failed."); break;
         }
     }
     
