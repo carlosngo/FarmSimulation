@@ -11,6 +11,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import javax.imageio.ImageIO;
@@ -86,7 +87,7 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
     }
 
     public void setMoney(double money) {
-        this.money.setText("Money: " + money);
+        this.money.setText("Money: " + new DecimalFormat("#.##").format(money));
         this.money.setFont(new Font("Arial", Font.PLAIN, 30));
     }
     
@@ -687,11 +688,11 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
     }
     
     public void setLogHarvested(double profit){
-        appendLog(profit + " Object Coins added to wallet. Gained 100 EXP");
+        appendLog(new DecimalFormat("#.##").format(profit) + " Object Coins added to wallet. Gained 100 EXP");
     }
     
     public void setLogPurchase(double cost) {
-        appendLog("Spent " + cost + " OC. Gained 25 EXP");
+        appendLog("Spent " + new DecimalFormat("#.##").format(cost) + " OC. Gained 25 EXP");
     }
     
     public void appendLog(String text) {

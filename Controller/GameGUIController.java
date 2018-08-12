@@ -164,16 +164,16 @@ public class GameGUIController {
 
     public void updateTile(int row, int col) {
         Tile t = player.getLot().getTile(row, col);
-        if (t.getSeed() != null)
+        if (t.getSeed() != null) {
             game.setTileImage(t.getstate(), t.getSeed().getName(), game.getTileButtons()[row][col]);
-        else
+        } else {
             game.setTileImage(t.getstate(), "", game.getTileButtons()[row][col]);
+        }
         game.invalidate();
         game.validate();
         game.repaint();
     }
-    
-    
+
     public void updateSelected(JButton btn) {
         double moneyTemp = player.getMoney();
         int levelTemp = player.getLevel();
@@ -265,10 +265,10 @@ public class GameGUIController {
             TileButton tileBtn = (TileButton) btn;
             int i = tileBtn.getRow();
             int j = tileBtn.getCol();
+            Tile t = player.getLot().getTile(i, j);
             if (player.getSelected() instanceof WateringCan) {
-                game.setLogAction(1, player.select(player.getLot().getTile(i, j)));
+                game.setLogAction(1, player.select(t));
             } else if (player.getSelected() instanceof Plow) {
-                Tile t = player.getLot().getTile(i, j);
                 if (t.getSeed() != null) {
                     if (JOptionPane.showConfirmDialog(null,
                             "Are you sure you want to remove this plant?") == JOptionPane.YES_OPTION) {
@@ -278,16 +278,15 @@ public class GameGUIController {
                     game.setLogAction(2, player.select(t));
                 }
             } else if (player.getSelected() instanceof Pickaxe) {
-                game.setLogAction(3, player.select(player.getLot().getTile(i, j)));
+                game.setLogAction(3, player.select(t));
             } else if (player.getSelected() instanceof Fertilizer) {
-                game.setLogAction(4, player.select(player.getLot().getTile(i, j)));
+                game.setLogAction(4, player.select(t));
             } else if (player.getSelected() instanceof Seed) {
-                game.setLogAction(5, player.select(player.getLot().getTile(i, j)));
+                game.setLogAction(5, player.select(t));
                 if (player.getInventory().getQuantity((Seed) player.getSelected()) == 0) {
                     deselect();
                 }
             } else {
-                Tile t = player.getLot().getTile(i, j);
                 if (t.getstate() == Tile.READY_TO_HARVEST) {
                     game.appendLog("Harvested " + t.getSeed().getProducts() + " " + t.getSeed().getName() + "(s)");
                 }
@@ -295,6 +294,10 @@ public class GameGUIController {
             }
             updateInventory();
             updateTile(i, j);
+            for (Tile tile : player.getLot().getAdjacentTiles(t)) {
+                updateTile(tile.getRow(), tile.getCol());
+            }
+
         }
         if (moneyTemp != player.getMoney()) {
             if (moneyTemp > player.getMoney()) {
