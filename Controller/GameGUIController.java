@@ -244,12 +244,16 @@ public class GameGUIController {
         } else if (cmd.equals("Buy Fertilizer")) {
             int qty = askQuantity();
             if (qty != 0) {
-                if (!player.buy(player.getInventory().getFertilizers(), qty)) {
-                    JOptionPane.showMessageDialog(null, "Insufficient Object Coins");
-                } else {
-                    game.appendLog("Bought " + qty + " fertilizers.");
-                    updateGameGUI();
+                int choice = JOptionPane.showConfirmDialog(null, "That would be " + qty * 10 + " OC. Proceed?", "Purchase Confirmation", JOptionPane.YES_NO_OPTION);
+                if (choice == JOptionPane.YES_OPTION) {
+                    if (!player.buy(player.getInventory().getFertilizers(), qty)) {
+                        JOptionPane.showMessageDialog(null, "Insufficient Object Coins");
+                    } else {
+                        game.appendLog("Bought " + qty + " fertilizers.");
+                        updateGameGUI();
+                    }
                 }
+                
             }
         } else if (cmd.equals("Volume Down")) {
             float volume = (float) Math.pow(10f, control.getValue() / 20f);
@@ -268,6 +272,7 @@ public class GameGUIController {
             if (choice == JOptionPane.YES_OPTION) {
                 seedMenu.dispose();
                 game.dispose();
+                music.stop();
             }
         } else {
             TileButton tileBtn = (TileButton) btn;
@@ -280,7 +285,12 @@ public class GameGUIController {
                 if (t.getSeed() != null) {
                     if (JOptionPane.showConfirmDialog(null,
                             "Are you sure you want to remove this plant?") == JOptionPane.YES_OPTION) {
-                        game.setLogAction(2, player.select(t));
+                        if (player.select(t))
+                            game.setLogAction(2, true);
+                        else {
+                            JOptionPane.showMessageDialog(null, "Insufficient Object Coins");
+                            game.setLogAction(2, false);
+                        }
                     }
                 } else {
                     game.setLogAction(2, player.select(t));

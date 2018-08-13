@@ -175,12 +175,14 @@ public abstract class Player {
                 if (s instanceof Tile) {
                     tile = (Tile) s;
                     if (tool.use(tile)) {
-                        addExp(10);
                         if (tool instanceof Plow && (tile.getstate() == Tile.WITHERED
                                 || (tile.getstate() == Tile.PLANTED && tile.getSeed() != null))) {
+                            if (money - tile.getSeed().getSeedCost() * 0.1 < 0)
+                                return false;
                             money -= tile.getSeed().getSeedCost() * 0.1;
                             lot.resetTile(tile);
                         }
+                        addExp(10);
                     } else
                         return false;
                 } else {
