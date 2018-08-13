@@ -25,8 +25,8 @@ public abstract class Player {
         this.controller = controller;
         this.name = name;
         lot = new Lot(this.controller);
-        money = 10000;
-        level = 40;
+        money = 100;
+        level = 0;
         inv = new Inventory();
     }
     

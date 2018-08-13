@@ -177,13 +177,14 @@ public class Tile implements Runnable, Selectable {
                 sb.append("Planted\n");
         }
        
-        if (state == PLANTED) {
+        if (state == PLANTED || state == WITHERED) {
             if (seed != null) {
                 sb.append("Fertilizer: " + seed.getFertilizer());
-                sb.append("\nSeed: " + seed.getName() + "\n");
-                sb.append("Water: " + seed.getWater() + "\n");
-                sb.append("Water Needed: " + seed.getWaterNeeded() + "\n");
-                sb.append("Time until harvest: " + ((seed.getHarvestTime() - seed.getTimeElapsed()) / 1000.0) + " seconds");
+                sb.append("\nFertilizer Needed: " + seed.getFertilizerNeeded());
+                sb.append("\nSeed: " + seed.getName());
+                sb.append("\nWater: " + seed.getWater());
+                sb.append("\nWater Needed: " + seed.getWaterNeeded());
+                sb.append("\nTime until harvest: " + ((seed.getHarvestTime() - seed.getTimeElapsed()) / 1000.0) + " seconds");
             } else {
                 sb.append("\nSeed: none (part of a Tree)");
             }

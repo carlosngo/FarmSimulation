@@ -15,6 +15,7 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.DataLine;
+import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.LineEvent;
 import javax.sound.sampled.LineListener;
 import javax.sound.sampled.LineUnavailableException;
@@ -33,33 +34,17 @@ public class GameGUIController {
     private GameGUI game;
     private Clip music;
     private AudioInputStream audioSource;
-
+    private FloatControl control;
     public void startGame() {
         mainMenu = new MainMenu(this);
     }
 
     public void playMusic() {
         try {
-            /*
-            audioSource = AudioSystem.getAudioInputStream(new File("Pineapple Overture.wav"));
- 
-            AudioFormat format = audioSource.getFormat();
- 
-            DataLine.Info info = new DataLine.Info(Clip.class, format);
- 
-            music = (Clip) AudioSystem.getLine(info);
- 
-            music.addLineListener(info);
- 
-            music.open(audioSource);
-             
-            music.start();
-            
-            music.loop(Clip.LOOP_CONTINUOUSLY);
-             */
             audioSource = AudioSystem.getAudioInputStream(new File("Pineapple Overture.wav"));
             music = AudioSystem.getClip();
             music.open(audioSource);
+            control = (FloatControl)music.getControl(FloatControl.Type.MASTER_GAIN);
             music.loop(Clip.LOOP_CONTINUOUSLY);
         } catch (LineUnavailableException e) {
             System.out.println("error");
@@ -110,6 +95,11 @@ public class GameGUIController {
         }
         initInventory();
         updateGameGUI();
+                int choice = JOptionPane.showConfirmDialog(null, "Welcome to Farm Simulator!\n"
+                + "Would you like to read the tutorial?");
+        if (choice == JOptionPane.YES_OPTION) {
+            game.showTutorial();
+        }
     }
 
     public void updateInventory() {
@@ -261,6 +251,24 @@ public class GameGUIController {
                     updateGameGUI();
                 }
             }
+        } else if (cmd.equals("Volume Down")) {
+            float volume = (float) Math.pow(10f, control.getValue() / 20f);
+            if (volume - 0.1f >= 0f)
+                control.setValue(20f * (float) Math.log10((float) Math.pow(10f, control.getValue() / 20f) - 0.1f));
+        } else if (cmd.equals("Volume Up")) {
+            float volume = (float) Math.pow(10f, control.getValue() / 20f);
+            if (volume + 0.1f <= 1f)
+                control.setValue(20f * (float) Math.log10((float) Math.pow(10f, control.getValue() / 20f) + 0.1f));
+        } else if (cmd.equals("Show Tutorial")) {
+            int choice = JOptionPane.showConfirmDialog(null, "Do you want to read the tutorial again?", "Select an Option", JOptionPane.YES_NO_OPTION);
+            if (choice == JOptionPane.YES_OPTION)
+                game.showTutorial();
+        } else if (cmd.equals("Exit Game")) {
+            int choice = JOptionPane.showConfirmDialog(null, "Are you sure you want to exit?");
+            if (choice == JOptionPane.YES_OPTION) {
+                seedMenu.dispose();
+                game.dispose();
+            }
         } else {
             TileButton tileBtn = (TileButton) btn;
             int i = tileBtn.getRow();
@@ -317,13 +325,17 @@ public class GameGUIController {
         int qty = askQuantity();
         if (qty != 0) {
             if (!name.isEmpty()) {
-                if (!player.buy(player.getInventory().getSeed(name), qty)) {
-                    JOptionPane.showMessageDialog(null, "Insufficient Object Coins");
-                } else {
-                    updateInventory();
-                    updateGameGUI();
-                    game.appendLog("Bought " + qty + " " + name + "s.");
-                    game.setLogPurchase(player.getInventory().getSeed(name).computeBuyingPrice() * qty);
+                double cost = player.getInventory().getSeed(name).computeBuyingPrice() * qty;
+                int choice = JOptionPane.showConfirmDialog(null, "That would be " + cost + " OC. Proceed?", "Purchase Confirmation", JOptionPane.YES_NO_OPTION);
+                if (choice == JOptionPane.YES_OPTION) {
+                    if (!player.buy(player.getInventory().getSeed(name), qty)) {
+                        JOptionPane.showMessageDialog(null, "Insufficient Object Coins");
+                    } else {
+                        updateInventory();
+                        updateGameGUI();
+                        game.appendLog("Bought " + qty + " " + name + "s.");
+                        game.setLogPurchase(cost);
+                    }
                 }
             }
         }
@@ -378,4 +390,5 @@ public class GameGUIController {
         }
         return 0;
     }
+
 }
