@@ -25,8 +25,8 @@ public abstract class Player {
         this.controller = controller;
         this.name = name;
         lot = new Lot(this.controller);
-        money = 10000;
-        level = 40;
+        money = 100;
+        level = 0;
         inv = new Inventory();
     }
     
@@ -198,6 +198,16 @@ public abstract class Player {
                 } else {
                     selected = s;
                 }
+            } else if (selected instanceof Tile) {
+                if (s instanceof Tile) {
+                    tile = (Tile) s;
+                    if (tile.getSeed() != null && tile.getstate() == Tile.READY_TO_HARVEST) {
+                        harvest(tile);
+                        addExp(100);
+                    } else
+                        selected = s;
+                } else
+                    selected = s;
             } else {
                 selected = s;
             }

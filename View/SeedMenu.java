@@ -24,6 +24,10 @@ public class SeedMenu extends JFrame implements ActionListener {
     private GameGUIController controller;
     private JLabel pic, name, ht, wn, fn, sc, hc, pp, bp;
 
+    public JButton getBackButton() {
+        return back;
+    }
+    
     public void setPic(BufferedImage img) {
         pic.setIcon(new ImageIcon(resizeImage(img, 90, 90)));
     }

@@ -11,6 +11,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import javax.imageio.ImageIO;
@@ -30,10 +31,13 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
     public final static int READY_TO_HARVEST = 4;
     public final static int WITHERED = 5;
     private JButton[][] tileButtons;
-    private JLabel nameLabel, level, type, exp, money, selected;
+    private JLabel nameLabel, level, type, money, selected;
+    private JProgressBar exp;
+    private JTabbedPane tp;
     private JTextArea description, log;
     private JButton mainmenu, register, watercan, plow, pickaxe, fertilizer, buyFertilizer, seeds, help;
     private JPanel pVeggie, pFlower, pTree, seedmenuMotherPnl;
+    private JScrollPane scrollPane1, scrollPane2, scrollPane3;
     private GameGUIController controller;
     private HashMap<String, BufferedImage> plantImages = new HashMap<>();
     private ArrayList<SeedPanel> seedPanels;
@@ -44,22 +48,6 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         tileButtons = new JButton[MAX_ROW][MAX_COL];
         seedPanels = new ArrayList<>();
         initGameGUI();
-        /*
-        AudioPlayer MGP = AudioPlayer.player;
-        AudioStream BGM;
-        AudioData MD;
-        ContinuousAudioDataStream loop = null;
-        
-        try{
-            BGM = new AudioStream(new FileInputStream("Pineapple Overture.mp3"));
-            MD = BGM.getData();
-            loop = new ContinuousAudioDataStream(MD);
-        }
-        catch(IOException e){
-            System.out.println("Unable to load audio.");
-        }
-        MGP.start(loop);
-        */
     }
 
     public void setNameLabel(String name) {
@@ -73,7 +61,10 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
     }
 
     public void setExp(int exp) {
-        this.exp.setText("EXP: " + exp + " / " + ((exp / 500 + 1) * 500));
+        this.exp.setMinimum(exp / 250 * 250);
+        this.exp.setMaximum((exp / 250 + 1) * 250);
+        this.exp.setString(exp + " EXP / " + this.exp.getMaximum() + " EXP");
+        this.exp.setValue(exp);
     }
     
     public void setType(String type) {
@@ -82,7 +73,7 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
     }
 
     public void setMoney(double money) {
-        this.money.setText("Money: " + money);
+        this.money.setText("Money: " + new DecimalFormat("#.##").format(money) + " OC");
         this.money.setFont(new Font("Arial", Font.PLAIN, 30));
     }
     
@@ -187,8 +178,13 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         c.fill = GridBagConstraints.HORIZONTAL;
         leftPanel.add(register,c);
         
-        exp = new JLabel("Exp: ");
-        exp.setFont(new Font("Arial", Font.PLAIN, 30));
+//        exp = new JLabel("Exp: ");
+        exp = new JProgressBar();
+        exp.setFont(new Font("Arial", Font.PLAIN, 15));
+        exp.setMinimum(0);
+        exp.setMaximum(250);
+        exp.setValue(0);
+        exp.setStringPainted(true);
         //Border border3 = BorderFactory.createLineBorder(Color.BLUE, 1);   type.setBorder(border3);
         c.gridx = 0;
         c.gridy = 3;
@@ -368,40 +364,7 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         c.gridwidth = 1;
         c.fill = GridBagConstraints.HORIZONTAL;
         leftPanel.add(seeds,c);
-        /*
-        help = new JButton("Help");
-        help.setFont(new Font("Marker Felt", Font.BOLD, 30));
-        help.setBackground(new Color(152,251,152));
-        help.setOpaque(true);
-        //help.setBorderPainted(false);
-        help.setBorder(BorderFactory.createLineBorder(new Color(0,78,56),1));
-        help.setIcon(new ImageIcon(resizeImage("help.png",50,35)));
-        help.setHorizontalAlignment(SwingConstants.LEFT);
-        help.addActionListener(this);
-        //Border border10 = BorderFactory.createLineBorder(Color.BLUE, 1);  seeds.setBorder(border10);
-        c.gridx = 0;
-        c.gridy = 14;
-        c.gridwidth = 3;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        leftPanel.add(help,c);
-        
-        mainmenu = new JButton(); //"EXIT GAME"
-        mainmenu.setFont(new Font("Arial", Font.PLAIN, 30));
-        mainmenu.setIcon(new ImageIcon(resizeImage("exit door.png",70,55)));
-        mainmenu.setBackground(new Color(152,251,152));
-        mainmenu.setOpaque(true);
-        //mainmenu.setBorderPainted(false);
-        mainmenu.setBorder(BorderFactory.createLineBorder(new Color(0,78,56),1));
-        mainmenu.addActionListener(this);
-        //Border border5 = BorderFactory.createLineBorder(Color.BLUE, 1);   mainmenu.setBorder(border5);
-        c.gridx = 0;
-        c.gridy = 11;
-        c.gridwidth = 3;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        leftPanel.add(mainmenu,c);
-        */
-        
-        
+
         seedmenuMotherPnl = new JPanel();
         seedmenuMotherPnl.setLayout(new OverlayLayout(seedmenuMotherPnl));
         
@@ -423,9 +386,9 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         //seedmenuLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         seedMenuTitlePanel.add(seedmenuLabel); //, BorderLayout.CENTER
         seedMenuTitlePanel.add(Box.createRigidArea(new Dimension(45, 0)));
-        JButton help = new JButton(new ImageIcon(resizeImage("help.png",20,17)));
+        help = new JButton(new ImageIcon(resizeImage("help.png",20,17)));
         help.setBackground(new Color(255,255,0));
-        help.setToolTipText("Help");
+        help.setToolTipText("Seed Information");
         help.addMouseListener(this);
         help.setContentAreaFilled(false);
         help.setBorderPainted(false);
@@ -440,22 +403,22 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         //leftPanel.add(seedMenuLogScroll);
         //seedmenu.setVisible(true);
         //seedmenu.setFont(new Font("Arial", Font.PLAIN, 16));
-        JTabbedPane tp = new JTabbedPane();
+        tp = new JTabbedPane();
         tp.setBackground(new Color(152,251,152));
         pVeggie = new JPanel();
-        JScrollPane scrollPane1 = new JScrollPane(pVeggie,JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+        scrollPane1 = new JScrollPane(pVeggie,JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         //scrollPane1.setPreferredSize(new Dimension(300, 240));
         pVeggie.setLayout(new BoxLayout(pVeggie, BoxLayout.X_AXIS));
         //pVeggie.setOpaque(false);
         //tp.add("", scrollPane1);
         pFlower = new JPanel();
-        JScrollPane scrollPane2 = new JScrollPane(pFlower,JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+        scrollPane2 = new JScrollPane(pFlower,JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         //scrollPane2.setPreferredSize(new Dimension(300, 240));
         pFlower.setLayout(new BoxLayout(pFlower, BoxLayout.X_AXIS));
         //pFlower.setOpaque(false);
         //tp.add("", scrollPane2);
         pTree = new JPanel();
-        JScrollPane scrollPane3 = new JScrollPane(pTree,JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+        scrollPane3 = new JScrollPane(pTree,JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         //scrollPane3.setPreferredSize(new Dimension(300, 240));
         pTree.setLayout(new BoxLayout(pTree, BoxLayout.X_AXIS));
         //pTree.setOpaque(false);
@@ -489,7 +452,7 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         
         for(int i=0; i < MAX_ROW; i++){
             for(int j=0;j<MAX_COL;j++){
-                tileButtons[i][j] = new JButton();
+                tileButtons[i][j] = new TileButton(i, j);
                 tileButtons[i][j].setBackground(new Color(255,255,0)); //76,187,23
                 tileButtons[i][j].setBorderPainted(false);
                 tileButtons[i][j].setContentAreaFilled(false);
@@ -567,6 +530,64 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         logScroll.setBorder(round2);
         logScroll.setOpaque(false);
         logPanel.add(logScroll);
+        
+        JPanel btnPanel = new JPanel();
+        btnPanel.setLayout(new BoxLayout(btnPanel, BoxLayout.X_AXIS));
+        JButton volumeDown = new JButton();
+        volumeDown.setIcon(new ImageIcon(resizeImage("volumedown.png", 60, 60)));
+        volumeDown.setContentAreaFilled(false);
+        volumeDown.setBackground(new Color(255,255,0));
+        volumeDown.setContentAreaFilled(false);
+        volumeDown.setOpaque(false);
+        volumeDown.setActionCommand("Volume Down");
+        volumeDown.setBorderPainted(false);
+        volumeDown.addActionListener(this);
+        volumeDown.addMouseListener(this);
+        
+        JButton volumeUp = new JButton();
+        volumeUp.setIcon(new ImageIcon(resizeImage("volumeup.png", 60, 60)));
+        volumeUp.setContentAreaFilled(false);
+        volumeUp.setBackground(new Color(255,255,0));
+        volumeUp.setContentAreaFilled(false);
+        volumeUp.setOpaque(false);
+        volumeUp.setActionCommand("Volume Up");
+        volumeUp.setBorderPainted(false);
+        volumeUp.addActionListener(this);
+        volumeUp.addMouseListener(this);
+        
+        JButton showTutorial = new JButton();
+        showTutorial.setIcon(new ImageIcon(resizeImage("tutorial.png", 60, 60)));
+        showTutorial.setContentAreaFilled(false);
+        showTutorial.setBackground(new Color(255,255,0));
+        showTutorial.setContentAreaFilled(false);
+        showTutorial.setOpaque(false);
+        showTutorial.setActionCommand("Show Tutorial");
+        showTutorial.setBorderPainted(false);
+        showTutorial.addActionListener(this);
+        showTutorial.addMouseListener(this);
+        
+        JButton exit = new JButton();
+        exit.setIcon(new ImageIcon(resizeImage("exit door.png", 60, 60)));
+        exit.setContentAreaFilled(false);
+        exit.setBackground(new Color(255,255,0));
+        exit.setContentAreaFilled(false);
+        exit.setOpaque(false);
+        exit.setActionCommand("Exit Game");
+        exit.setBorderPainted(false);
+        exit.addActionListener(this);
+        exit.addMouseListener(this);
+        
+        btnPanel.add(volumeDown);
+        btnPanel.add(Box.createRigidArea(new Dimension(10, 0)));
+        btnPanel.add(volumeUp);
+        btnPanel.add(Box.createRigidArea(new Dimension(10, 0)));
+        btnPanel.add(showTutorial);
+        btnPanel.add(Box.createRigidArea(new Dimension(10, 0)));
+        btnPanel.add(exit);
+        btnPanel.setOpaque(false);
+        logPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+        logPanel.add(btnPanel);
+        
         rightPanel.add(descriptionPanel, BorderLayout.NORTH);
         rightPanel.add(logPanel, BorderLayout.CENTER);
         rightPanel.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
@@ -678,15 +699,15 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
     }
     
     public void setLogHarvested(double profit){
-        appendLog("Harvest successful. " + profit + " Object Coins added to wallet. Gained 100 EXP");
+        appendLog(new DecimalFormat("#.##").format(profit) + " Object Coins added to wallet. Gained 100 EXP");
     }
     
     public void setLogPurchase(double cost) {
-        appendLog("Spent " + cost + " OC. Gained 25 EXP");
+        appendLog("Spent " + new DecimalFormat("#.##").format(cost) + " OC. Gained 25 EXP");
     }
     
     public void appendLog(String text) {
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm:ss");  
         LocalDateTime now = LocalDateTime.now();
         log.setText(log.getText() + dtf.format(now) + " - " + text + "\n");
     }
@@ -697,7 +718,7 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
             case 2: appendLog(success ? "Tile plowed. Gained 10 EXP." : "Plowing failed.");        break;
             case 3: appendLog(success ? "Rocks cleared. Gained 10 EXP." : "There are no rocks on the tile.");      break;
             case 4: appendLog(success ? "Tile fertilized. Gained 10 EXP." : "Fertilizing failed");   break;
-            case 5: appendLog(success ? "Planted a seed." : "Plant failed."); break;
+            case 5: appendLog(success ? "Planted a seed. Gained 50 EXP." : "Plant failed."); break;
         }
     }
     
@@ -739,5 +760,55 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
             JButton btn = (JButton)e.getSource();
             btn.setContentAreaFilled(false);
         }
+    }
+    
+    
+    public void showTutorial() {
+        JOptionPane.showMessageDialog(null, "The goal of this game is to be the richest farmer alive.\n"
+                + "The currency in this is game is called Object Coins (OC).\n"
+                + "To earn OC, you must plant a seed on a tile and harvest it successfully.",
+                "Tutorial", JOptionPane.INFORMATION_MESSAGE);
+        watercan.setContentAreaFilled(true);
+        JOptionPane.showMessageDialog(null, "Use the Watering Can tool to water your plants to keep them happy.");
+        watercan.setContentAreaFilled(false);
+        plow.setContentAreaFilled(true);
+        JOptionPane.showMessageDialog(null, "Before planting a seed, the tile must be plowed first using the Plow tool.");
+        plow.setContentAreaFilled(false);
+        pickaxe.setContentAreaFilled(true);
+        JOptionPane.showMessageDialog(null, "There may be rocky tiles, so use the Pickaxe tool to clear the rocks before plowing it.");
+        pickaxe.setContentAreaFilled(false);
+        fertilizer.setContentAreaFilled(true);
+        JOptionPane.showMessageDialog(null, "You can fertilize a tile with the Fertilizer tool to keep the soil perfect for planting.");
+        fertilizer.setContentAreaFilled(false);
+        seeds.setContentAreaFilled(true);
+        JOptionPane.showMessageDialog(null, "You can view the seeds by clicking the Seed Bag button.");
+        seeds.setContentAreaFilled(false);
+        seedmenuMotherPnl.setVisible(true);
+        
+        JOptionPane.showMessageDialog(null, "There are a variety of seeds.");
+        JOptionPane.showMessageDialog(null, "Vegetables are yummy and healthy.");
+        tp.setSelectedComponent(scrollPane2);
+        JOptionPane.showMessageDialog(null, "Flowers have a selling bonus because they're pretty :)");
+        tp.setSelectedComponent(scrollPane3);
+        JOptionPane.showMessageDialog(null, "Trees cannot have other seeds next to them.");
+        tp.setSelectedComponent(scrollPane1);
+        help.setContentAreaFilled(true);
+        JOptionPane.showMessageDialog(null, "You can view the information of each seed by clicking the Seed Information button.");
+        help.setContentAreaFilled(false);
+        controller.getSeedMenu().setVisible(true);
+        JOptionPane.showMessageDialog(controller.getSeedMenu().getBackButton(),
+                "Seeds have different properties.\n"
+                + "Harvest Time is the time it takes for the plant to mature.\n"
+                + "NOTE: FAILURE TO HARVEST A PLANT ONE MINUTE AFTER IT MATURES WILL RESULT TO ITS DEATH.\n"
+                + "Water Needed is the minimum amount of water the plant needs to mature.\n"
+                + "Fertilizer Needed is the minimum amount of fertilizer the plant needs to mature.\n"
+                + "NOTE: FAILURE TO MEET THE NEEDS OF THE PLANT BY THE TIME OF ITS HARVEST WILL RESULT TO ITS DEATH.\n"
+                + "Products Produced is the possible range of yields the seed can produce.\n"
+                + "Seed Cost is the buying price of a seed.\n"
+                , "Seed Properties", JOptionPane.INFORMATION_MESSAGE);
+        controller.getSeedMenu().setVisible(false);
+        seedmenuMotherPnl.setVisible(false);
+        JOptionPane.showMessageDialog(null, "That's all folks. Have fun playing!"
+        , "Tutorial End", JOptionPane.INFORMATION_MESSAGE);
     }
 }
