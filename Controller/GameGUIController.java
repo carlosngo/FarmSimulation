@@ -32,6 +32,11 @@ public class GameGUIController {
     private SeedMenu seedMenu;
     private GameGUI game;
     private Clip music;
+    private Clip levelUp;
+    private Clip plowing;
+    private Clip watering;
+    private Clip removingRocks;
+    private Clip plantingOrHarvesting;
     private AudioInputStream audioSource;
 
     public void startGame() {
@@ -40,23 +45,6 @@ public class GameGUIController {
 
     public void playMusic() {
         try {
-            /*
-            audioSource = AudioSystem.getAudioInputStream(new File("Pineapple Overture.wav"));
- 
-            AudioFormat format = audioSource.getFormat();
- 
-            DataLine.Info info = new DataLine.Info(Clip.class, format);
- 
-            music = (Clip) AudioSystem.getLine(info);
- 
-            music.addLineListener(info);
- 
-            music.open(audioSource);
-             
-            music.start();
-            
-            music.loop(Clip.LOOP_CONTINUOUSLY);
-             */
             audioSource = AudioSystem.getAudioInputStream(new File("Pineapple Overture.wav"));
             music = AudioSystem.getClip();
             music.open(audioSource);
@@ -70,6 +58,21 @@ public class GameGUIController {
         }
     }
 
+    public void playSoundEffects(Clip clip, String title) {
+        try {
+            audioSource = AudioSystem.getAudioInputStream(new File(title));
+            clip = AudioSystem.getClip();
+            clip.open(audioSource);
+            clip.start();
+        } catch (LineUnavailableException e) {
+            System.out.println("LineUnavailableException");
+        } catch (UnsupportedAudioFileException e) {
+            System.out.println("UnsupportedAudioFileException");
+        } catch (IOException e) {
+            System.out.println("IOException");
+        }
+    }
+    
     public BufferedImage getPlantImage(String name) {
         return game.getPlantImages().get(name);
     }
@@ -101,6 +104,12 @@ public class GameGUIController {
         playMusic();
         for (Seed s : player.getInventory().getSeeds().keySet()) {
             game.addPlantImage(s.getName());
+        }
+        JButton[][] buttons = game.getTileButtons();
+        for (int i = 0; i < buttons.length; i++) {
+            for (int j = 0; j < buttons[i].length; j++) {
+                updateTile(i, j);
+            }
         }
         initInventory();
         updateGameGUI();
@@ -141,15 +150,27 @@ public class GameGUIController {
                     + "Click on the background to deselect this object.");
         }
 
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 5; j++) {
-                Tile tile = player.getLot().getTile(i, j);
-                if (tile.getSeed() != null) {
-                    game.setTileImage(tile.getstate(), tile.getSeed().getName(), game.getTileButtons()[i][j]);
-                } else {
-                    game.setTileImage(tile.getstate(), "", game.getTileButtons()[i][j]);
-                }
-            }
+//        for (int i = 0; i < 10; i++) {
+//            for (int j = 0; j < 5; j++) {
+//                Tile tile = player.getLot().getTile(i, j);
+//                if (tile.getSeed() != null) {
+//                    game.setTileImage(tile.getstate(), tile.getSeed().getName(), game.getTileButtons()[i][j]);
+//                } else {
+//                    game.setTileImage(tile.getstate(), "", game.getTileButtons()[i][j]);
+//                }
+//            }
+//        }
+        game.invalidate();
+        game.validate();
+        game.repaint();
+    }
+
+    public void updateTile(int row, int col) {
+        Tile t = player.getLot().getTile(row, col);
+        if (t.getSeed() != null) {
+            game.setTileImage(t.getstate(), t.getSeed().getName(), game.getTileButtons()[row][col]);
+        } else {
+            game.setTileImage(t.getstate(), "", game.getTileButtons()[row][col]);
         }
         game.invalidate();
         game.validate();
@@ -158,6 +179,7 @@ public class GameGUIController {
 
     public void updateSelected(JButton btn) {
         double moneyTemp = player.getMoney();
+        int levelTemp = player.getLevel();
         String cmd = btn.getActionCommand();
         if (cmd.equals("Watering Can")) {
             player.select(Inventory.WATERING_CAN);
@@ -173,7 +195,6 @@ public class GameGUIController {
             player.select(player.getInventory().getFertilizers());
         } else if (cmd.equals("EXIT GAME")) {
             music.close();
-//            audioSource.close();
             game.dispose();
         } else if (cmd.equals("View Seeds")) {
             if (game.getSeedMenu().isVisible()) {
@@ -182,7 +203,7 @@ public class GameGUIController {
                 game.getSeedMenu().setVisible(true);
             }
         } else if (cmd.equals("Register")) {
-            
+
             int choice = -1;
             switch (player.getType()) {
                 case "Farmer":
@@ -194,8 +215,8 @@ public class GameGUIController {
                             + Registered.TRANSACTION_BENEFIT + " OC buying price per individual item\n"
                             + "REGISTRATION REQUIREMENTS\n"
                             + "Registration Fee: " + Registered.REGISTRATION_FEE + " OC\n"
-                            + "Level Requirement: " + Registered.LEVEL_REQUIREMENT 
-                            , "Sign up as Registered", JOptionPane.YES_NO_OPTION);
+                            + "Level Requirement: " + Registered.LEVEL_REQUIREMENT,
+                            "Sign up as Registered", JOptionPane.YES_NO_OPTION);
                     break;
                 case "Registered":
                     choice = JOptionPane.showConfirmDialog(null, "REGISTRATION BENEFITS\n+"
@@ -206,8 +227,8 @@ public class GameGUIController {
                             + Distinguished.TRANSACTION_BENEFITS + " OC buying price per individual item\n"
                             + "REGISTRATION REQUIREMENTS\n"
                             + "Registration Fee: " + Distinguished.REGISTRATION_FEE + " OC\n"
-                            + "Level Requirement: " + Distinguished.LEVEL_REQUIREMENT 
-                            , "Sign up as Distinguished", JOptionPane.YES_NO_OPTION);
+                            + "Level Requirement: " + Distinguished.LEVEL_REQUIREMENT,
+                            "Sign up as Distinguished", JOptionPane.YES_NO_OPTION);
                     break;
                 case "Distinguished":
                     choice = JOptionPane.showConfirmDialog(null, "REGISTRATION BENEFITS\n+"
@@ -218,11 +239,11 @@ public class GameGUIController {
                             + Honorable.TRANSACTION_BENEFIT + " OC buying price per individual item\n"
                             + "REGISTRATION REQUIREMENTS\n"
                             + "Registration Fee: " + Honorable.REGISTRATION_FEE + " OC\n"
-                            + "Level Requirement: " + Honorable.LEVEL_REQUIREMENT 
-                            , "Sign up as Honorable", JOptionPane.YES_NO_OPTION);
+                            + "Level Requirement: " + Honorable.LEVEL_REQUIREMENT,
+                            "Sign up as Honorable", JOptionPane.YES_NO_OPTION);
                     break;
             }
-            
+
             if (choice == JOptionPane.YES_OPTION) {
                 Player p = player.register();
                 if (p != null) {
@@ -243,47 +264,67 @@ public class GameGUIController {
                 }
             }
         } else {
-            boolean found = false;
-            for (int i = 0; i < GameGUI.MAX_ROW && !found; i++) {
-                for (int j = 0; j < GameGUI.MAX_COL && !found; j++) {
-                    if (btn.equals(game.getTileButtons()[i][j])) {
-                        if (player.getSelected() instanceof WateringCan) {
-                            game.setLogAction(1, player.select(player.getLot().getTile(i, j)));
-                        } else if (player.getSelected() instanceof Plow) {
-                            Tile t = player.getLot().getTile(i, j);
-                            if (t.getSeed() != null) {
-                                if (JOptionPane.showConfirmDialog(null,
-                                        "Are you sure you want to remove this plant?") == JOptionPane.YES_OPTION) {
-                                    game.setLogAction(2, player.select(t));
-                                }
-                            } else {
-                                game.setLogAction(2, player.select(t));
-                            }
-                        } else if (player.getSelected() instanceof Pickaxe) {
-                            game.setLogAction(3, player.select(player.getLot().getTile(i, j)));
-                        } else if (player.getSelected() instanceof Fertilizer) {
-                            game.setLogAction(4, player.select(player.getLot().getTile(i, j)));
-                        } else if (player.getSelected() instanceof Seed) {
-                            game.setLogAction(5, player.select(player.getLot().getTile(i, j)));
-                            if (player.getInventory().getQuantity((Seed) player.getSelected()) == 0) {
-                                deselect();
-                            }
-                        } else {
-                            player.select(player.getLot().getTile(i, j));
-                        }
-                        found = true;
-                        updateInventory();
+            TileButton tileBtn = (TileButton) btn;
+            int i = tileBtn.getRow();
+            int j = tileBtn.getCol();
+            Tile t = player.getLot().getTile(i, j);
+            if (player.getSelected() instanceof WateringCan) {
+                playSoundEffects(watering, "watering.wav");
+                //watering.close();
+                game.setLogAction(1, player.select(t));
+            } else if (player.getSelected() instanceof Plow) {
+                if (t.getSeed() != null) {
+                    if (JOptionPane.showConfirmDialog(null,
+                            "Are you sure you want to remove this plant?") == JOptionPane.YES_OPTION) {
+                        playSoundEffects(plowing, "plowing.wav");
+                        //plowing.close();
+                        game.setLogAction(2, player.select(t));
                     }
+                } else {
+                    playSoundEffects(plowing, "plowing.wav");
+                    //plowing.close();
+                    game.setLogAction(2, player.select(t));
                 }
+            } else if (player.getSelected() instanceof Pickaxe) {
+                playSoundEffects(removingRocks, "remove rocks.wav");
+                //removingRocks.close();
+                game.setLogAction(3, player.select(t));
+            } else if (player.getSelected() instanceof Fertilizer) {
+                game.setLogAction(4, player.select(t));
+            } else if (player.getSelected() instanceof Seed) {
+                playSoundEffects(plantingOrHarvesting, "plant or pick.wav");
+                //plantingOrHarvesting.close();
+                game.setLogAction(5, player.select(t));
+                if (player.getInventory().getQuantity((Seed) player.getSelected()) == 0) {
+                    //playSoundEffects(plantingOrHarvesting, "planting or harvesting.wav");
+                    deselect();
+                }
+            } else {
+                if (t.getstate() == Tile.READY_TO_HARVEST) {
+                playSoundEffects(plantingOrHarvesting, "plant or pick.wav");
+                //plantingOrHarvesting.close();
+                    game.appendLog("Harvested " + t.getSeed().getProducts() + " " + t.getSeed().getName() + "(s)");
+                }
+                player.select(player.getLot().getTile(i, j));
             }
-        }
+            updateInventory();
+            updateTile(i, j);
+            for (Tile tile : player.getLot().getAdjacentTiles(t)) {
+                updateTile(tile.getRow(), tile.getCol());
+            }
 
+        }
         if (moneyTemp != player.getMoney()) {
             if (moneyTemp > player.getMoney()) {
                 game.setLogPurchase(moneyTemp - player.getMoney());
             } else {
                 game.setLogHarvested(player.getMoney() - moneyTemp);
             }
+        }
+        if (levelTemp != player.getLevel()) {
+            playSoundEffects(levelUp, "level up.wav");
+            //levelUp.close();
+            game.appendLog(player.getName() + " has leveled up!");
         }
         updateGameGUI();
 
