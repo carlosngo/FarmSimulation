@@ -263,12 +263,16 @@ public class GameGUIController {
         } else if (cmd.equals("Buy Fertilizer")) {
             int qty = askQuantity();
             if (qty != 0) {
-                if (!player.buy(player.getInventory().getFertilizers(), qty)) {
-                    JOptionPane.showMessageDialog(null, "Insufficient Object Coins");
-                } else {
-                    game.appendLog("Bought " + qty + " fertilizers.");
-                    updateGameGUI();
+                int choice = JOptionPane.showConfirmDialog(null, "That would be " + qty * 10 + " OC. Proceed?", "Purchase Confirmation", JOptionPane.YES_NO_OPTION);
+                if (choice == JOptionPane.YES_OPTION) {
+                    if (!player.buy(player.getInventory().getFertilizers(), qty)) {
+                        JOptionPane.showMessageDialog(null, "Insufficient Object Coins");
+                    } else {
+                        game.appendLog("Bought " + qty + " fertilizers.");
+                        updateGameGUI();
+                    }
                 }
+                
             }
         } else if (cmd.equals("Volume Down")) {
             float volume = (float) Math.pow(10f, control.getValue() / 20f);
@@ -287,6 +291,7 @@ public class GameGUIController {
             if (choice == JOptionPane.YES_OPTION) {
                 seedMenu.dispose();
                 game.dispose();
+                music.stop();
             }
         } else {
             TileButton tileBtn = (TileButton) btn;
@@ -300,9 +305,13 @@ public class GameGUIController {
                 if (t.getSeed() != null) {
                     if (JOptionPane.showConfirmDialog(null,
                             "Are you sure you want to remove this plant?") == JOptionPane.YES_OPTION) {
-                        playSoundEffects(plowing, "plowing.wav");
-                        //plowing.close();
-                        game.setLogAction(2, player.select(t));
+                        if (player.select(t))
+                            playSoundEffects(plowing, "plowing.wav");
+                            game.setLogAction(2, true);
+                        else {
+                            JOptionPane.showMessageDialog(null, "Insufficient Object Coins");
+                            game.setLogAction(2, false);
+                        }
                     }
                 } else {
                     playSoundEffects(plowing, "plowing.wav");
@@ -327,23 +336,7 @@ public class GameGUIController {
                 if (t.getstate() == Tile.READY_TO_HARVEST) {
                 playSoundEffects(plantingOrHarvesting, "plant or pick.wav");
                 //plantingOrHarvesting.close();
-                        game.setLogAction(2, player.select(t));
-                    }
-                } else {
-                    game.setLogAction(2, player.select(t));
-                }
-            } else if (player.getSelected() instanceof Pickaxe) {
-                game.setLogAction(3, player.select(t));
-            } else if (player.getSelected() instanceof Fertilizer) {
-                game.setLogAction(4, player.select(t));
-            } else if (player.getSelected() instanceof Seed) {
-                game.setLogAction(5, player.select(t));
-                if (player.getInventory().getQuantity((Seed) player.getSelected()) == 0) {
-                    deselect();
-                }
-            } else {
-                if (t.getstate() == Tile.READY_TO_HARVEST) {
-                    game.appendLog("Harvested " + t.getSeed().getProducts() + " " + t.getSeed().getName() + "(s)");
+   
                 }
                 player.select(player.getLot().getTile(i, j));
             }
