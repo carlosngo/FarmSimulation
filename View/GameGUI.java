@@ -817,7 +817,8 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         JOptionPane.showMessageDialog(null, "There may be rocky tiles, so use the Pickaxe tool to clear the rocks before plowing it.");
         pickaxe.setContentAreaFilled(false);
         fertilizer.setContentAreaFilled(true);
-        JOptionPane.showMessageDialog(null, "You can fertilize a tile with the Fertilizer tool to keep the soil perfect for planting.");
+        JOptionPane.showMessageDialog(null, "You can fertilize a tile with the Fertilizer tool to keep the soil perfect for planting.\n"
+                + "Tip: Put enough fertilizers to meet your plant's needs BEFORE planting it!");
         fertilizer.setContentAreaFilled(false);
         seeds.setContentAreaFilled(true);
         JOptionPane.showMessageDialog(null, "You can view the seeds by clicking the Seed Bag button.");
@@ -836,15 +837,20 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         help.setContentAreaFilled(false);
         controller.getSeedMenu().setVisible(true);
         JOptionPane.showMessageDialog(controller.getSeedMenu().getBackButton(),
-                "Seeds have different properties.\n"
-                + "Harvest Time is the time it takes for the plant to mature.\n"
-                + "NOTE: FAILURE TO HARVEST A PLANT ONE MINUTE AFTER IT MATURES WILL RESULT TO ITS DEATH.\n"
-                + "Water Needed is the minimum amount of water the plant needs to mature.\n"
-                + "Fertilizer Needed is the minimum amount of fertilizer the plant needs to mature.\n"
+          "Seeds have different properties.", "Seed Properties", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(controller.getSeedMenu().getBackButton(),
+                "Harvest Time is the time it takes for the plant to mature.\n" +
+                "NOTE: FAILURE TO HARVEST A PLANT ONE MINUTE AFTER IT MATURES WILL RESULT TO ITS DEATH.", 
+                "Seed Properties", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(controller.getSeedMenu().getBackButton(),
+                "Water Needed is the minimum amount of water the plant needs to mature.\n" + 
+                "Fertilizer Needed is the minimum amount of fertilizer the plant needs to mature.\n"
                 + "NOTE: FAILURE TO MEET THE NEEDS OF THE PLANT BY THE TIME OF ITS HARVEST WILL RESULT TO ITS DEATH.\n"
-                + "Products Produced is the possible range of yields the seed can produce.\n"
-                + "Seed Cost is the buying price of a seed.\n"
                 , "Seed Properties", JOptionPane.INFORMATION_MESSAGE);
+	            JOptionPane.showMessageDialog(controller.getSeedMenu().getBackButton(),
+                "Products Produced is the possible range of yields the seed can produce.", "Seed Properties", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(controller.getSeedMenu().getBackButton(),
+                "Seed Cost is the buying price of a seed.", "Seed Properties", JOptionPane.INFORMATION_MESSAGE);
         controller.getSeedMenu().setVisible(false);
         seedmenuMotherPnl.setVisible(false);
         JOptionPane.showMessageDialog(null, "That's all folks. Have fun playing!"
