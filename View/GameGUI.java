@@ -439,9 +439,9 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         String veggie = "Vegetables";
         String flower = "Flower";
         String trees = "Fruit Trees";
-        tp.addTab("", new ImageIcon(resizeImage("carrot.png",30,25)), scrollPane1, veggie);
-        tp.addTab("", new ImageIcon(resizeImage("stargazer.png",30,25)), scrollPane2, flower);
-        tp.addTab("", new ImageIcon(resizeImage("banana.png",30,25)), scrollPane3, trees);
+        tp.addTab("", new ImageIcon(resizeImage("carrot cursor.png",30,25)), scrollPane1, veggie);
+        tp.addTab("", new ImageIcon(resizeImage("stargazer cursor.png",30,25)), scrollPane2, flower);
+        tp.addTab("", new ImageIcon(resizeImage("banana cursor.png",30,25)), scrollPane3, trees);
         seedmenu.add(tp);
         
         seedmenu.setAlignmentX(0.5f);
