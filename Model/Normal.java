@@ -49,7 +49,7 @@ public class Normal extends Player  {
     @Override
     public boolean plant(Tile t, Seed s) {
         Seed seedClone = getInventory().getClone(s);
-        if (getInventory().getQuantity(s) > 0 && getLot().plantSeed(t, seedClone)) {
+        if (getInventory().getQuantity(s) > 0 && getLot().setSeed(t, seedClone)) {
             getInventory().removeSeed(s);
             return true;
         }

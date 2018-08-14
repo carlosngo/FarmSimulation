@@ -76,7 +76,7 @@ public class Lot {
      * @param s the Seed object to be planted in the tile object 
      * @return true if planting is successful, otherwise false
      */
-    public boolean plantSeed(Tile t, Seed s) {
+    public boolean setSeed(Tile t, Seed s) {
         if (t.getstate() != Tile.PLOWED) {
             return false;
         }

@@ -54,7 +54,7 @@ public class Distinguished extends Player  {
         seedClone.setWaterMax(s.getWaterMax() + WATER_FERTILIZER_BONUS);
         seedClone.setFertilizerMax(s.getFertilizerMax() + WATER_FERTILIZER_BONUS);
         seedClone.setHarvestTime(s.getHarvestTime() - (long)(s.getHarvestTime() * HARVEST_TIME_REDUCTION / 100));
-        if (getInventory().getQuantity(s) > 0 && getLot().plantSeed(t, seedClone)) {
+        if (getInventory().getQuantity(s) > 0 && getLot().setSeed(t, seedClone)) {
             getInventory().removeSeed(s);
             return true;
         }
