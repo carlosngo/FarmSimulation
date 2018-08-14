@@ -4,8 +4,8 @@ import java.util.*;
 import Controller.*;
 
 /**
- * The lot that contains the tiles.
- * @author Carlos
+ * The class that contains the tiles.
+ * @author Carlos & Johanna
  */
 public class Lot {
     public static final int MAX_ROW = 10;
@@ -36,17 +36,18 @@ public class Lot {
 
     /**
      * 
-     * @param row the number of rows
-     * @param col the number of columns
-     * @return the Tile object associated with the parameter's row and col
+     * @param row the row number of the tile
+     * @param col the column number of the tile
+     * @return the Tile object in the specified coordinates
      */
     public Tile getTile(int row, int col) {
         return tiles.get(row)[col];
     }
 
     /**
-     * Resets the tiles around a Tile planted with a Tree Seed.
-     * @param t the Tile to be initialized
+     * Re-initialize the specified tile. If the tile contains a tree, 
+     * re-initialize the tiles around it as well.
+     * @param t the Tile to be re-initialized
      */
     public void resetTile(Tile t) {
         if (t.getSeed() instanceof Tree) {
@@ -69,8 +70,7 @@ public class Lot {
     }
 
     /**
-     * Sets (plants) the parameter's Seed as the seed of the parameter's Tile 
-     * and returns true. 
+     * Sets the parameter's Seed as the seed of the parameter's Tile. 
      * If the seed is a tree, the adjacent tiles of the tile parameter will have leaves.
      * @param t the Tile object to take in the Seed object
      * @param s the Seed object to be planted in the tile object 
@@ -83,10 +83,9 @@ public class Lot {
         if (s instanceof Tree) {
             boolean canPlant = true;
             for (Tile tile : getAdjacentTiles(t)) {
-                boolean isValidTile = false;
-                if (tile.getstate() == Tile.PLOWED ||
-                        tile.getstate() == Tile.PLANTED && tile.getSeed() == null) 
-                    isValidTile = true;
+                boolean isValidTile = true;
+                if (tile.getstate() == Tile.PLANTED && tile.getSeed() != null) 
+                    isValidTile = false;
                 if (!isValidTile)
                     canPlant = false;
             }
@@ -104,21 +103,13 @@ public class Lot {
     }
 
     /**
-     * Returns the list of the adjacent tiles around the parameter's Tile object.
-     * @param t the Tile object that is the center of the adjacent Tile objects
-     * @return ArrayList of Tile objects
+     * 
+     * @param t the Tile object to be checked
+     * @return the ArrayList of the adjacent tiles around the parameter's Tile object.
      */
     public ArrayList<Tile> getAdjacentTiles(Tile t) {
         int row = t.getRow();
         int col = t.getCol();
-//        for (int i = 0; i < currentRows; i++) {
-//            for (int j = 0; j < MAX_COL; j++) {
-//                if (tiles.get(i)[j].equals(t)) {
-//                    row = i;
-//                    col = j;
-//                }
-//            }
-//        }
         ArrayList<Tile> list = new ArrayList<>();
         if (row - 1 >= 0) {
             list.add(tiles.get(row - 1)[col]);
@@ -147,6 +138,10 @@ public class Lot {
         return list;
     }
     
+    /**
+     * Expands the lot with the specified rows.
+     * @param rows the number of rows to be added 
+     */
     public void expand(int rows) {
         int max = currentRows + rows;
         for (int i = currentRows; i < max; i++) {

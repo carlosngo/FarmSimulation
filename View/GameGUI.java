@@ -98,6 +98,10 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         selected.setFont(new Font("Arial", Font.PLAIN, 26));
     }
     
+    public JButton getRegister() {
+        return register;
+    }
+    
     public ArrayList<SeedPanel> getSeedPanels() {
         return seedPanels;
     }
@@ -755,10 +759,8 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        if (e.getButton() == MouseEvent.BUTTON1) {
-            if (!(e.getSource() instanceof JButton))
-                controller.deselect();
-        }
+        if (e.getButton() == MouseEvent.BUTTON3)
+            controller.deselect();
     }
 
     @Override

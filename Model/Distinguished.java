@@ -2,7 +2,7 @@ package Model;
 
 /**
  * This class contains implemented Player class methods personalized for a "Distinguished" player
- * @author Carlos
+ * @author Carlos & Johanna
  */
 public class Distinguished extends Player  {
     public static final int HARVEST_TIME_REDUCTION = 10;

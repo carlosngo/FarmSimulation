@@ -30,9 +30,8 @@ public class Fertilizer extends Tool implements Purchasable {
     }
 
     /**
-     * Fertilizes the parameter's Tile object; deducts the count of the 
-     * fertilizer, and returns true when fertilization is successful, 
-     * returns false otherwise.
+     * Fertilizes the parameter's Tile object and decrements the count of the 
+     * fertilizer.
      * @param t the tile to be fertilized
      * @return true, if the fertilization was successful; false otherwise 
      */

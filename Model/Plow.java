@@ -19,7 +19,7 @@ public class Plow extends Tool {
      * @return true, if the tile is unplowed or has a seed planted or withered plant; false otherwise
      */
     public boolean use(Tile t) {
-        if (t.getstate() == Tile.WITHERED || (t.getstate() == Tile.PLANTED && t.getSeed() != null)) {
+        if (t.getstate() >= Tile.PLANTED && t.getSeed() != null) {
             ;
         } else if (t.getstate() == Tile.UNPLOWED)
             t.setState(Tile.PLOWED);

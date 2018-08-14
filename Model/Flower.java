@@ -3,7 +3,7 @@ package Model;
 /**
  * This class contains an implementation of a method from the Seed Class;
  * it is specialized for a Flower object.
- * @author Carlos
+ * @author Carlos & Johanna
  */
 public class Flower extends Seed {
         
