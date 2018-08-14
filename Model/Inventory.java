@@ -6,7 +6,7 @@ import java.util.*;
  * This class contains the seeds and tools of the player. It adds and removes
  * seeds and fertilizers.
  *
- * @author Carlos & Johanna
+ * @author Carlos
  */
 public class Inventory {
 

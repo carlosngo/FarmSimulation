@@ -3,7 +3,7 @@ package Model;
 import Controller.*;
 
 /**
- * The tile on which the seed will be planted.
+ * The class that represents a tile in the game.
  * @author Carlos
  */
 public class Tile implements Runnable, Selectable {
@@ -29,17 +29,25 @@ public class Tile implements Runnable, Selectable {
         init();
     }
 
+    /**
+     * 
+     * @return the row number of this tile
+     */
     public int getRow() {
         return row;
     }
 
+    /**
+     * 
+     * @return the column number of this tile
+     */
     public int getCol() {
         return col;
     }
 
     
     /**
-     * runs a Seed thread
+     * {@inheritDoc}
      */
     public void run() {
         try {
@@ -71,8 +79,7 @@ public class Tile implements Runnable, Selectable {
     }
     
     /**
-     * initializes the Tile.
-     * Depending on the result of Math.random(), the tile can either be rocky or not
+     * Initializes the Tile. 10% chance for the tile to be rocky.
      */
     public void init() {
         if (thread.isAlive())
@@ -96,12 +103,12 @@ public class Tile implements Runnable, Selectable {
     
     /**
      * Returns the state of the tile object.
-     * @return 0 if the Tile object is rocky
-     *         1 if the Tile object is unplowed
-     *         2 if the Tile object is plowed
-     *         3 if the Tile object is planted
-     *         4 if the Tile object is ready to be harvested
-     *         5 if the Tile object is withered
+     * @return 0 if the Tile object is rocky<br>
+     *         1 if the Tile object is unplowed<br>
+     *         2 if the Tile object is plowed<br>
+     *         3 if the Tile object is planted<br>
+     *         4 if the Tile object is ready to be harvested<br>
+     *         5 if the Tile object is withered<br>
      */
     public int getstate() {
         return state;
@@ -124,9 +131,9 @@ public class Tile implements Runnable, Selectable {
     }
     
     /**
-     * Sets the parameter's Seed object as the Tile object's Seed object 
+     * 
      * @param seed the Seed object to be set as the Tile object's Seed object
-     * @return true is the setting is successful, otherwise false
+     * @return true is the state of the tile is plowed, otherwise false
      */
     public boolean setSeed(Seed seed) {
         if (state == PLOWED) {

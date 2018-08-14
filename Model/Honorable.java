@@ -7,7 +7,7 @@ package Model;
 
 /**
  * This class contains implemented Player class methods personalized for an "Honorable" player
- * @author Carlos & Johanna
+ * @author Carlos
  */
 public class Honorable extends Player  {
 

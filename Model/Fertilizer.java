@@ -3,7 +3,7 @@ package Model;
 /**
  * A tool that helps plants survive the farm heat. It also boosts 
  * the selling price of the plant.
- * @author Carlos & Johanna
+ * @author Carlos
  */
 public class Fertilizer extends Tool implements Purchasable {
 
@@ -22,7 +22,7 @@ public class Fertilizer extends Tool implements Purchasable {
     }
 
     /**
-     * Sets the parameter's integer as the Fertilizer object's new count.
+     * 
      * @param count the integer to be set as the new count
      */
     public void setCount(int count) {

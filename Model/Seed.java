@@ -1,7 +1,7 @@
 package Model;
 
 /**
- * The seed to be bought, planted, and harvested.
+ * The class that represents a seed in the game.
  * @author Carlos
  */
 public abstract class Seed implements Selectable, Purchasable, Comparable<Seed> {
@@ -227,7 +227,8 @@ public abstract class Seed implements Selectable, Purchasable, Comparable<Seed> 
     
     /**
      * 
-     * @return true if the Seed object's number of fertilizations are valid, otherwise false
+     * @return true if the amount of fertilizer of the seed is below its max capacity; 
+     * otherwise false
      */
     public boolean canFertilize() {
         return fertilizer < fertilizerMax;
@@ -235,7 +236,8 @@ public abstract class Seed implements Selectable, Purchasable, Comparable<Seed> 
     
     /**
      * 
-     * @return true if the Seed object's number of waterings are valid, otherwise false
+     * @return true if the water level of the seed is below its max capacity; 
+     * otherwise false
      */
     public boolean canWater() {
         return water < waterMax;
@@ -267,15 +269,13 @@ public abstract class Seed implements Selectable, Purchasable, Comparable<Seed> 
     }
     
     /**
-     * Computes and returns the selling price of the Seed object's produce
+     * Computes and returns the selling price of an individual produce of the seed.
      * @return the selling price of the Seed object's produce
      */
     public abstract double computeSellingPrice();
     
     /**
-     * This method checks whether two Seed objects are equal or not
-     * @param obj the object to be checked
-     * @return true if the object is equal to the Seed object, otherwise false
+     * {@inheritDoc}
      */
     public boolean equals (Object obj) {
         Seed s = (Seed)obj;
@@ -283,11 +283,7 @@ public abstract class Seed implements Selectable, Purchasable, Comparable<Seed> 
     }
     
     /**
-     * 
-     * @param s the Seed object to be compared with
-     * @return 0 if the Seed objects being compared are equal
-     *         1 if the Seed argument is less than the Seed object
-     *         -1 if the Seed argument is greater than the Seed object
+     * {@inheritDoc}
      */
     public int compareTo(Seed s) {
         return name.compareTo(s.getName());

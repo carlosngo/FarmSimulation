@@ -16,7 +16,7 @@ public class Plow extends Tool {
      * Sets the state of the tile parameter from unplowed to plowed. 
      * Returns false if the tile is already plowed or has no seed nor withered plant.
      * @param t the tile to be plowed or prepared for planting.
-     * @return true, if the tile is unplowed or has a seed planted or withered plant; false otherwise
+     * @return false, if the tile is rocky, plowed, or has leaves; true otherwise
      */
     public boolean use(Tile t) {
         if (t.getstate() >= Tile.PLANTED && t.getSeed() != null) {
