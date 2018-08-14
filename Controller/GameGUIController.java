@@ -283,15 +283,15 @@ public class GameGUIController {
                     player.addExp(25);
                     switch (player.getType()) {
                         case "Registered":
-                            player.getLot().expandLot(2);
+                            player.getLot().expand(2);
                             game.addRow(2);
                             break;
                         case "Distinguished":
-                            player.getLot().expandLot(2);
+                            player.getLot().expand(2);
                             game.addRow(2);
                             break;
                         default:
-                            player.getLot().expandLot(1);
+                            player.getLot().expand(1);
                             game.addRow(1);
                     }
                 } else {

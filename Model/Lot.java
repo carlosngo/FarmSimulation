@@ -10,7 +10,7 @@ import Controller.*;
 public class Lot {
     public static final int MAX_ROW = 10;
     public static final int MAX_COL = 5;
-    public int currentRows;
+    private int currentRows;
     private ArrayList<Tile[]> tiles;
     private GameGUIController controller;
 
@@ -147,7 +147,7 @@ public class Lot {
         return list;
     }
     
-    public void expandLot(int rows) {
+    public void expand(int rows) {
         int max = currentRows + rows;
         for (int i = currentRows; i < max; i++) {
             tiles.add(new Tile[MAX_COL]);
