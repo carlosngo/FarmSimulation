@@ -22,8 +22,9 @@ import sun.audio.*;
 
 
 public class GameGUI extends JFrame implements ActionListener, MouseListener {
-    public static final int MAX_ROW = 10;
-    public static final int MAX_COL = 5;
+    public final static int MAX_ROW = 10;
+    public final static int MAX_COL = 5;
+    private int currRow = 5;
     public final static int ROCKY = 0;
     public final static int UNPLOWED = 1;
     public final static int PLOWED = 2;
@@ -36,7 +37,7 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
     private JTabbedPane tp;
     private JTextArea description, log;
     private JButton mainmenu, register, watercan, plow, pickaxe, fertilizer, buyFertilizer, seeds, help;
-    private JPanel pVeggie, pFlower, pTree, seedmenuMotherPnl;
+    private JPanel pVeggie, pFlower, pTree, seedmenuMotherPnl, middlePanel;
     private JScrollPane scrollPane1, scrollPane2, scrollPane3;
     private GameGUIController controller;
     private HashMap<String, BufferedImage> plantImages = new HashMap<>();
@@ -45,11 +46,22 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
     public GameGUI(GameGUIController controller) {
         this.controller = controller;
         plantImages = new HashMap<>();
-        tileButtons = new JButton[MAX_ROW][MAX_COL];
         seedPanels = new ArrayList<>();
         initGameGUI();
+        setExtendedState(JFrame.MAXIMIZED_BOTH); 
+        setBackground(Color.WHITE);
+        setResizable(false);
+        setUndecorated(true);
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
+        setVisible(true);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
 
+    public int getCurrentRows() {
+        return currRow;
+    }
+    
     public void setNameLabel(String name) {
         nameLabel.setText("Name: " + name);
      
@@ -374,7 +386,7 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         seedmenu.setLayout(new BoxLayout(seedmenu, BoxLayout.Y_AXIS));
         Border round3 = new LineBorder(new Color(0,78,56),10,true);
         seedmenu.setBorder(round3);
-        seedmenu.setPreferredSize(new Dimension(315, 270));
+        seedmenu.setPreferredSize(new Dimension(250, 270));
         
         JPanel seedMenuTitlePanel = new JPanel();
         seedMenuTitlePanel.setLayout(new BoxLayout(seedMenuTitlePanel, BoxLayout.X_AXIS));
@@ -427,16 +439,16 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         String veggie = "Vegetables";
         String flower = "Flower";
         String trees = "Fruit Trees";
-        tp.addTab("", new ImageIcon(resizeImage("carrot.png",30,25)), scrollPane1, veggie);
-        tp.addTab("", new ImageIcon(resizeImage("stargazer.png",30,25)), scrollPane2, flower);
-        tp.addTab("", new ImageIcon(resizeImage("banana.png",30,25)), scrollPane3, trees);
+        tp.addTab("", new ImageIcon(resizeImage("carrot cursor.png",30,25)), scrollPane1, veggie);
+        tp.addTab("", new ImageIcon(resizeImage("stargazer cursor.png",30,25)), scrollPane2, flower);
+        tp.addTab("", new ImageIcon(resizeImage("banana cursor.png",30,25)), scrollPane3, trees);
         seedmenu.add(tp);
         
         seedmenu.setAlignmentX(0.5f);
         seedmenu.setAlignmentY(0.5f);
         seedmenuMotherPnl.add(seedmenu);
         
-        JLabel woodpic = new JLabel(new ImageIcon(resizeImage("wood.png",315,270)));                   
+        JLabel woodpic = new JLabel(new ImageIcon(resizeImage("wood.png",270,270)));                   
         woodpic.setAlignmentX(0.5f);
         woodpic.setAlignmentY(0.5f);
         seedmenuMotherPnl.add(woodpic);
@@ -447,11 +459,12 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         leftPanel.add(seedmenuMotherPnl,c);
         seedmenuMotherPnl.setVisible(false);
         GridBagConstraints c2 = new GridBagConstraints();
-        JPanel middlePanel = new JPanel(new GridBagLayout());
+        middlePanel = new JPanel(new GridBagLayout());
         middlePanel.setOpaque(false);
         
-        for(int i=0; i < MAX_ROW; i++){
-            for(int j=0;j<MAX_COL;j++){
+        tileButtons = new JButton[MAX_ROW][MAX_COL];
+        for(int i=0; i < currRow; i++){
+            for(int j=0;j< MAX_COL;j++){
                 tileButtons[i][j] = new TileButton(i, j);
                 tileButtons[i][j].setBackground(new Color(255,255,0)); //76,187,23
                 tileButtons[i][j].setBorderPainted(false);
@@ -604,14 +617,14 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         motherPnl.add(grasspic);
         
         add(motherPnl);
-        setExtendedState(JFrame.MAXIMIZED_BOTH); 
-        setBackground(Color.WHITE);
-        setResizable(false);
-        setUndecorated(true);
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
-        setVisible(true);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+//        setExtendedState(JFrame.MAXIMIZED_BOTH); 
+//        setBackground(Color.WHITE);
+//        setResizable(false);
+//        setUndecorated(true);
+//        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+//        setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
+//        setVisible(true);
+//        setDefaultCloseOperation(EXIT_ON_CLOSE);
         //setLogAction(1); 
         //setLogAction(2);
         //setLogAction(3);
@@ -643,6 +656,11 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         }
     }
     */
+    
+    public void drawTiles() {
+        
+    }
+    
     public void addPlantImage(String name) {
         plantImages.put(name, resizeImage(name.toLowerCase() + ".png", 65, 65));
     }
@@ -762,6 +780,27 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         }
     }
     
+    public void addRow(int rows) {
+        GridBagConstraints c2 = new GridBagConstraints();
+        for (int i = currRow; i < currRow + rows; i++) {
+            for (int j = 0; j < MAX_COL; j++) {
+                tileButtons[i][j] = new TileButton(i, j);
+                tileButtons[i][j].setBackground(new Color(255,255,0)); //76,187,23
+                tileButtons[i][j].setBorderPainted(false);
+                tileButtons[i][j].setContentAreaFilled(false);
+                tileButtons[i][j].addActionListener(this);
+                tileButtons[i][j].addMouseListener(this);
+                c2.gridx = j;
+                c2.gridy = i;
+                middlePanel.add(tileButtons[i][j], c2);
+                controller.updateTile(i, j);
+            }
+        }
+        currRow += rows;
+        invalidate();
+        validate();
+        repaint();
+    }
     
     public void showTutorial() {
         JOptionPane.showMessageDialog(null, "The goal of this game is to be the richest farmer alive.\n"
