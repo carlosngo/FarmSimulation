@@ -95,7 +95,7 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
     
     public void setSelected(String s) {
         selected.setText("Selected: " + s);
-        selected.setFont(new Font("Arial", Font.PLAIN, 30));
+        selected.setFont(new Font("Arial", Font.PLAIN, 26));
     }
     
     public ArrayList<SeedPanel> getSeedPanels() {
@@ -162,7 +162,7 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         leftPanel.add(nameLabel,c);
         
         level = new JLabel("Level: ");
-        level.setFont(new Font("Arial", Font.PLAIN, 30));
+        level.setFont(new Font("Arial", Font.PLAIN, 26));
         //Border border2 = BorderFactory.createLineBorder(Color.BLUE, 1);   level.setBorder(border2);
         c.gridx = 0;
         c.gridy = 2;
