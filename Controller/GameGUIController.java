@@ -34,12 +34,14 @@ public class GameGUIController {
     private GameGUI game;
     private Clip music;
     private Clip levelUp;
-    private Clip plowing;
+    //private Clip plowing;
     private Clip watering;
     private Clip removingRocks;
     private Clip plantingOrHarvesting;
+    private Clip buying;
     private AudioInputStream audioSource;
     private FloatControl control;
+
     public void startGame() {
         mainMenu = new MainMenu(this);
     }
@@ -49,7 +51,7 @@ public class GameGUIController {
             audioSource = AudioSystem.getAudioInputStream(new File("Pineapple Overture.wav"));
             music = AudioSystem.getClip();
             music.open(audioSource);
-            control = (FloatControl)music.getControl(FloatControl.Type.MASTER_GAIN);
+            control = (FloatControl) music.getControl(FloatControl.Type.MASTER_GAIN);
             music.loop(Clip.LOOP_CONTINUOUSLY);
         } catch (LineUnavailableException e) {
             System.out.println("error");
@@ -65,6 +67,8 @@ public class GameGUIController {
             audioSource = AudioSystem.getAudioInputStream(new File(title));
             clip = AudioSystem.getClip();
             clip.open(audioSource);
+            //FloatControl ctrl = (FloatControl)clip.getControl(FloatControl.Type.MASTER_GAIN);
+            //ctrl.setValue(1.0f);
             clip.start();
         } catch (LineUnavailableException e) {
             System.out.println("LineUnavailableException");
@@ -75,6 +79,24 @@ public class GameGUIController {
         }
     }
     
+    public void playPlowSound() {
+        try {
+            audioSource = AudioSystem.getAudioInputStream(new File("plowing.wav"));
+            Clip plowing = AudioSystem.getClip();
+            plowing.open(audioSource);
+            //plowing.setMicrosecondPosition(3000000);
+            //FloatControl ctrl = (FloatControl)clip.getControl(FloatControl.Type.MASTER_GAIN);
+            //ctrl.setValue(1.0f);
+            plowing.start();
+        } catch (LineUnavailableException e) {
+            System.out.println("LineUnavailableException");
+        } catch (UnsupportedAudioFileException e) {
+            System.out.println("UnsupportedAudioFileException");
+        } catch (IOException e) {
+            System.out.println("IOException");
+        }
+    }
+
     public BufferedImage getPlantImage(String name) {
         return game.getPlantImages().get(name);
     }
@@ -115,7 +137,7 @@ public class GameGUIController {
         }
         initInventory();
         updateGameGUI();
-                int choice = JOptionPane.showConfirmDialog(null, "Welcome to Farm Simulator!\n"
+        int choice = JOptionPane.showConfirmDialog(null, "Welcome to Farm Simulator!\n"
                 + "Would you like to read the tutorial?");
         if (choice == JOptionPane.YES_OPTION) {
             game.showTutorial();
@@ -263,29 +285,34 @@ public class GameGUIController {
         } else if (cmd.equals("Buy Fertilizer")) {
             int qty = askQuantity();
             if (qty != 0) {
-                int choice = JOptionPane.showConfirmDialog(null, "That would be " + qty * 10 + " OC. Proceed?", "Purchase Confirmation", JOptionPane.YES_NO_OPTION);
+                double cost = calculateCost(10, qty);
+                int choice = JOptionPane.showConfirmDialog(null, "That would be " + cost + " OC. Proceed?", "Purchase Confirmation", JOptionPane.YES_NO_OPTION);
                 if (choice == JOptionPane.YES_OPTION) {
                     if (!player.buy(player.getInventory().getFertilizers(), qty)) {
                         JOptionPane.showMessageDialog(null, "Insufficient Object Coins");
                     } else {
+                        playSoundEffects(buying, "cash register.wav");
                         game.appendLog("Bought " + qty + " fertilizers.");
                         updateGameGUI();
                     }
                 }
-                
+
             }
         } else if (cmd.equals("Volume Down")) {
             float volume = (float) Math.pow(10f, control.getValue() / 20f);
-            if (volume - 0.1f >= 0f)
+            if (volume - 0.1f >= 0f) {
                 control.setValue(20f * (float) Math.log10((float) Math.pow(10f, control.getValue() / 20f) - 0.1f));
+            }
         } else if (cmd.equals("Volume Up")) {
             float volume = (float) Math.pow(10f, control.getValue() / 20f);
-            if (volume + 0.1f <= 1f)
+            if (volume + 0.1f <= 1f) {
                 control.setValue(20f * (float) Math.log10((float) Math.pow(10f, control.getValue() / 20f) + 0.1f));
+            }
         } else if (cmd.equals("Show Tutorial")) {
             int choice = JOptionPane.showConfirmDialog(null, "Do you want to read the tutorial again?", "Select an Option", JOptionPane.YES_NO_OPTION);
-            if (choice == JOptionPane.YES_OPTION)
+            if (choice == JOptionPane.YES_OPTION) {
                 game.showTutorial();
+            }
         } else if (cmd.equals("Exit Game")) {
             int choice = JOptionPane.showConfirmDialog(null, "Are you sure you want to exit?");
             if (choice == JOptionPane.YES_OPTION) {
@@ -305,16 +332,16 @@ public class GameGUIController {
                 if (t.getSeed() != null) {
                     if (JOptionPane.showConfirmDialog(null,
                             "Are you sure you want to remove this plant?") == JOptionPane.YES_OPTION) {
-                        if (player.select(t))
-                            playSoundEffects(plowing, "plowing.wav");
+                        if (player.select(t)) {
+                            playPlowSound();
                             game.setLogAction(2, true);
-                        else {
+                        } else {
                             JOptionPane.showMessageDialog(null, "Insufficient Object Coins");
                             game.setLogAction(2, false);
                         }
                     }
                 } else {
-                    playSoundEffects(plowing, "plowing.wav");
+                    playPlowSound();
                     //plowing.close();
                     game.setLogAction(2, player.select(t));
                 }
@@ -323,6 +350,7 @@ public class GameGUIController {
                 //removingRocks.close();
                 game.setLogAction(3, player.select(t));
             } else if (player.getSelected() instanceof Fertilizer) {
+                playSoundEffects(plantingOrHarvesting, "plant or pick.wav");
                 game.setLogAction(4, player.select(t));
             } else if (player.getSelected() instanceof Seed) {
                 playSoundEffects(plantingOrHarvesting, "plant or pick.wav");
@@ -334,9 +362,9 @@ public class GameGUIController {
                 }
             } else {
                 if (t.getstate() == Tile.READY_TO_HARVEST) {
-                playSoundEffects(plantingOrHarvesting, "plant or pick.wav");
-                //plantingOrHarvesting.close();
-   
+                    playSoundEffects(plantingOrHarvesting, "plant or pick.wav");
+                    //plantingOrHarvesting.close();
+
                 }
                 player.select(player.getLot().getTile(i, j));
             }
@@ -349,8 +377,10 @@ public class GameGUIController {
         }
         if (moneyTemp != player.getMoney()) {
             if (moneyTemp > player.getMoney()) {
+                playSoundEffects(buying, "cash register.wav");
                 game.setLogPurchase(moneyTemp - player.getMoney());
             } else {
+                playSoundEffects(buying, "cash register.wav");
                 game.setLogHarvested(player.getMoney() - moneyTemp);
             }
         }
@@ -367,7 +397,7 @@ public class GameGUIController {
         int qty = askQuantity();
         if (qty != 0) {
             if (!name.isEmpty()) {
-                double cost = player.getInventory().getSeed(name).computeBuyingPrice() * qty;
+                double cost = calculateCost(player.getInventory().getSeed(name).computeBuyingPrice(), qty);
                 int choice = JOptionPane.showConfirmDialog(null, "That would be " + cost + " OC. Proceed?", "Purchase Confirmation", JOptionPane.YES_NO_OPTION);
                 if (choice == JOptionPane.YES_OPTION) {
                     if (!player.buy(player.getInventory().getSeed(name), qty)) {
@@ -375,7 +405,8 @@ public class GameGUIController {
                     } else {
                         updateInventory();
                         updateGameGUI();
-                        game.appendLog("Bought " + qty + " " + name + "s.");
+                        playSoundEffects(buying, "cash register.wav");
+                        game.appendLog("Bought " + qty + " " + name + "(s).");
                         game.setLogPurchase(cost);
                     }
                 }
@@ -424,13 +455,30 @@ public class GameGUIController {
                 if (quantity > 0) {
                     return quantity;
                 } else {
-                    JOptionPane.showMessageDialog(null, "Please input a positive integer");
+                    JOptionPane.showMessageDialog(null, "Please input a whole number");
                 }
             } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(null, "Please input an integer");
+                JOptionPane.showMessageDialog(null, "Please input a whole number");
             }
         }
         return 0;
     }
 
+    public double calculateCost(double basePrice, int qty) {
+        double cost;
+        switch (player.getType()) {
+            case "Farmer":
+                cost = basePrice * qty;
+                break;
+            case "Registered":
+                cost = (basePrice - Registered.TRANSACTION_BENEFIT) * qty;
+                break;
+            case "Distinguished":
+                cost = (basePrice - Distinguished.TRANSACTION_BENEFITS) * qty;
+                break;
+            default:
+                cost = (basePrice - Honorable.TRANSACTION_BENEFIT) * qty;
+        }
+        return cost;
+    }
 }
