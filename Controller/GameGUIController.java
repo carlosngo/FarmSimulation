@@ -138,7 +138,7 @@ public class GameGUIController {
         initInventory();
         updateGameGUI();
         int choice = JOptionPane.showConfirmDialog(null, "Welcome to Farm Simulator!\n"
-                + "Would you like to read the tutorial?");
+                + "Would you like to read the tutorial?", "Tutorial", JOptionPane.YES_NO_OPTION);
         if (choice == JOptionPane.YES_OPTION) {
             game.showTutorial();
         }
@@ -309,7 +309,7 @@ public class GameGUIController {
                 control.setValue(20f * (float) Math.log10((float) Math.pow(10f, control.getValue() / 20f) + 0.1f));
             }
         } else if (cmd.equals("Show Tutorial")) {
-            int choice = JOptionPane.showConfirmDialog(null, "Do you want to read the tutorial again?", "Select an Option", JOptionPane.YES_NO_OPTION);
+            int choice = JOptionPane.showConfirmDialog(null, "Do you want to read the tutorial?", "Select an Option", JOptionPane.YES_NO_OPTION);
             if (choice == JOptionPane.YES_OPTION) {
                 game.showTutorial();
             }
@@ -364,7 +364,7 @@ public class GameGUIController {
                 if (t.getstate() == Tile.READY_TO_HARVEST) {
                     playSoundEffects(plantingOrHarvesting, "plant or pick.wav");
                     //plantingOrHarvesting.close();
-
+                    game.appendLog("Harvested " + t.getSeed().getProducts() + " " + t.getSeed().getName() + "(s).");
                 }
                 player.select(player.getLot().getTile(i, j));
             }
