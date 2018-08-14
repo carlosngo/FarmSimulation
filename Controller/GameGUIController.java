@@ -34,10 +34,11 @@ public class GameGUIController {
     private GameGUI game;
     private Clip music;
     private Clip levelUp;
-    private Clip plowing;
+    //private Clip plowing;
     private Clip watering;
     private Clip removingRocks;
     private Clip plantingOrHarvesting;
+    private Clip buying;
     private AudioInputStream audioSource;
     private FloatControl control;
 
@@ -66,7 +67,27 @@ public class GameGUIController {
             audioSource = AudioSystem.getAudioInputStream(new File(title));
             clip = AudioSystem.getClip();
             clip.open(audioSource);
+            //FloatControl ctrl = (FloatControl)clip.getControl(FloatControl.Type.MASTER_GAIN);
+            //ctrl.setValue(1.0f);
             clip.start();
+        } catch (LineUnavailableException e) {
+            System.out.println("LineUnavailableException");
+        } catch (UnsupportedAudioFileException e) {
+            System.out.println("UnsupportedAudioFileException");
+        } catch (IOException e) {
+            System.out.println("IOException");
+        }
+    }
+
+    public void playPlowSound() {
+        try {
+            audioSource = AudioSystem.getAudioInputStream(new File("plowing.wav"));
+            Clip plowing = AudioSystem.getClip();
+            plowing.open(audioSource);
+            //plowing.setMicrosecondPosition(3000000);
+            //FloatControl ctrl = (FloatControl)clip.getControl(FloatControl.Type.MASTER_GAIN);
+            //ctrl.setValue(1.0f);
+            plowing.start();
         } catch (LineUnavailableException e) {
             System.out.println("LineUnavailableException");
         } catch (UnsupportedAudioFileException e) {
@@ -117,7 +138,8 @@ public class GameGUIController {
         initInventory();
         updateGameGUI();
         int choice = JOptionPane.showConfirmDialog(null, "Welcome to Farm Simulator!\n"
-                + "Would you like to read the tutorial?");
+                + "Would you like to read the tutorial?", "Tutorial", JOptionPane.YES_NO_OPTION);
+
         if (choice == JOptionPane.YES_OPTION) {
             game.showTutorial();
         }
@@ -270,6 +292,7 @@ public class GameGUIController {
                     if (!player.buy(player.getInventory().getFertilizers(), qty)) {
                         JOptionPane.showMessageDialog(null, "Insufficient Object Coins");
                     } else {
+                        playSoundEffects(buying, "cash register.wav");
                         game.appendLog("Bought " + qty + " fertilizers.");
                         updateGameGUI();
                     }
@@ -287,7 +310,7 @@ public class GameGUIController {
                 control.setValue(20f * (float) Math.log10((float) Math.pow(10f, control.getValue() / 20f) + 0.1f));
             }
         } else if (cmd.equals("Show Tutorial")) {
-            int choice = JOptionPane.showConfirmDialog(null, "Do you want to read the tutorial again?", "Select an Option", JOptionPane.YES_NO_OPTION);
+            int choice = JOptionPane.showConfirmDialog(null, "Do you want to read the tutorial?", "Select an Option", JOptionPane.YES_NO_OPTION);
             if (choice == JOptionPane.YES_OPTION) {
                 game.showTutorial();
             }
@@ -311,7 +334,7 @@ public class GameGUIController {
                     if (JOptionPane.showConfirmDialog(null,
                             "Are you sure you want to remove this plant?") == JOptionPane.YES_OPTION) {
                         if (player.select(t)) {
-                            playSoundEffects(plowing, "plowing.wav");
+                            playPlowSound();
                             game.setLogAction(2, true);
                         } else {
                             JOptionPane.showMessageDialog(null, "Insufficient Object Coins");
@@ -319,7 +342,7 @@ public class GameGUIController {
                         }
                     }
                 } else {
-                    playSoundEffects(plowing, "plowing.wav");
+                    playPlowSound();
                     //plowing.close();
                     game.setLogAction(2, player.select(t));
                 }
@@ -328,6 +351,7 @@ public class GameGUIController {
                 //removingRocks.close();
                 game.setLogAction(3, player.select(t));
             } else if (player.getSelected() instanceof Fertilizer) {
+                playSoundEffects(plantingOrHarvesting, "plant or pick.wav");
                 game.setLogAction(4, player.select(t));
             } else if (player.getSelected() instanceof Seed) {
                 playSoundEffects(plantingOrHarvesting, "plant or pick.wav");
@@ -341,7 +365,7 @@ public class GameGUIController {
                 if (t.getstate() == Tile.READY_TO_HARVEST) {
                     playSoundEffects(plantingOrHarvesting, "plant or pick.wav");
                     //plantingOrHarvesting.close();
-
+                    game.appendLog("Harvested " + t.getSeed().getProducts() + " " + t.getSeed().getName() + "(s).");
                 }
                 player.select(player.getLot().getTile(i, j));
             }
@@ -354,8 +378,10 @@ public class GameGUIController {
         }
         if (moneyTemp != player.getMoney()) {
             if (moneyTemp > player.getMoney()) {
+                playSoundEffects(buying, "cash register.wav");
                 game.setLogPurchase(moneyTemp - player.getMoney());
             } else {
+                playSoundEffects(buying, "cash register.wav");
                 game.setLogHarvested(player.getMoney() - moneyTemp);
             }
         }
@@ -380,6 +406,7 @@ public class GameGUIController {
                     } else {
                         updateInventory();
                         updateGameGUI();
+                        playSoundEffects(buying, "cash register.wav");
                         game.appendLog("Bought " + qty + " " + name + "(s).");
                         game.setLogPurchase(cost);
                     }
