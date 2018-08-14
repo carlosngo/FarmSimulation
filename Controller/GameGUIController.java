@@ -7,19 +7,11 @@ package Controller;
 
 import Model.*;
 import View.*;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.DataLine;
-import javax.sound.sampled.FloatControl;
-import javax.sound.sampled.LineEvent;
-import javax.sound.sampled.LineListener;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.sound.sampled.*;
 import javax.swing.*;
 
 /**
@@ -34,7 +26,7 @@ public class GameGUIController {
     private GameGUI game;
     private Clip music;
     private Clip levelUp;
-    //private Clip plowing;
+    private Clip plowing;
     private Clip watering;
     private Clip removingRocks;
     private Clip plantingOrHarvesting;
@@ -52,6 +44,7 @@ public class GameGUIController {
             music = AudioSystem.getClip();
             music.open(audioSource);
             control = (FloatControl) music.getControl(FloatControl.Type.MASTER_GAIN);
+            control.setValue(0.25f);
             music.loop(Clip.LOOP_CONTINUOUSLY);
         } catch (LineUnavailableException e) {
             System.out.println("error");
@@ -78,7 +71,7 @@ public class GameGUIController {
             System.out.println("IOException");
         }
     }
-
+/*
     public void playPlowSound() {
         try {
             audioSource = AudioSystem.getAudioInputStream(new File("plowing.wav"));
@@ -96,7 +89,7 @@ public class GameGUIController {
             System.out.println("IOException");
         }
     }
-
+*/
     public BufferedImage getPlantImage(String name) {
         return game.getPlantImages().get(name);
     }
@@ -130,8 +123,8 @@ public class GameGUIController {
             game.addPlantImage(s.getName());
         }
         JButton[][] buttons = game.getTileButtons();
-        for (int i = 0; i < buttons.length; i++) {
-            for (int j = 0; j < buttons[i].length; j++) {
+        for (int i = 0; i < game.getCurrentRows(); i++) {
+            for (int j = 0; j < GameGUI.MAX_COL; j++) {
                 updateTile(i, j);
             }
         }
@@ -178,18 +171,8 @@ public class GameGUIController {
         if (player.getSelected() != null) {
             game.setDescription(player.getSelected().getDescription() + "\n"
                     + "Click on the background to deselect this object.");
-        }
 
-//        for (int i = 0; i < 10; i++) {
-//            for (int j = 0; j < 5; j++) {
-//                Tile tile = player.getLot().getTile(i, j);
-//                if (tile.getSeed() != null) {
-//                    game.setTileImage(tile.getstate(), tile.getSeed().getName(), game.getTileButtons()[i][j]);
-//                } else {
-//                    game.setTileImage(tile.getstate(), "", game.getTileButtons()[i][j]);
-//                }
-//            }
-//        }
+        }
         game.invalidate();
         game.validate();
         game.repaint();
@@ -207,6 +190,19 @@ public class GameGUIController {
         game.repaint();
     }
 
+    public void updateCursor(String name) {
+        Toolkit toolkit = Toolkit.getDefaultToolkit();
+        if (name != null) {
+            
+            Image img = toolkit.getImage(name + ".png");
+            Cursor c = toolkit.createCustomCursor(img, new Point(game.getX(),
+                    game.getY()), "img");
+            game.setCursor(c);
+        } else {
+            game.setCursor(null);
+        }
+    }
+
     public void updateSelected(JButton btn) {
         double moneyTemp = player.getMoney();
         int levelTemp = player.getLevel();
@@ -214,15 +210,19 @@ public class GameGUIController {
         if (cmd.equals("Watering Can")) {
             player.select(Inventory.WATERING_CAN);
             game.setSelected("Watering Can");
+            updateCursor("watering can");
         } else if (cmd.equals("Plow")) {
             player.select(Inventory.PLOW);
             game.setSelected("Plow");
+            updateCursor("plow");
         } else if (cmd.equals("Pickaxe")) {
             game.setSelected("Pickaxe");
             player.select(Inventory.PICKAXE);
+            updateCursor("pickaxe");
         } else if (cmd.equals("Fertilizer")) {
             game.setSelected("Fertilizer");
             player.select(player.getInventory().getFertilizers());
+            updateCursor("fertilizer");
         } else if (cmd.equals("EXIT GAME")) {
             music.close();
             game.dispose();
@@ -233,7 +233,7 @@ public class GameGUIController {
                 game.getSeedMenu().setVisible(true);
             }
         } else if (cmd.equals("Register")) {
-
+            deselect();
             int choice = -1;
             switch (player.getType()) {
                 case "Farmer":
@@ -243,6 +243,7 @@ public class GameGUIController {
                             + Registered.WATER_FERTILIZER_BONUS + " max water per plant\n+"
                             + Registered.TRANSACTION_BENEFIT + " OC selling price per individual produce\n-"
                             + Registered.TRANSACTION_BENEFIT + " OC buying price per individual item\n"
+                            + "+10 additional tiles\n"
                             + "REGISTRATION REQUIREMENTS\n"
                             + "Registration Fee: " + Registered.REGISTRATION_FEE + " OC\n"
                             + "Level Requirement: " + Registered.LEVEL_REQUIREMENT,
@@ -255,6 +256,7 @@ public class GameGUIController {
                             + Distinguished.WATER_FERTILIZER_BONUS + " max water per plant\n+"
                             + Distinguished.TRANSACTION_BENEFITS + " OC selling price per individual produce\n-"
                             + Distinguished.TRANSACTION_BENEFITS + " OC buying price per individual item\n"
+                            + "+10 additional tiles\n"
                             + "REGISTRATION REQUIREMENTS\n"
                             + "Registration Fee: " + Distinguished.REGISTRATION_FEE + " OC\n"
                             + "Level Requirement: " + Distinguished.LEVEL_REQUIREMENT,
@@ -267,6 +269,7 @@ public class GameGUIController {
                             + Honorable.WATER_FERTILIZER_BONUS + " max water per plant\n+"
                             + Honorable.TRANSACTION_BENEFIT + " OC selling price per individual produce\n-"
                             + Honorable.TRANSACTION_BENEFIT + " OC buying price per individual item\n"
+                            + "+5 additional tiles\n"
                             + "REGISTRATION REQUIREMENTS\n"
                             + "Registration Fee: " + Honorable.REGISTRATION_FEE + " OC\n"
                             + "Level Requirement: " + Honorable.LEVEL_REQUIREMENT,
@@ -279,11 +282,25 @@ public class GameGUIController {
                 if (p != null) {
                     player = p;
                     player.addExp(25);
+                    switch (player.getType()) {
+                        case "Registered":
+                            player.getLot().expand(2);
+                            game.addRow(2);
+                            break;
+                        case "Distinguished":
+                            player.getLot().expand(2);
+                            game.addRow(2);
+                            break;
+                        default:
+                            player.getLot().expand(1);
+                            game.addRow(1);
+                    }
                 } else {
                     JOptionPane.showMessageDialog(null, "You do not meet the requirements to register.");
                 }
             }
         } else if (cmd.equals("Buy Fertilizer")) {
+            deselect();
             int qty = askQuantity();
             if (qty != 0) {
                 double cost = calculateCost(10, qty);
@@ -300,22 +317,25 @@ public class GameGUIController {
 
             }
         } else if (cmd.equals("Volume Down")) {
+            deselect();
             float volume = (float) Math.pow(10f, control.getValue() / 20f);
             if (volume - 0.1f >= 0f) {
                 control.setValue(20f * (float) Math.log10((float) Math.pow(10f, control.getValue() / 20f) - 0.1f));
             }
         } else if (cmd.equals("Volume Up")) {
+            deselect();
             float volume = (float) Math.pow(10f, control.getValue() / 20f);
             if (volume + 0.1f <= 1f) {
                 control.setValue(20f * (float) Math.log10((float) Math.pow(10f, control.getValue() / 20f) + 0.1f));
             }
         } else if (cmd.equals("Show Tutorial")) {
+            deselect();
             int choice = JOptionPane.showConfirmDialog(null, "Do you want to read the tutorial?", "Select an Option", JOptionPane.YES_NO_OPTION);
             if (choice == JOptionPane.YES_OPTION) {
                 game.showTutorial();
             }
         } else if (cmd.equals("Exit Game")) {
-            int choice = JOptionPane.showConfirmDialog(null, "Are you sure you want to exit?");
+            int choice = JOptionPane.showConfirmDialog(null, "Are you sure you want to exit?", "Tutorial", JOptionPane.YES_NO_OPTION);
             if (choice == JOptionPane.YES_OPTION) {
                 seedMenu.dispose();
                 game.dispose();
@@ -334,7 +354,7 @@ public class GameGUIController {
                     if (JOptionPane.showConfirmDialog(null,
                             "Are you sure you want to remove this plant?") == JOptionPane.YES_OPTION) {
                         if (player.select(t)) {
-                            playPlowSound();
+                            playSoundEffects(plowing, "plowing.wav");
                             game.setLogAction(2, true);
                         } else {
                             JOptionPane.showMessageDialog(null, "Insufficient Object Coins");
@@ -342,7 +362,7 @@ public class GameGUIController {
                         }
                     }
                 } else {
-                    playPlowSound();
+                    playSoundEffects(plowing, "plowing.wav");
                     //plowing.close();
                     game.setLogAction(2, player.select(t));
                 }
@@ -395,6 +415,7 @@ public class GameGUIController {
     }
 
     public void buySeed(String name) {
+        deselect();
         int qty = askQuantity();
         if (qty != 0) {
             if (!name.isEmpty()) {
@@ -422,6 +443,7 @@ public class GameGUIController {
             player.select(s);
             game.setSelected(s.getName());
             updateGameGUI();
+            updateCursor(name.toLowerCase() + " cursor");
         } else {
             JOptionPane.showMessageDialog(null, "You have insufficient seeds.");
         }
@@ -439,6 +461,7 @@ public class GameGUIController {
         player.deselect();
         game.setSelected("none");
         game.setDescription("Click on a tool to select it, or click on a tile to view its details.");
+        updateCursor(null);
     }
 
     public void showHelp() {
