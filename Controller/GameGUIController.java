@@ -11,6 +11,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import javax.imageio.ImageIO;
 import javax.sound.sampled.*;
 import javax.swing.*;
 
@@ -26,7 +27,7 @@ public class GameGUIController {
     private GameGUI game;
     private Clip music;
     private Clip levelUp;
-    //private Clip plowing;
+    private Clip plowing;
     private Clip watering;
     private Clip removingRocks;
     private Clip plantingOrHarvesting;
@@ -71,7 +72,7 @@ public class GameGUIController {
             System.out.println("IOException");
         }
     }
-
+/*
     public void playPlowSound() {
         try {
             audioSource = AudioSystem.getAudioInputStream(new File("plowing.wav"));
@@ -89,7 +90,7 @@ public class GameGUIController {
             System.out.println("IOException");
         }
     }
-
+*/
     public BufferedImage getPlantImage(String name) {
         return game.getPlantImages().get(name);
     }
@@ -193,15 +194,35 @@ public class GameGUIController {
     public void updateCursor(String name) {
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         if (name != null) {
-            Image img = toolkit.getImage(name + ".png");
-            Cursor c = toolkit.createCustomCursor(img, new Point(game.getX(),
-                    game.getY()), "img");
+            Image img =  resizeImage(name + ".png", 50, 50);
+            //Image resizedImage = img.getScaledInstance(5, 5, Image.SCALE_DEFAULT);
+            //Cursor c = toolkit.createCustomCursor(img, new Point(game.getX(),
+              //      game.getY()), "img");
+            Cursor c = toolkit.createCustomCursor(img, new Point(0,
+                    0), "img");
+
             game.setCursor(c);
         } else {
             game.setCursor(null);
         }
     }
-
+  
+    public static BufferedImage resizeImage(String address, int width, int height) {
+        try{
+             BufferedImage rawHolder = ImageIO.read(new File(address));
+             Image raw = rawHolder.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+             BufferedImage resized = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+             Graphics2D g2d = resized.createGraphics();
+             g2d.drawImage(raw, 0, 0, null);
+             g2d.dispose();
+             return resized;
+        }
+        catch(IOException e){
+             System.out.println("File not found.");
+             return null;
+        }
+    }
+  
     public void updateSelected(JButton btn) {
         double moneyTemp = player.getMoney();
         int levelTemp = player.getLevel();
@@ -334,7 +355,7 @@ public class GameGUIController {
                 game.showTutorial();
             }
         } else if (cmd.equals("Exit Game")) {
-            int choice = JOptionPane.showConfirmDialog(null, "Are you sure you want to exit?");
+            int choice = JOptionPane.showConfirmDialog(null, "Are you sure you want to exit?", "Tutorial", JOptionPane.YES_NO_OPTION);
             if (choice == JOptionPane.YES_OPTION) {
                 seedMenu.dispose();
                 game.dispose();
@@ -353,7 +374,7 @@ public class GameGUIController {
                     if (JOptionPane.showConfirmDialog(null,
                             "Are you sure you want to remove this plant?") == JOptionPane.YES_OPTION) {
                         if (player.select(t)) {
-                            playPlowSound();
+                            playSoundEffects(plowing, "plowing.wav");
                             game.setLogAction(2, true);
                         } else {
                             JOptionPane.showMessageDialog(null, "Insufficient Object Coins");
@@ -361,7 +382,7 @@ public class GameGUIController {
                         }
                     }
                 } else {
-                    playPlowSound();
+                    playSoundEffects(plowing, "plowing.wav");
                     //plowing.close();
                     game.setLogAction(2, player.select(t));
                 }

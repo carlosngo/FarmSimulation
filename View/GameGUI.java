@@ -95,7 +95,7 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
     
     public void setSelected(String s) {
         selected.setText("Selected: " + s);
-        selected.setFont(new Font("Arial", Font.PLAIN, 30));
+        selected.setFont(new Font("Arial", Font.PLAIN, 26));
     }
     
     public ArrayList<SeedPanel> getSeedPanels() {
@@ -162,7 +162,7 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         leftPanel.add(nameLabel,c);
         
         level = new JLabel("Level: ");
-        level.setFont(new Font("Arial", Font.PLAIN, 30));
+        level.setFont(new Font("Arial", Font.PLAIN, 26));
         //Border border2 = BorderFactory.createLineBorder(Color.BLUE, 1);   level.setBorder(border2);
         c.gridx = 0;
         c.gridy = 2;
@@ -386,7 +386,7 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         seedmenu.setLayout(new BoxLayout(seedmenu, BoxLayout.Y_AXIS));
         Border round3 = new LineBorder(new Color(0,78,56),10,true);
         seedmenu.setBorder(round3);
-        seedmenu.setPreferredSize(new Dimension(315, 270));
+        seedmenu.setPreferredSize(new Dimension(250, 270));
         
         JPanel seedMenuTitlePanel = new JPanel();
         seedMenuTitlePanel.setLayout(new BoxLayout(seedMenuTitlePanel, BoxLayout.X_AXIS));
@@ -448,7 +448,7 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         seedmenu.setAlignmentY(0.5f);
         seedmenuMotherPnl.add(seedmenu);
         
-        JLabel woodpic = new JLabel(new ImageIcon(resizeImage("wood.png",315,270)));                   
+        JLabel woodpic = new JLabel(new ImageIcon(resizeImage("wood.png",270,270)));                   
         woodpic.setAlignmentX(0.5f);
         woodpic.setAlignmentY(0.5f);
         seedmenuMotherPnl.add(woodpic);
