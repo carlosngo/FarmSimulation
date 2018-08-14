@@ -429,6 +429,16 @@ public class GameGUIController {
             playSoundEffects(levelUp, "level up.wav");
             //levelUp.close();
             game.appendLog(player.getName() + " has leveled up!");
+            if (player.getLevel() == 10) {
+                updateGameGUI();
+                JOptionPane.showMessageDialog(null, "Congratulations for reaching Level 10!\n"
+                        + "You are now applicable to register.\n"
+                        + "Upon registering, you will receive additional benefits.");
+                game.getRegister().setContentAreaFilled(true);
+                JOptionPane.showMessageDialog(null, "\n"
+                        + "Click the Register button to see more details.");
+                game.getRegister().setContentAreaFilled(false);
+            }
         }
         updateGameGUI();
 
