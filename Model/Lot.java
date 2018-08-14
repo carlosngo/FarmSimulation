@@ -8,18 +8,20 @@ import Controller.*;
  * @author Carlos
  */
 public class Lot {
-
     public static final int MAX_ROW = 10;
     public static final int MAX_COL = 5;
-    private Tile[][] tiles;
+    private int currentRows;
+    private ArrayList<Tile[]> tiles;
     private GameGUIController controller;
 
     public Lot(GameGUIController controller) {
         this.controller = controller;
-        tiles = new Tile[MAX_ROW][MAX_COL];
-        for (int i = 0; i < MAX_ROW; i++) {
+        tiles = new ArrayList<>();
+        currentRows = 5;
+        for (int i = 0; i < currentRows; i++) {
+            tiles.add(new Tile[MAX_COL]);
             for (int j = 0; j < MAX_COL; j++) {
-                tiles[i][j] = new Tile(this.controller, i, j);
+                tiles.get(i)[j] = new Tile(this.controller, i, j);
             }
         }
     }
@@ -28,7 +30,7 @@ public class Lot {
      * 
      * @return the 2D array of Tile objects
      */
-    public Tile[][] getLot() {
+    public ArrayList<Tile[]> getLot() {
         return tiles;
     }
 
@@ -39,7 +41,7 @@ public class Lot {
      * @return the Tile object associated with the parameter's row and col
      */
     public Tile getTile(int row, int col) {
-        return tiles[row][col];
+        return tiles.get(row)[col];
     }
 
     /**
@@ -74,7 +76,7 @@ public class Lot {
      * @param s the Seed object to be planted in the tile object 
      * @return true if planting is successful, otherwise false
      */
-    public boolean plantSeed(Tile t, Seed s) {
+    public boolean setSeed(Tile t, Seed s) {
         if (t.getstate() != Tile.PLOWED) {
             return false;
         }
@@ -107,41 +109,59 @@ public class Lot {
      * @return ArrayList of Tile objects
      */
     public ArrayList<Tile> getAdjacentTiles(Tile t) {
-        int row = -1;
-        int col = -1;
-        for (int i = 0; i < MAX_ROW; i++) {
-            for (int j = 0; j < MAX_COL; j++) {
-                if (tiles[i][j].equals(t)) {
-                    row = i;
-                    col = j;
-                }
-            }
-        }
+        int row = t.getRow();
+        int col = t.getCol();
+//        for (int i = 0; i < currentRows; i++) {
+//            for (int j = 0; j < MAX_COL; j++) {
+//                if (tiles.get(i)[j].equals(t)) {
+//                    row = i;
+//                    col = j;
+//                }
+//            }
+//        }
         ArrayList<Tile> list = new ArrayList<>();
         if (row - 1 >= 0) {
-            list.add(tiles[row - 1][col]);
+            list.add(tiles.get(row - 1)[col]);
         }
-        if (row + 1 < MAX_ROW) {
-            list.add(tiles[row + 1][col]);
+        if (row + 1 < currentRows) {
+            list.add(tiles.get(row + 1)[col]);
         }
         if (col - 1 >= 0) {
-            list.add(tiles[row][col - 1]);
+            list.add(tiles.get(row)[col - 1]);
         }
         if (col + 1 < MAX_COL) {
-            list.add(tiles[row][col + 1]);
+            list.add(tiles.get(row)[col + 1]);
         }
         if (row - 1 >= 0 && col - 1 >= 0) {
-            list.add(tiles[row - 1][col - 1]);
+            list.add(tiles.get(row - 1)[col - 1]);
         }
         if (row - 1 >= 0 && col + 1 < MAX_COL) {
-            list.add(tiles[row - 1][col + 1]);
+            list.add(tiles.get(row - 1)[col + 1]);
         }
-        if (row + 1 < MAX_ROW && col - 1 >= 0) {
-            list.add(tiles[row + 1][col - 1]);
+        if (row + 1 < currentRows && col - 1 >= 0) {
+            list.add(tiles.get(row + 1)[col - 1]);
         }
-        if (row + 1 < MAX_ROW && col + 1 < MAX_COL) {
-            list.add(tiles[row + 1][col + 1]);
+        if (row + 1 < currentRows && col + 1 < MAX_COL) {
+            list.add(tiles.get(row + 1)[col + 1]);
         }
         return list;
+    }
+    
+    public void expand(int rows) {
+        int max = currentRows + rows;
+        for (int i = currentRows; i < max; i++) {
+            tiles.add(new Tile[MAX_COL]);
+            currentRows++;
+            for (int j = 0; j < MAX_COL; j++) {
+                Tile t = new Tile(this.controller, i, j);
+                for (Tile tile: getAdjacentTiles(t)) {
+                    if (tile != null && tile.getSeed() != null && tile.getSeed() instanceof Tree) {
+                        t.setState(Tile.PLANTED);
+                    }
+                }    
+                tiles.get(i)[j] = t;
+                
+            }
+        }
     }
 }

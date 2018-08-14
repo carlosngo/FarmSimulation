@@ -194,20 +194,19 @@ public class GameGUIController {
     public void updateCursor(String name) {
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         if (name != null) {
-            
-            //Image img = toolkit.getImage(name + ".png");
             Image img =  resizeImage(name + ".png", 50, 50);
             //Image resizedImage = img.getScaledInstance(5, 5, Image.SCALE_DEFAULT);
             //Cursor c = toolkit.createCustomCursor(img, new Point(game.getX(),
               //      game.getY()), "img");
             Cursor c = toolkit.createCustomCursor(img, new Point(0,
                     0), "img");
+
             game.setCursor(c);
         } else {
             game.setCursor(null);
         }
     }
-
+  
     public static BufferedImage resizeImage(String address, int width, int height) {
         try{
              BufferedImage rawHolder = ImageIO.read(new File(address));
@@ -223,6 +222,7 @@ public class GameGUIController {
              return null;
         }
     }
+  
     public void updateSelected(JButton btn) {
         double moneyTemp = player.getMoney();
         int levelTemp = player.getLevel();
