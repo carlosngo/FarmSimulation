@@ -78,7 +78,7 @@ public class GameGUIController {
             System.out.println("IOException");
         }
     }
-    
+
     public void playPlowSound() {
         try {
             audioSource = AudioSystem.getAudioInputStream(new File("plowing.wav"));
@@ -139,6 +139,7 @@ public class GameGUIController {
         updateGameGUI();
         int choice = JOptionPane.showConfirmDialog(null, "Welcome to Farm Simulator!\n"
                 + "Would you like to read the tutorial?", "Tutorial", JOptionPane.YES_NO_OPTION);
+
         if (choice == JOptionPane.YES_OPTION) {
             game.showTutorial();
         }
