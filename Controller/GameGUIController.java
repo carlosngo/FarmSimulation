@@ -71,25 +71,7 @@ public class GameGUIController {
             System.out.println("IOException");
         }
     }
-/*
-    public void playPlowSound() {
-        try {
-            audioSource = AudioSystem.getAudioInputStream(new File("plowing.wav"));
-            Clip plowing = AudioSystem.getClip();
-            plowing.open(audioSource);
-            //plowing.setMicrosecondPosition(3000000);
-            //FloatControl ctrl = (FloatControl)clip.getControl(FloatControl.Type.MASTER_GAIN);
-            //ctrl.setValue(1.0f);
-            plowing.start();
-        } catch (LineUnavailableException e) {
-            System.out.println("LineUnavailableException");
-        } catch (UnsupportedAudioFileException e) {
-            System.out.println("UnsupportedAudioFileException");
-        } catch (IOException e) {
-            System.out.println("IOException");
-        }
-    }
-*/
+
     public BufferedImage getPlantImage(String name) {
         return game.getPlantImages().get(name);
     }
