@@ -95,7 +95,11 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
     
     public void setSelected(String s) {
         selected.setText("Selected: " + s);
-        selected.setFont(new Font("Arial", Font.PLAIN, 30));
+        selected.setFont(new Font("Arial", Font.PLAIN, 26));
+    }
+    
+    public JButton getRegister() {
+        return register;
     }
     
     public ArrayList<SeedPanel> getSeedPanels() {
@@ -106,10 +110,6 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         return tileButtons;
     }
 
-    public JButton getRegister() {
-        return register;
-    }
-    
     public JPanel getpVeggie() {
         return pVeggie;
     }
@@ -166,7 +166,7 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         leftPanel.add(nameLabel,c);
         
         level = new JLabel("Level: ");
-        level.setFont(new Font("Arial", Font.PLAIN, 30));
+        level.setFont(new Font("Arial", Font.PLAIN, 26));
         //Border border2 = BorderFactory.createLineBorder(Color.BLUE, 1);   level.setBorder(border2);
         c.gridx = 0;
         c.gridy = 2;
@@ -390,7 +390,7 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         seedmenu.setLayout(new BoxLayout(seedmenu, BoxLayout.Y_AXIS));
         Border round3 = new LineBorder(new Color(0,78,56),10,true);
         seedmenu.setBorder(round3);
-        seedmenu.setPreferredSize(new Dimension(315, 270));
+        seedmenu.setPreferredSize(new Dimension(250, 270));
         
         JPanel seedMenuTitlePanel = new JPanel();
         seedMenuTitlePanel.setLayout(new BoxLayout(seedMenuTitlePanel, BoxLayout.X_AXIS));
@@ -452,7 +452,7 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         seedmenu.setAlignmentY(0.5f);
         seedmenuMotherPnl.add(seedmenu);
         
-        JLabel woodpic = new JLabel(new ImageIcon(resizeImage("wood.png",315,270)));                   
+        JLabel woodpic = new JLabel(new ImageIcon(resizeImage("wood.png",330,270)));                   
         woodpic.setAlignmentX(0.5f);
         woodpic.setAlignmentY(0.5f);
         seedmenuMotherPnl.add(woodpic);
@@ -615,7 +615,7 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         content.setAlignmentY(0.5f);
         motherPnl.add(content);
         
-        JLabel grasspic = new JLabel(new ImageIcon(resizeImage("grass.png",1450,850)));                   
+        JLabel grasspic = new JLabel(new ImageIcon(resizeImage("grass.png",3000,1100)));                   
         grasspic.setAlignmentX(0.5f);
         grasspic.setAlignmentY(0.5f);
         motherPnl.add(grasspic);
@@ -759,10 +759,8 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        if (e.getButton() == MouseEvent.BUTTON1) {
-            if (!(e.getSource() instanceof JButton))
-                controller.deselect();
-        }
+        if (e.getButton() == MouseEvent.BUTTON3)
+            controller.deselect();
     }
 
     @Override
@@ -841,7 +839,7 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         help.setContentAreaFilled(false);
         controller.getSeedMenu().setVisible(true);
         JOptionPane.showMessageDialog(controller.getSeedMenu().getBackButton(),
-                "Seeds have different properties.", "Seed Properties", JOptionPane.INFORMATION_MESSAGE);
+          "Seeds have different properties.", "Seed Properties", JOptionPane.INFORMATION_MESSAGE);
         JOptionPane.showMessageDialog(controller.getSeedMenu().getBackButton(),
                 "Harvest Time is the time it takes for the plant to mature.\n" +
                 "NOTE: FAILURE TO HARVEST A PLANT ONE MINUTE AFTER IT MATURES WILL RESULT TO ITS DEATH.", 
@@ -851,7 +849,7 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
                 "Fertilizer Needed is the minimum amount of fertilizer the plant needs to mature.\n"
                 + "NOTE: FAILURE TO MEET THE NEEDS OF THE PLANT BY THE TIME OF ITS HARVEST WILL RESULT TO ITS DEATH.\n"
                 , "Seed Properties", JOptionPane.INFORMATION_MESSAGE);
-        JOptionPane.showMessageDialog(controller.getSeedMenu().getBackButton(),
+	            JOptionPane.showMessageDialog(controller.getSeedMenu().getBackButton(),
                 "Products Produced is the possible range of yields the seed can produce.", "Seed Properties", JOptionPane.INFORMATION_MESSAGE);
         JOptionPane.showMessageDialog(controller.getSeedMenu().getBackButton(),
                 "Seed Cost is the buying price of a seed.", "Seed Properties", JOptionPane.INFORMATION_MESSAGE);
