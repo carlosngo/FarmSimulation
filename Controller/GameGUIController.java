@@ -26,7 +26,7 @@ public class GameGUIController {
     private GameGUI game;
     private Clip music;
     private Clip levelUp;
-    //private Clip plowing;
+    private Clip plowing;
     private Clip watering;
     private Clip removingRocks;
     private Clip plantingOrHarvesting;
@@ -71,7 +71,7 @@ public class GameGUIController {
             System.out.println("IOException");
         }
     }
-
+/*
     public void playPlowSound() {
         try {
             audioSource = AudioSystem.getAudioInputStream(new File("plowing.wav"));
@@ -89,7 +89,7 @@ public class GameGUIController {
             System.out.println("IOException");
         }
     }
-
+*/
     public BufferedImage getPlantImage(String name) {
         return game.getPlantImages().get(name);
     }
@@ -334,7 +334,7 @@ public class GameGUIController {
                 game.showTutorial();
             }
         } else if (cmd.equals("Exit Game")) {
-            int choice = JOptionPane.showConfirmDialog(null, "Are you sure you want to exit?");
+            int choice = JOptionPane.showConfirmDialog(null, "Are you sure you want to exit?","", JOptionPane.YES_NO_OPTION);
             if (choice == JOptionPane.YES_OPTION) {
                 seedMenu.dispose();
                 game.dispose();
@@ -351,9 +351,9 @@ public class GameGUIController {
             } else if (player.getSelected() instanceof Plow) {
                 if (t.getSeed() != null) {
                     if (JOptionPane.showConfirmDialog(null,
-                            "Are you sure you want to remove this plant?") == JOptionPane.YES_OPTION) {
+                            "Are you sure you want to remove this plant?","", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                         if (player.select(t)) {
-                            playPlowSound();
+                            playSoundEffects(plowing, "plowing.wav");
                             game.setLogAction(2, true);
                         } else {
                             JOptionPane.showMessageDialog(null, "Insufficient Object Coins");
@@ -361,7 +361,7 @@ public class GameGUIController {
                         }
                     }
                 } else {
-                    playPlowSound();
+                    playSoundEffects(plowing, "plowing.wav");
                     //plowing.close();
                     game.setLogAction(2, player.select(t));
                 }
