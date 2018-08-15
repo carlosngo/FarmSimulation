@@ -1,11 +1,11 @@
 package Model;
 
+import Controller.*;
+
 /**
  * This class contains implemented Player class methods personalized for an "Unregistered" player
  * @author Carlos
  */
-import Controller.*;
-
 public class Normal extends Player  {
     
     public Normal(String name, GameGUIController controller) {

@@ -8,7 +8,7 @@ import Controller.*;
  * object. A Player object can also buy a Purchasable instance, plant a seed
  * on a tile, harvest a tile, and register to enjoy benefits.
  * 
- * @author Carlos & Johanna
+ * @author Carlos
  */
 public abstract class Player {
     public static final int MAX_LEVEL = 50;
@@ -25,9 +25,9 @@ public abstract class Player {
         this.controller = controller;
         this.name = name;
         lot = new Lot(this.controller);
-        money = 10000;
-        level = 9;
-        exp = 2250;
+        money = 100;
+        level = 0;
+        exp = 0;
         inv = new Inventory();
     }
     
@@ -176,8 +176,7 @@ public abstract class Player {
                 if (s instanceof Tile) {
                     tile = (Tile) s;
                     if (tool.use(tile)) {
-                        if (tool instanceof Plow && (tile.getstate() == Tile.WITHERED
-                                || (tile.getstate() == Tile.PLANTED && tile.getSeed() != null))) {
+                        if (tool instanceof Plow && (tile.getstate() >= Tile.PLANTED && tile.getSeed() != null)) {
                             if (money - tile.getSeed().getSeedCost() * 0.1 < 0)
                                 return false;
                             money -= tile.getSeed().getSeedCost() * 0.1;

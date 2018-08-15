@@ -3,7 +3,7 @@ package Model;
 /**
  * A tool that helps plants survive the farm heat. It also boosts 
  * the selling price of the plant.
- * @author Carlos & Johanna
+ * @author Carlos
  */
 public class Fertilizer extends Tool implements Purchasable {
 
@@ -22,7 +22,7 @@ public class Fertilizer extends Tool implements Purchasable {
     }
 
     /**
-     * Sets the parameter's integer as the Fertilizer object's new count.
+     * 
      * @param count the integer to be set as the new count
      */
     public void setCount(int count) {
@@ -30,9 +30,8 @@ public class Fertilizer extends Tool implements Purchasable {
     }
 
     /**
-     * Fertilizes the parameter's Tile object; deducts the count of the 
-     * fertilizer, and returns true when fertilization is successful, 
-     * returns false otherwise.
+     * Fertilizes the parameter's Tile object and decrements the count of the 
+     * fertilizer.
      * @param t the tile to be fertilized
      * @return true, if the fertilization was successful; false otherwise 
      */

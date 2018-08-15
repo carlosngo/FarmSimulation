@@ -170,7 +170,7 @@ public class GameGUIController {
         game.setType(player.getType());
         if (player.getSelected() != null) {
             game.setDescription(player.getSelected().getDescription() + "\n"
-                    + "Click on the background to deselect this object.");
+                    + "Press right-click to deselect this object.");
 
         }
         game.invalidate();

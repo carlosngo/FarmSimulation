@@ -3,7 +3,9 @@ package Model;
 import java.util.*;
 
 /**
- * This class contains methods for tools' actions to be executed.
+ * This class contains the seeds and tools of the player. It adds and removes
+ * seeds and fertilizers.
+ *
  * @author Carlos
  */
 public class Inventory {
@@ -22,8 +24,8 @@ public class Inventory {
     }
 
     /**
-     * This list is used to initialize the HashMap seeds list
-     * @return ArrayList of Seed objects
+     *
+     * @return an ArrayList of available seeds in the game.
      */
     private ArrayList<Seed> getAvailableSeeds() {
         ArrayList<Seed> seeds = new ArrayList<>();
@@ -55,16 +57,16 @@ public class Inventory {
     }
 
     /**
-     * 
-     * @return the HashMap list of Seed objects
+     *
+     * @return the HashMap of seeds
      */
     public HashMap<Seed, Integer> getSeeds() {
         return seeds;
     }
-    
+
     /**
-     * 
-     * @return the subHashMap seeds list or the Tree objects HashMap list
+     *
+     * @return the TreeMap of Tree seeds sorted alphabetically.
      */
     public TreeMap<Tree, Integer> getTrees() {
         TreeMap<Tree, Integer> trees = new TreeMap<>();
@@ -77,8 +79,8 @@ public class Inventory {
     }
 
     /**
-     * 
-     * @return the subHashMap seeds list or the Flower objects HashMap list
+     *
+     * @return the TreeMap of Flower seeds sorted alphabetically.
      */
     public TreeMap<Flower, Integer> getFlowers() {
         TreeMap<Flower, Integer> flowers = new TreeMap<>();
@@ -91,8 +93,8 @@ public class Inventory {
     }
 
     /**
-     * 
-     * @return the subHashMap seeds list or the Vegetable objects HashMap list
+     *
+     * @return the TreeMap of Vegetable seeds sorted alphabetically.
      */
     public TreeMap<Vegetable, Integer> getVegetables() {
         TreeMap<Vegetable, Integer> vegetables = new TreeMap<>();
@@ -105,39 +107,41 @@ public class Inventory {
     }
 
     /**
-     * 
-     * @return the initial Fertilizer object
+     *
+     * @return the Fertilizer object
      */
     public Fertilizer getFertilizers() {
         return FERTILIZERS;
     }
 
     /**
-     * 
+     *
      * @param s the Seed object of the requested ID
-     * @return the HashMap ID of the parameter's Seed object
+     * @return the quantity of the parameter's Seed object
      */
     public int getQuantity(Seed s) {
         return seeds.get(s);
     }
 
     /**
-     * Returns the Seed object with the matching name with the parameter's name.
-     * If no matches are found, null is returned.
-     * @param name the String name of the chosen Seed object
-     * @return Seed object if a match is found, otherwise null
+     *
+     * @param name the name of the seed to be retrieved
+     * @return the Seed object with the same name if a match is found, otherwise
+     * null
      */
     public Seed getSeed(String name) {
-        for (Seed s : seeds.keySet()) 
-            if (s.getName().equals(name)) 
+        for (Seed s : seeds.keySet()) {
+            if (s.getName().equals(name)) {
                 return s;
+            }
+        }
         return null;
     }
-    
+
     /**
-     * Sets the HashMap ID of the parameter's Seed object to the parameter's quantity.
-     * @param s the Seed object whose ID is to be changed
-     * @param quantity the new ID to be used
+     * 
+     * @param s the Seed object to be cloned
+     * @return an independent Seed object if a match is found, otherwise null
      */
     public Seed getClone(Seed s) {
         if (s instanceof Tree) {
@@ -152,9 +156,9 @@ public class Inventory {
     }
 
     /**
-     * Returns a clone object of the Seed with the matching name with the parameter's name.
-     * @param name the String name of the chosen Seed object to be cloned
-     * @return Seed object if a match is found, otherwise null
+     *
+     * @param s the seed which quantity is to be changed
+     * @param quantity the quantity to be set 
      */
     public void setQuantity(Seed s, int quantity) {
         seeds.put(s, quantity);
@@ -162,7 +166,9 @@ public class Inventory {
 
     /**
      * Adds the parameter's quantity to the count of fertilizers.
-     * @param quantity the integer to be added to the current number of fertilizers
+     *
+     * @param quantity the integer to be added to the current number of
+     * fertilizers
      */
     public void addFertilizer(int quantity) {
         FERTILIZERS.setCount(FERTILIZERS.getCount() + quantity);
@@ -170,6 +176,7 @@ public class Inventory {
 
     /**
      * Adds the parameter's Seed object to the list of seeds.
+     *
      * @param s the Seed object to be added to the seeds ArrayList
      */
     public void addSeed(Seed s) {
@@ -177,9 +184,10 @@ public class Inventory {
     }
 
     /**
-     * Decreases the number of Seed objects in the HashMap seeds list and returns true.
-     * @param s the Seed object to be removed
-     * @return true if removal is successful, otherwise null
+     * Decrements the quantity of the specified seed.
+     *
+     * @param s the Seed object which quantity is to be decremented
+     * @return true if the quantity of the specified seed is greater than 0, otherwise null
      */
     public boolean removeSeed(Seed s) {
         if (getQuantity(s) < 1) {
