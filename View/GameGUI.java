@@ -452,7 +452,7 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         seedmenu.setAlignmentY(0.5f);
         seedmenuMotherPnl.add(seedmenu);
         
-        JLabel woodpic = new JLabel(new ImageIcon(resizeImage("wood.png",270,270)));                   
+        JLabel woodpic = new JLabel(new ImageIcon(resizeImage("wood.png",330,270)));                   
         woodpic.setAlignmentX(0.5f);
         woodpic.setAlignmentY(0.5f);
         seedmenuMotherPnl.add(woodpic);
@@ -615,7 +615,7 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         content.setAlignmentY(0.5f);
         motherPnl.add(content);
         
-        JLabel grasspic = new JLabel(new ImageIcon(resizeImage("grass.png",1450,850)));                   
+        JLabel grasspic = new JLabel(new ImageIcon(resizeImage("grass.png",3000,1100)));                   
         grasspic.setAlignmentX(0.5f);
         grasspic.setAlignmentY(0.5f);
         motherPnl.add(grasspic);
