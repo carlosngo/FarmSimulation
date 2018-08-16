@@ -11,6 +11,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.*;
 import javax.sound.sampled.*;
 import javax.swing.*;
 
@@ -40,31 +42,31 @@ public class GameGUIController {
 
     public void playMusic() {
         try {
-            audioSource = AudioSystem.getAudioInputStream(getClass().getResourceAsStream("/Pineapple Overture.wav"));
+            InputStream audioSrc = getClass().getResourceAsStream("/Pineapple Overture.wav");
+            InputStream bufferedIn = new BufferedInputStream(audioSrc);
+            audioSource = AudioSystem.getAudioInputStream(bufferedIn);
             music = AudioSystem.getClip();
             music.open(audioSource);
             control = (FloatControl) music.getControl(FloatControl.Type.MASTER_GAIN);
             control.setValue(0.25f);
             music.loop(Clip.LOOP_CONTINUOUSLY);
-        } catch (LineUnavailableException e) {
-            System.out.println("error");
-        } catch (UnsupportedAudioFileException e) {
-            System.out.println("error");
-        } catch (IOException e) {
-            System.out.println("error");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     public void playSoundEffects(Clip clip, String title) {
         try {
-            audioSource = AudioSystem.getAudioInputStream(getClass().getResourceAsStream("/" + title));
+            InputStream audioSrc = getClass().getResourceAsStream("/" + title);
+            InputStream bufferedIn = new BufferedInputStream(audioSrc);
+            audioSource = AudioSystem.getAudioInputStream(bufferedIn);
             clip = AudioSystem.getClip();
             clip.open(audioSource);
             //FloatControl ctrl = (FloatControl)clip.getControl(FloatControl.Type.MASTER_GAIN);
             //ctrl.setValue(1.0f);
             clip.start();
         } catch (LineUnavailableException e) {
-            System.out.println("LineUnavailableException");
+            e.printStackTrace();
         } catch (UnsupportedAudioFileException e) {
             System.out.println("UnsupportedAudioFileException");
         } catch (IOException e) {
@@ -316,7 +318,7 @@ public class GameGUIController {
                 game.showTutorial();
             }
         } else if (cmd.equals("Exit Game")) {
-            int choice = JOptionPane.showConfirmDialog(null, "Are you sure you want to exit?","", JOptionPane.YES_NO_OPTION);
+            int choice = JOptionPane.showConfirmDialog(null, "Are you sure you want to exit?", "", JOptionPane.YES_NO_OPTION);
             if (choice == JOptionPane.YES_OPTION) {
                 seedMenu.dispose();
                 game.dispose();
@@ -333,7 +335,7 @@ public class GameGUIController {
             } else if (player.getSelected() instanceof Plow) {
                 if (t.getSeed() != null) {
                     if (JOptionPane.showConfirmDialog(null,
-                            "Are you sure you want to remove this plant?","", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                            "Are you sure you want to remove this plant?", "", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
                         if (player.select(t)) {
                             playSoundEffects(plowing, "plowing.wav");
                             game.setLogAction(2, true);
@@ -352,10 +354,10 @@ public class GameGUIController {
                 //removingRocks.close();
                 game.setLogAction(3, player.select(t));
             } else if (player.getSelected() instanceof Fertilizer) {
-                playSoundEffects(plantingOrHarvesting, "plant or pick.wav");
+                playSoundEffects(plantingOrHarvesting, "plant.wav");
                 game.setLogAction(4, player.select(t));
             } else if (player.getSelected() instanceof Seed) {
-                playSoundEffects(plantingOrHarvesting, "plant or pick.wav");
+                playSoundEffects(plantingOrHarvesting, "plant.wav");
                 //plantingOrHarvesting.close();
                 game.setLogAction(5, player.select(t));
                 if (player.getInventory().getQuantity((Seed) player.getSelected()) == 0) {
@@ -364,7 +366,7 @@ public class GameGUIController {
                 }
             } else {
                 if (t.getstate() == Tile.READY_TO_HARVEST) {
-                    playSoundEffects(plantingOrHarvesting, "plant or pick.wav");
+                    playSoundEffects(plantingOrHarvesting, "plant.wav");
                     //plantingOrHarvesting.close();
                     game.appendLog("Harvested " + t.getSeed().getProducts() + " " + t.getSeed().getName() + "(s).");
                 }
