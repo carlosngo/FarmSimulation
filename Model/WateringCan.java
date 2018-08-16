@@ -2,7 +2,7 @@ package Model;
 
 /**
  * A tool that can water a plant.
- * @author Carlos
+ * @author Carlos & Johanna
  */
 public class WateringCan extends Tool {
     public WateringCan() { }

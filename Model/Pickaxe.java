@@ -2,7 +2,7 @@ package Model;
 
 /**
  * A tool that can remove rocks from tiles.
- * @author Carlos
+ * @author Carlos & Johanna
  */
 public class Pickaxe extends Tool {
     public Pickaxe() { }

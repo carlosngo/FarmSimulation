@@ -40,7 +40,7 @@ public class GameGUIController {
 
     public void playMusic() {
         try {
-            audioSource = AudioSystem.getAudioInputStream(new File("Pineapple Overture.wav"));
+            audioSource = AudioSystem.getAudioInputStream(getClass().getResourceAsStream("/Pineapple Overture.wav"));
             music = AudioSystem.getClip();
             music.open(audioSource);
             control = (FloatControl) music.getControl(FloatControl.Type.MASTER_GAIN);
@@ -57,7 +57,7 @@ public class GameGUIController {
 
     public void playSoundEffects(Clip clip, String title) {
         try {
-            audioSource = AudioSystem.getAudioInputStream(new File(title));
+            audioSource = AudioSystem.getAudioInputStream(getClass().getResourceAsStream("/" + title));
             clip = AudioSystem.getClip();
             clip.open(audioSource);
             //FloatControl ctrl = (FloatControl)clip.getControl(FloatControl.Type.MASTER_GAIN);
@@ -175,7 +175,7 @@ public class GameGUIController {
     public void updateCursor(String name) {
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         if (name != null) {
-            Image img = toolkit.getImage(name + ".png");
+            Image img = toolkit.getImage(getClass().getResource("/" + name + ".png"));
             Cursor c = toolkit.createCustomCursor(img, new Point(game.getX(),
                     game.getY()), "img");
             game.setCursor(c);

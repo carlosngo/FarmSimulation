@@ -2,7 +2,7 @@ package Model;
 
 /**
  * Represents a selectable tool that can be used on tiles.
- * @author Carlos
+ * @author Carlos & Johanna
  */
 public abstract class Tool implements Selectable {
 

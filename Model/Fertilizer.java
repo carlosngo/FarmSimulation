@@ -3,7 +3,7 @@ package Model;
 /**
  * A tool that helps plants survive the farm heat. It also boosts 
  * the selling price of the plant.
- * @author Carlos
+ * @author Carlos & Johanna
  */
 public class Fertilizer extends Tool implements Purchasable {
 

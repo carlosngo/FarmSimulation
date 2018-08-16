@@ -80,7 +80,7 @@ public class SeedMenu extends JFrame implements ActionListener {
         content.setOpaque(false);
         //content.setBackground(new Color(152, 251, 152));
         pic = new JLabel();
-        pic.setIcon(new ImageIcon(resizeImage("seed.png",90,90)));
+        pic.setIcon(new ImageIcon(resizeImage("/seed.png",90,90)));
         Border border = BorderFactory.createLineBorder(new Color(68, 76, 56), 10, true);    
         pic.setBorder(border);
         pic.setPreferredSize(new Dimension(110, 0));
@@ -178,7 +178,7 @@ public class SeedMenu extends JFrame implements ActionListener {
         content.setAlignmentY(0.5f);
         base.add(content);
         
-        JLabel seedmenu = new JLabel(new ImageIcon(resizeImage("seedmenu background.png",600,380)));
+        JLabel seedmenu = new JLabel(new ImageIcon(resizeImage("/seedmenu background.png",600,380)));
         seedmenu.setAlignmentX(0.5f);
         seedmenu.setAlignmentY(0.5f);
         base.add(seedmenu);
@@ -223,9 +223,9 @@ public class SeedMenu extends JFrame implements ActionListener {
         
     }
     
-    public static BufferedImage resizeImage(String name, int width, int height) {
+    public BufferedImage resizeImage(String name, int width, int height) {
         try{
-             BufferedImage rawHolder = ImageIO.read(new File(name));
+             BufferedImage rawHolder = ImageIO.read(getClass().getResource(name));
              Image raw = rawHolder.getScaledInstance(width, height, Image.SCALE_SMOOTH);
              BufferedImage resized = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
              Graphics2D g2d = resized.createGraphics();

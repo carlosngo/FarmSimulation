@@ -89,7 +89,7 @@ public class MainMenu extends JFrame implements ActionListener, DocumentListener
         motherPnl.add(p);
 
         try{
-             BufferedImage rawHolder = ImageIO.read(new File("farm.png"));
+             BufferedImage rawHolder = ImageIO.read(getClass().getResource("/farm.png"));
              Image raw = rawHolder.getScaledInstance(550, 300, Image.SCALE_SMOOTH);
              BufferedImage resized = new BufferedImage(550, 300, BufferedImage.TYPE_INT_ARGB);
              Graphics2D g2d = resized.createGraphics();

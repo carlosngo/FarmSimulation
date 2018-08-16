@@ -59,7 +59,7 @@ public class SeedPanel extends JPanel implements ActionListener {
         seedPic.setActionCommand("Plant Seed");
         seedPic.setToolTipText(name);
         seedPic.addActionListener(this);
-        seedPic.setIcon(new ImageIcon(resizeImage(name.toLowerCase() + ".png", 120, 100)));
+        seedPic.setIcon(new ImageIcon(resizeImage("/" + name.toLowerCase() + ".png", 120, 100)));
         c.gridx = 0;
         c.gridy = 0;
         c.gridwidth = 4;
@@ -76,7 +76,7 @@ public class SeedPanel extends JPanel implements ActionListener {
         buy.setActionCommand("Buy Seed");
         buy.setToolTipText("Buy Seed");
         buy.addActionListener(this);
-        buy.setIcon(new ImageIcon(resizeImage("add seed.png",35,25)));
+        buy.setIcon(new ImageIcon(resizeImage("/add seed.png",35,25)));
         functional.add(buy);
         c.gridx = 0;
         c.gridy = 1;
@@ -85,9 +85,9 @@ public class SeedPanel extends JPanel implements ActionListener {
         product.add(functional,c);
     }
 
-    public static BufferedImage resizeImage(String address, int width, int height) {
+    public BufferedImage resizeImage(String address, int width, int height) {
         try{
-             BufferedImage rawHolder = ImageIO.read(new File(address));
+             BufferedImage rawHolder = ImageIO.read(getClass().getResource(address));
              Image raw = rawHolder.getScaledInstance(width, height, Image.SCALE_SMOOTH);
              BufferedImage resized = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
              Graphics2D g2d = resized.createGraphics();

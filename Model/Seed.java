@@ -2,7 +2,7 @@ package Model;
 
 /**
  * The class that represents a seed in the game.
- * @author Carlos
+ * @author Carlos & Johanna
  */
 public abstract class Seed implements Selectable, Purchasable, Comparable<Seed> {
     

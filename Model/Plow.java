@@ -7,7 +7,7 @@ package Model;
 
 /**
  * A tool that can prepare a tile for planting and remove withered plants from tiles.
- * @author Carlos
+ * @author Carlos & Johanna
  */
 public class Plow extends Tool {
     public Plow() { }

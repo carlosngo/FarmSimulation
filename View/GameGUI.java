@@ -175,7 +175,7 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         leftPanel.add(level,c);
         
         register = new JButton();
-        register.setIcon(new ImageIcon(resizeImage("register.png",60,45)));
+        register.setIcon(new ImageIcon(resizeImage("/register.png",60,45)));
         register.setActionCommand("Register");
         register.setToolTipText("Register");
         
@@ -265,7 +265,7 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         watercan.setToolTipText("Watering Can");
         watercan.setOpaque(false);
         watercan.setBorderPainted(false);
-        watercan.setIcon(new ImageIcon(resizeImage("watering can.png",80,65)));
+        watercan.setIcon(new ImageIcon(resizeImage("/watering can.png",80,65)));
         //watercan.setHorizontalAlignment(SwingConstants.LEFT);
         watercan.setActionCommand("Watering Can");
         watercan.addActionListener(this);
@@ -285,7 +285,7 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         plow.setBorderPainted(false);
         plow.setToolTipText("Plow");
         //plow.setBorder(BorderFactory.createLineBorder(new Color(0,78,56),1));
-        plow.setIcon(new ImageIcon(resizeImage("plow.png",80,65)));
+        plow.setIcon(new ImageIcon(resizeImage("/plow.png",80,65)));
         plow.setHorizontalAlignment(SwingConstants.LEFT);
         plow.setActionCommand("Plow");
         
@@ -306,7 +306,7 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         pickaxe.setBorderPainted(false);
         pickaxe.setToolTipText("Pickaxe");
         //pickaxe.setBorder(BorderFactory.createLineBorder(new Color(0,78,56),1));
-        pickaxe.setIcon(new ImageIcon(resizeImage("pickaxe.png",80,65)));
+        pickaxe.setIcon(new ImageIcon(resizeImage("/pickaxe.png",80,65)));
         pickaxe.setActionCommand("Pickaxe");
         //pickaxe.setHorizontalAlignment(SwingConstants.LEFT);
         pickaxe.addActionListener(this);
@@ -328,7 +328,7 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         fertilizer.setOpaque(false);
         fertilizer.setBorderPainted(false);
         //fertilizer.setBorder(BorderFactory.createLineBorder(new Color(0,78,56),1));
-        fertilizer.setIcon(new ImageIcon(resizeImage("fertilizer.png",80,65)));
+        fertilizer.setIcon(new ImageIcon(resizeImage("/fertilizer.png",80,65)));
         //fertilizer.setHorizontalAlignment(SwingConstants.LEFT);
         fertilizer.addActionListener(this);
         fertilizer.addMouseListener(this);
@@ -348,7 +348,7 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         buyFertilizer.setBorderPainted(false);
         buyFertilizer.setToolTipText("Buy Fertilizer");
         //buyFertilizer.setBorder(BorderFactory.createLineBorder(new Color(0,78,56),1));
-        buyFertilizer.setIcon(new ImageIcon(resizeImage("add fertilizer.png",80,65)));
+        buyFertilizer.setIcon(new ImageIcon(resizeImage("/add fertilizer.png",80,65)));
         //buyFertilizer.setHorizontalAlignment(SwingConstants.LEFT);
         buyFertilizer.addActionListener(this);
         buyFertilizer.addMouseListener(this);
@@ -370,7 +370,7 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         seeds.setToolTipText("View Seeds");
         //seeds.setBorderPainted(false);
         //seeds.setBorder(BorderFactory.createLineBorder(new Color(0,78,56),1));
-        seeds.setIcon(new ImageIcon(resizeImage("seeds.png",80,65)));
+        seeds.setIcon(new ImageIcon(resizeImage("/seeds.png",80,65)));
         seeds.setHorizontalAlignment(SwingConstants.LEFT);
         seeds.addActionListener(this);
         seeds.addMouseListener(this);
@@ -402,7 +402,7 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         //seedmenuLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         seedMenuTitlePanel.add(seedmenuLabel); //, BorderLayout.CENTER
         seedMenuTitlePanel.add(Box.createRigidArea(new Dimension(45, 0)));
-        help = new JButton(new ImageIcon(resizeImage("help.png",20,17)));
+        help = new JButton(new ImageIcon(resizeImage("/help.png",20,17)));
         help.setBackground(new Color(255,255,0));
         help.setToolTipText("Seed Information");
         help.addMouseListener(this);
@@ -443,16 +443,16 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         String veggie = "Vegetables";
         String flower = "Flower";
         String trees = "Fruit Trees";
-        tp.addTab("", new ImageIcon(resizeImage("carrot cursor.png",30,25)), scrollPane1, veggie);
-        tp.addTab("", new ImageIcon(resizeImage("stargazer cursor.png",30,25)), scrollPane2, flower);
-        tp.addTab("", new ImageIcon(resizeImage("banana cursor.png",30,25)), scrollPane3, trees);
+        tp.addTab("", new ImageIcon(resizeImage("/carrot cursor.png",30,25)), scrollPane1, veggie);
+        tp.addTab("", new ImageIcon(resizeImage("/stargazer cursor.png",30,25)), scrollPane2, flower);
+        tp.addTab("", new ImageIcon(resizeImage("/banana cursor.png",30,25)), scrollPane3, trees);
         seedmenu.add(tp);
         
         seedmenu.setAlignmentX(0.5f);
         seedmenu.setAlignmentY(0.5f);
         seedmenuMotherPnl.add(seedmenu);
         
-        JLabel woodpic = new JLabel(new ImageIcon(resizeImage("wood.png",330,270)));                   
+        JLabel woodpic = new JLabel(new ImageIcon(resizeImage("/wood.png",330,270)));                   
         woodpic.setAlignmentX(0.5f);
         woodpic.setAlignmentY(0.5f);
         seedmenuMotherPnl.add(woodpic);
@@ -551,7 +551,7 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         JPanel btnPanel = new JPanel();
         btnPanel.setLayout(new BoxLayout(btnPanel, BoxLayout.X_AXIS));
         JButton volumeDown = new JButton();
-        volumeDown.setIcon(new ImageIcon(resizeImage("volumedown.png", 60, 60)));
+        volumeDown.setIcon(new ImageIcon(resizeImage("/volumedown.png", 60, 60)));
         volumeDown.setContentAreaFilled(false);
         volumeDown.setBackground(new Color(255,255,0));
         volumeDown.setContentAreaFilled(false);
@@ -562,7 +562,7 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         volumeDown.addMouseListener(this);
         
         JButton volumeUp = new JButton();
-        volumeUp.setIcon(new ImageIcon(resizeImage("volumeup.png", 60, 60)));
+        volumeUp.setIcon(new ImageIcon(resizeImage("/volumeup.png", 60, 60)));
         volumeUp.setContentAreaFilled(false);
         volumeUp.setBackground(new Color(255,255,0));
         volumeUp.setContentAreaFilled(false);
@@ -573,7 +573,7 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         volumeUp.addMouseListener(this);
         
         JButton showTutorial = new JButton();
-        showTutorial.setIcon(new ImageIcon(resizeImage("tutorial.png", 60, 60)));
+        showTutorial.setIcon(new ImageIcon(resizeImage("/tutorial.png", 60, 60)));
         showTutorial.setContentAreaFilled(false);
         showTutorial.setBackground(new Color(255,255,0));
         showTutorial.setContentAreaFilled(false);
@@ -584,7 +584,7 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         showTutorial.addMouseListener(this);
         
         JButton exit = new JButton();
-        exit.setIcon(new ImageIcon(resizeImage("exit door.png", 60, 60)));
+        exit.setIcon(new ImageIcon(resizeImage("/exit door.png", 60, 60)));
         exit.setContentAreaFilled(false);
         exit.setBackground(new Color(255,255,0));
         exit.setContentAreaFilled(false);
@@ -615,7 +615,7 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         content.setAlignmentY(0.5f);
         motherPnl.add(content);
         
-        JLabel grasspic = new JLabel(new ImageIcon(resizeImage("grass.png",3000,1100)));                   
+        JLabel grasspic = new JLabel(new ImageIcon(resizeImage("/grass.png",3000,1100)));                   
         grasspic.setAlignmentX(0.5f);
         grasspic.setAlignmentY(0.5f);
         motherPnl.add(grasspic);
@@ -635,38 +635,14 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
         //setLogAction(4);
         //setLogHarvested(12.78);
     }
-    /*
-    public static BufferedImage setTileImage(int state, String plant){
-        switch(state){
-            case 0 : return resizeImage("rocky soil.png",60,60);
-            case 1 : return resizeImage("unplowed soil.png",60,60);
-            case 2 : return resizeImage("plowed soil.png",60,60);
-            case 3 : switch(plant){
-                        case "Turnip"   :     return resizeImage("turnip.png",60,60);
-                        case "Carrot"   :     return resizeImage("carrot.png",60,60);
-                        case "Tomato"   :     return resizeImage("tomato.png",60,60);
-                        case "Potato"   :     return resizeImage("potato.png",60,60);
-                        case "Rose"     :     return resizeImage("rose.png",60,60);
-                        case "Tulip"    :     return resizeImage("tulip.png",60,60);
-                        case "Stargazer":     return resizeImage("stargazer.png",60,60);
-                        case "Sunflower":     return resizeImage("sunflower.png",60,60);
-                        case "Mango"    :     return resizeImage("mango.png",60,60);
-                        case "Apple"    :     return resizeImage("apple.png",60,60);
-                        case "Banana"   :     return resizeImage("banana.png",60,60);
-                        case "Orange"   :     return resizeImage("orange.png",60,60);
-                     }
-            case 4: return resizeImage("withered soil.png",60,60);
-            default : return null;
-        }
-    }
-    */
+
     
     public void drawTiles() {
         
     }
     
     public void addPlantImage(String name) {
-        plantImages.put(name, resizeImage(name.toLowerCase() + ".png", 65, 65));
+        plantImages.put(name, resizeImage("/" + name.toLowerCase() + ".png", 65, 65));
     }
     
     public void addVegetablePanel(String name, GameGUIController controller) {
@@ -689,24 +665,24 @@ public class GameGUI extends JFrame implements ActionListener, MouseListener {
     
     public void setTileImage(int state, String plant, JButton tileButton){
         switch(state){
-            case ROCKY : tileButton.setIcon(new ImageIcon(resizeImage("rocky soil.png",65,65))); break;
-            case UNPLOWED : tileButton.setIcon(new ImageIcon(resizeImage("unplowed soil.png",65,65))); break;
-            case PLOWED : tileButton.setIcon(new ImageIcon(resizeImage("plowed soil.png",65,65))); break;
+            case ROCKY : tileButton.setIcon(new ImageIcon(resizeImage("/rocky soil.png",65,65))); break;
+            case UNPLOWED : tileButton.setIcon(new ImageIcon(resizeImage("/unplowed soil.png",65,65))); break;
+            case PLOWED : tileButton.setIcon(new ImageIcon(resizeImage("/plowed soil.png",65,65))); break;
             case PLANTED : 
                 if (plant.isEmpty())
-                    tileButton.setIcon(new ImageIcon(resizeImage("leaf.png",65,65))); 
+                    tileButton.setIcon(new ImageIcon(resizeImage("/leaf.png",65,65))); 
                 else
-                    tileButton.setIcon(new ImageIcon(resizeImage("seedling.png",65,65))); 
+                    tileButton.setIcon(new ImageIcon(resizeImage("/seedling.png",65,65))); 
                 break;
             case READY_TO_HARVEST : tileButton.setIcon(new ImageIcon(plantImages.get(plant))); break;
-            case WITHERED: tileButton.setIcon(new ImageIcon(resizeImage("withered.png",60,60))); break;
+            case WITHERED: tileButton.setIcon(new ImageIcon(resizeImage("/withered.png",60,60))); break;
             default : System.out.println("Unable to set picture.");;
         }
     }
     
-    public static BufferedImage resizeImage(String address, int width, int height) {
+    public BufferedImage resizeImage(String address, int width, int height) {
         try{
-             BufferedImage rawHolder = ImageIO.read(new File(address));
+             BufferedImage rawHolder = ImageIO.read(getClass().getResource(address));
              Image raw = rawHolder.getScaledInstance(width, height, Image.SCALE_SMOOTH);
              BufferedImage resized = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
              Graphics2D g2d = resized.createGraphics();

@@ -9,7 +9,7 @@ import Controller.*;
 
 /**
  * This class contains implemented Player class methods personalized for a "Registered" player
- * @author Carlos 
+ * @author Carlos & Johanna
  */
 public class Registered extends Player {
     

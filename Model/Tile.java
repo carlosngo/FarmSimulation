@@ -4,7 +4,7 @@ import Controller.*;
 
 /**
  * The class that represents a tile in the game.
- * @author Carlos
+ * @author Carlos & Johanna
  */
 public class Tile implements Runnable, Selectable {
     public final static int ROCKY = 0;

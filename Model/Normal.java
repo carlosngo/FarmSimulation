@@ -4,7 +4,7 @@ import Controller.*;
 
 /**
  * This class contains implemented Player class methods personalized for an "Unregistered" player
- * @author Carlos
+ * @author Carlos  & Johanna
  */
 public class Normal extends Player  {
     

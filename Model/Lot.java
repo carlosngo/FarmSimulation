@@ -5,7 +5,7 @@ import Controller.*;
 
 /**
  * The class that contains the tiles.
- * @author Carlos
+ * @author Carlos & Johanna
  */
 public class Lot {
     public static final int MAX_ROW = 10;

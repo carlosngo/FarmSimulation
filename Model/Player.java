@@ -8,7 +8,7 @@ import Controller.*;
  * object. A Player object can also buy a Purchasable instance, plant a seed
  * on a tile, harvest a tile, and register to enjoy benefits.
  * 
- * @author Carlos
+ * @author Carlos & Johanna
  */
 public abstract class Player {
     public static final int MAX_LEVEL = 50;

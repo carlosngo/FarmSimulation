@@ -2,7 +2,7 @@ package Model;
 
 /**
  * An object in the game that can be selected by the user.
- * @author Carlos
+ * @author Carlos & Johanna
  */
 public interface Selectable {
 
